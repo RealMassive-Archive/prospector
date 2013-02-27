@@ -1,0 +1,20 @@
+%h2 I am the future home of a dashboard
+
+%h4 All Nuggets (#{@nuggets.count})
+
+%h4{class: 'alert-success'} Craigslist Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
+%p Signage Received (#{@signage_received_nuggets.count})
+%p Signage Reviewable (#{@signage_reviewable_nuggets.count})
+
+%h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count})
+%p Ready to contact Broker (#{@ready_to_contact_broker_nuggets.count})
+%p Broker Contacted (#{@broker_contacted_nuggets.count})
+
+%h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count})
+%p No GPS (#{@no_gps_nuggets.count})
+%p Blurry (#{@blurry_nuggets.count})
+%p Inappropriate (#{@inappropriate_nuggets.count})
+
+%h4{class: 'alert-info'} System Backend: (#{@extracted_metadata_nuggets.count})
+%p Extracted Metadata (#{@extracted_metadata_nuggets.count})
+
