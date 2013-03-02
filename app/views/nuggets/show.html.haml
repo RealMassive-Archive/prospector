@@ -1,0 +1,8 @@
+%p#notice= notice
+%p
+  %b Submitter:
+  = @nugget.submitter
+
+= link_to 'Edit', edit_nugget_path(@nugget)
+\|
+= link_to 'Back', nuggets_path

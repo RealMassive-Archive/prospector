@@ -1,0 +1,13 @@
+= form_for @nugget do |f|
+  - if @nugget.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@nugget.errors.count, "error")} prohibited this nugget from being saved:"
+      %ul
+        - @nugget.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :submitter
+    = f.text_field :submitter
+
+  .actions
+    = f.submit 'Save'

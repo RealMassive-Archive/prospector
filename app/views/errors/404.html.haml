@@ -1,0 +1,12 @@
+#errors-page
+  .thumbnail.errors
+    .errors-404
+    .caption
+      %h5 Sorry.
+  %h1 404 File Not Found
+
+  - # Do not remove this line. It is used for development
+  - # purposes. When an error is found. In development, it
+  - # shows the logs, in production it is nil.
+  .error-msg
+    = @log

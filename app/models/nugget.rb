@@ -7,6 +7,9 @@ class Nugget < ActiveRecord::Base
   validates_inclusion_of :nugget_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
 
+  before_save :default_values
+
+  default_scope order(:submission_on)
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
   scope :extracted_metadata, -> { with_state(:extracted_metadata) }
@@ -39,6 +42,12 @@ class Nugget < ActiveRecord::Base
     event :broker_contacted do
       transition :ready_to_contact_broker => :broker_contacted
     end
+  end
+
+  def default_values
+    self.submission_method ||= 'email'
+    self.submission_on ||= Time.now
+    self.submitter ||= "Cato"
   end
 
 end

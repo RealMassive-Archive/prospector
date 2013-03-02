@@ -3,7 +3,11 @@
 %h4 All Nuggets (#{@nuggets.count})
 
 %h4{class: 'alert-success'} Craigslist Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
-%p Signage Received (#{@signage_received_nuggets.count})
+%p
+  Signage Received (#{@signage_received_nuggets.count}) (most recent: #{time_ago_in_words(@signage_received_nuggets.last.submission_on)} ago)
+  %div{class:"btn-group inline pull-left"}
+    %button#no-gps{class:"btn"} No GPS
+
 %p Signage Reviewable (#{@signage_reviewable_nuggets.count})
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count})
@@ -18,3 +22,11 @@
 %h4{class: 'alert-info'} System Backend: (#{@extracted_metadata_nuggets.count})
 %p Extracted Metadata (#{@extracted_metadata_nuggets.count})
 
+:javascript
+    $(document).ready( function() {
+
+      $('#no-gps').on('click', function (e) {
+          alert("hihi");
+      });
+
+    } );
