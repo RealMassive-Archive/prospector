@@ -2,6 +2,17 @@
 %p
   %b Submitter:
   = @nugget.submitter
+  %b Submitte via:
+  = @nugget.submission_method
+  %b Submitted on:
+  = @nugget.submitted_at
+  %b Longitude/Latitude:
+  #{@nugget.latitude}, #{@nugget.longitude}
+
+%p
+  = @nugget.signage.url
+%p
+  = image_tag(@nugget.signage_url)
 
 = link_to 'Edit', edit_nugget_path(@nugget)
 \|
