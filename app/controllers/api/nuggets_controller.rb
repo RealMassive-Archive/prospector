@@ -1,4 +1,4 @@
-class Api::TicketsController < ApplicationController
+class Api::NuggetsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def create
