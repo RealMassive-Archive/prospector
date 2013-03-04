@@ -82,14 +82,14 @@ class Nugget < ActiveRecord::Base
           signage: signage
         )
         n.save!
-
+        logger.info "saving attachment #{i} of #{message.attachments.count}"
       end
         # rescue Exception => e
         #     # puts there was a problem storing attachments
         #     logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
         #     logger.error [e, *e.backtrace].join("\n")
         # end
-      }
+    }
   end
 
 end
