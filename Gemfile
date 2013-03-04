@@ -7,6 +7,12 @@ gem 'carrierwave'
 gem "fog", "~> 1.3.1"
 gem 'state_machine'
 
+# receive emails
+gem 'postmark-mitt'
+# read metadata from photos (use for getting Lat/Log data)
+gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
+
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
