@@ -62,12 +62,13 @@ class Nugget < ActiveRecord::Base
       logger.info "message #{message.message_id}: reading attachment #{i} ('#{attachment.file_name}') of type #{attachment.content_type}"
       begin
         signage = SignageUploader.new
-      rescue Exception => e
+        signage.cache!(attachment.read)
+      rescue CarrierWave::IntegrityError => e
         # puts there was a problem storing attachments
         logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
         logger.error [e, *e.backtrace].join("\n")
       end
-       signage.cache!(attachment.read)
+
       jpg = EXIFR::JPEG.new(sign.file.path)
       unless jpg.gps.compact.blank?
         n = Nugget.create!(
