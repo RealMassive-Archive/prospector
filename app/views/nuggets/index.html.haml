@@ -6,7 +6,7 @@
     %th submitter
     %th submitted via
     %th date submitted
-    %th lat/lon
+    %th google maps
     %th
     %th
     %th
@@ -17,7 +17,8 @@
       %td= nugget.submitter
       %td= nugget.submission_method
       %td #{time_ago_in_words(nugget.submitted_at)} ago
-      %td #{nugget.latitude}, #{nugget.longitude}
+      %td = button_to "#{@nugget.latitude},#{@nugget.longitude}", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
+
       %td= link_to 'Show', nugget
       %td= link_to 'Edit', edit_nugget_path(nugget)
       %td= link_to 'Destroy', nugget, :method => :delete, :data => { :confirm => 'Are you sure?' }

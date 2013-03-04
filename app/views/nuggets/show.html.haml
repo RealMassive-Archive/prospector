@@ -12,12 +12,12 @@
   %b Longitude/Latitude:
   #{@nugget.latitude},#{@nugget.longitude}
   %br/
-  = link_to "see on Google maps", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
+  = button_to "view on Google maps", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
 %p
-  %b I think signage url is:
+  %b signage url is:
   = @nugget.signage.url
 %p
-  -#= image_tag(@nugget.signage_url)
+  = image_tag(@nugget.signage_url)
 
 = link_to 'Edit', edit_nugget_path(@nugget)
 \|
