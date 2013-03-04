@@ -4,6 +4,7 @@ gem 'pg'
 gem 'thin'
 
 gem 'carrierwave'
+gem "fog", "~> 1.3.1"
 gem 'state_machine'
 
 group :assets do
