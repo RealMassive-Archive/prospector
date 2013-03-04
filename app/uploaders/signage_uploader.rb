@@ -14,6 +14,10 @@ class SignageUploader < CarrierWave::Uploader::Base
   storage :fog
   # storage :file
 
+  def cache_dir
+    '/tmp/nugget-signage-cache'
+  end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
