@@ -12,7 +12,8 @@
   %b Longitude/Latitude:
   #{@nugget.latitude}, #{@nugget.longitude}
 
-%p I think signage url is:
+%p
+  %b I think signage url is:
   = @nugget.signage.url
 %p
   -#= image_tag(@nugget.signage_url)
