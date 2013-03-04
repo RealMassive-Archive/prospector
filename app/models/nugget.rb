@@ -67,9 +67,10 @@ class Nugget < ActiveRecord::Base
         # puts there was a problem storing attachments
         logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
         logger.error [e, *e.backtrace].join("\n")
+        return
       end
 
-      jpg = EXIFR::JPEG.new(sign.file.path)
+      jpg = EXIFR::JPEG.new(signage.file.path)
       unless jpg.gps.compact.blank?
         n = Nugget.create!(
           submitter: message.from,
