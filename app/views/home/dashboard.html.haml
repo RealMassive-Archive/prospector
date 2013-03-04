@@ -2,12 +2,12 @@
 
 %h4 All Nuggets (#{@nuggets.count})
 
-%h4{class: 'alert-success'} Craigslist Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
+%h4{class: 'alert-success'} Intern Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
 %p
   Signage Received (#{@signage_received_nuggets.count})
   -if @signage_received_nuggets.last
     (most recent: #{time_ago_in_words(@signage_received_nuggets.last.submitted_at)} ago)
-  -end
+
   %div{class:"btn-group inline pull-left"}
     %button#no-gps{class:"btn"} No GPS
 
