@@ -5,8 +5,9 @@
 %h4{class: 'alert-success'} Craigslist Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
 %p
   Signage Received (#{@signage_received_nuggets.count})
-  - time_ago = @signage_received_nuggets.last.submitted_at.nil? ? nil : @signage_received_nuggets.last.submitted_at
-  (most recent: #{time_ago_in_words(time_ago)} ago)
+  -if @signage_received_nuggets.last
+    (most recent: #{time_ago_in_words(@signage_received_nuggets.last.submitted_at)} ago)
+  -end
   %div{class:"btn-group inline pull-left"}
     %button#no-gps{class:"btn"} No GPS
 
