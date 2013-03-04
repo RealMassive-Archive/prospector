@@ -17,7 +17,7 @@
       %td= nugget.submitter
       %td= nugget.submission_method
       %td #{time_ago_in_words(nugget.submitted_at)} ago
-      %td= button_to "#{nugget.latitude},#{nugget.longitude}", "https://maps.google.com/maps?q=#{nugget.latitude},#{nugget.longitude}"
+      %td #{nugget.latitude},#{nugget.longitude}
 
       %td= link_to 'Show', nugget
       %td= link_to 'Edit', edit_nugget_path(nugget)

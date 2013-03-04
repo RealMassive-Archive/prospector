@@ -12,7 +12,7 @@
   %b Longitude/Latitude:
   #{@nugget.latitude},#{@nugget.longitude}
   %br/
-  = button_to "view on Google maps", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
+  = button_to "map me!", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
 %p
   %b signage url is:
   = @nugget.signage.url
