@@ -3,6 +3,7 @@ gem 'rails', '3.2.12'
 gem 'pg'
 gem 'thin'
 
+gem 'carrierwave'
 gem 'state_machine'
 
 group :assets do

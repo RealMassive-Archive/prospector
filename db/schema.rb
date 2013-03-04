@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227172753) do
+ActiveRecord::Schema.define(:version => 20130304052932) do
 
   create_table "nuggets", :force => true do |t|
     t.string   "state"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20130227172753) do
     t.string   "approx_address"
     t.string   "nugget_type"
     t.string   "nugget_phone"
+    t.string   "signage"
   end
 
   create_table "roles", :force => true do |t|

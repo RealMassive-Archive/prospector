@@ -9,6 +9,9 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
   resources :users
   resources :nuggets
 
+  namespace :api do
+    resources :nuggets, :only => [ :create ]
+  end
 
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).
   match "*path", :to => "application#routing_error"

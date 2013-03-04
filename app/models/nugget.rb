@@ -1,4 +1,5 @@
 class Nugget < ActiveRecord::Base
+  mount_uploader :signage, SignageUploader
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submission_on, :submitter
   attr_accessible :state
@@ -48,6 +49,37 @@ class Nugget < ActiveRecord::Base
     self.submission_method ||= 'email'
     self.submission_on ||= Time.now
     self.submitter ||= "Cato"
+  end
+
+  def self.create_from_postmark(message)
+    # ignore messages with no attachments
+    if message.attachments.empty?
+      logger.info "message #{message.message_id}: no attachments!; skipping."
+      return
+    end
+
+    message.attachments.each {|attachment, i|
+      logger.info "message #{message.message_id}: reading attachment #{i} ('#{attachment.file_name}') of type #{attachment.content_type}"
+      signage = SignageUploader.new
+      signage.cache!(attachment.read)
+      jpg = EXIFR::JPEG.new(sign.file.path)
+      unless jpg.gps.compact.blank?
+        n = Nugget.create!(
+          submitter: message.from,
+          latitude: jpg.gps[0],
+          longitude: jpg.gps[1],
+          submission_method: "email",
+          submission_on: Time.now,
+          signage: signage
+        )
+
+      end
+        # rescue Exception => e
+        #     # puts there was a problem storing attachments
+        #     logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
+        #     logger.error [e, *e.backtrace].join("\n")
+        # end
+      }
   end
 
 end
