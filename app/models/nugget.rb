@@ -1,7 +1,7 @@
 class Nugget < ActiveRecord::Base
   mount_uploader :signage, SignageUploader
   attr_accessible :latitude, :longitude
-  attr_accessible :submission_method, :submission_on, :submitter
+  attr_accessible :submission_method, :submitted_at, :submitter
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
 
@@ -10,7 +10,7 @@ class Nugget < ActiveRecord::Base
 
   before_save :default_values
 
-  default_scope order(:submission_on)
+  default_scope order(:submitted_at)
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
   scope :extracted_metadata, -> { with_state(:extracted_metadata) }
@@ -47,7 +47,7 @@ class Nugget < ActiveRecord::Base
 
   def default_values
     self.submission_method ||= 'email'
-    self.submission_on ||= Time.now
+    self.submitted_at ||= Time.now
     self.submitter ||= "Cato"
   end
 
@@ -77,7 +77,7 @@ class Nugget < ActiveRecord::Base
           latitude: jpg.gps[0],
           longitude: jpg.gps[1],
           submission_method: "email",
-          submission_on: Time.now,
+          submitted_at: Time.now,
           signage: signage
         )
 

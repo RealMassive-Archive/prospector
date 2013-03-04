@@ -6,7 +6,7 @@ class CreateNuggets < ActiveRecord::Migration
       t.decimal :longitude
       t.string :submitter
       t.string :submission_method
-      t.datetime :submission_on
+      t.datetime :submitted_at, :null => false
 
       t.timestamps
     end

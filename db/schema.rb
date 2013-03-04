@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20130304052932) do
     t.decimal  "longitude"
     t.string   "submitter"
     t.string   "submission_method"
-    t.datetime "submission_on"
+    t.datetime "submitted_at",      :null => false
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.string   "approx_address"
