@@ -2,14 +2,17 @@
 %p
   %b Submitter:
   = @nugget.submitter
-  %b Submitte via:
+%p
+  %b Submitted via:
   = @nugget.submission_method
+%p
   %b Submitted on:
   = @nugget.submitted_at
+%p
   %b Longitude/Latitude:
   #{@nugget.latitude}, #{@nugget.longitude}
 
-%p
+%p I think signage url is:
   = @nugget.signage.url
 %p
   -#= image_tag(@nugget.signage_url)
