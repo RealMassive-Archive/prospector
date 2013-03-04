@@ -73,7 +73,7 @@ class Nugget < ActiveRecord::Base
 
       jpg = EXIFR::JPEG.new(signage.file.path)
       unless jpg.gps.compact.blank?
-        n = Nugget.create!(
+        n = Nugget.new(
           submitter: message.from,
           latitude: jpg.gps[0],
           longitude: jpg.gps[1],
@@ -81,6 +81,7 @@ class Nugget < ActiveRecord::Base
           submitted_at: Time.now,
           signage: signage
         )
+        n.save!
 
       end
         # rescue Exception => e
