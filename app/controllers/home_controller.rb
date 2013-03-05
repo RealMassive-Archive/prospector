@@ -9,7 +9,6 @@ class HomeController < ApplicationController
     @nuggets = Nugget.all
     @signage_received_nuggets = Nugget.signage_received
     @no_gps_nuggets = Nugget.no_gps
-    @extracted_metadata_nuggets = Nugget.extracted_metadata
     @signage_reviewable_nuggets = Nugget.signage_reviewable
     @blurry_nuggets = Nugget.blurry
     @inappropriate_nuggets = Nugget.inappropriate
