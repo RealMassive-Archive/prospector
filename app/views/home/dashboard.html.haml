@@ -8,8 +8,8 @@
   -if @signage_received_nuggets.last
     (most recent: #{time_ago_in_words(@signage_received_nuggets.last.submitted_at)} ago)
 
-  %div{class:"btn-group inline pull-left"}
-    %button#no-gps{class:"btn"} No GPS
+  -#%span{class:"btn-group inline pull-left"}
+    -#%button#no-gps{class:"btn"} No GPS
 
 %p Signage Reviewable (#{@signage_reviewable_nuggets.count})
 
