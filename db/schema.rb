@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130304052932) do
+ActiveRecord::Schema.define(:version => 20130305041505) do
 
   create_table "nuggets", :force => true do |t|
     t.string   "state"
@@ -19,13 +19,18 @@ ActiveRecord::Schema.define(:version => 20130304052932) do
     t.decimal  "longitude"
     t.string   "submitter"
     t.string   "submission_method"
-    t.datetime "submitted_at",      :null => false
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "submitted_at",         :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "approx_address"
     t.string   "nugget_type"
     t.string   "nugget_phone"
     t.string   "signage"
+    t.string   "signage_address"
+    t.string   "signage_city"
+    t.string   "signage_state"
+    t.string   "signage_county"
+    t.string   "signage_neighborhood"
   end
 
   create_table "roles", :force => true do |t|
