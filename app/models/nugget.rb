@@ -1,10 +1,15 @@
 class Nugget < ActiveRecord::Base
   mount_uploader :signage, SignageUploader
+
+  reverse_geocoded_by :latitude, :longitude, {address: :signage_address}
+  after_validation :reverse_geocode
+  
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
   attr_accessible :signage
+  attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
 
   validates_inclusion_of :nugget_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true

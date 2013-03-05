@@ -5,6 +5,7 @@ gem 'thin'
 
 gem 'carrierwave'
 gem "fog", "~> 1.3.1"
+gem 'geocoder'
 gem 'state_machine'
 
 # receive emails
