@@ -83,6 +83,8 @@ class Nugget < ActiveRecord::Base
         )
         n.save!
         logger.info "saving attachment #{i} of #{message.attachments.count}"
+      else
+        logger.warn "NO GPS FOUND!"
       end
         # rescue Exception => e
         #     # puts there was a problem storing attachments
