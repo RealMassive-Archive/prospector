@@ -19,7 +19,6 @@ class Nugget < ActiveRecord::Base
   default_scope order(:submitted_at)
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
-  scope :extracted_metadata, -> { with_state(:extracted_metadata) }
   scope :signage_reviewable, -> { with_state(:signage_reviewable) }
   scope :blurry, -> { with_state(:blurry) }
   scope :inappropriate, -> { with_state(:inappropriate) }
