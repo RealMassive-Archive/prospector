@@ -2,8 +2,8 @@ class Nugget < ActiveRecord::Base
   mount_uploader :signage, SignageUploader
 
   reverse_geocoded_by :latitude, :longitude, {address: :signage_address}
-  after_validation :reverse_geocode
-  
+  #after_validation :reverse_geocode
+
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter
   attr_accessible :state
@@ -27,15 +27,11 @@ class Nugget < ActiveRecord::Base
   scope :broker_contacted, -> { with_state(:broker_contacted) }
 
   state_machine initial: :signage_received do
-
     event :no_gps do
       transition  :signage_received => :no_gps
     end
-    event :extract_metadata do
-      transition :signage_received => :extracted_metadata
-    end
-    event :saved_to_cdn do
-      transition :extracted_metadata => :signage_reviewable
+    event :signage_reviewable do
+      transition :signage_received => :signage_reviewable
     end
     event :blurry do
       transition :signage_reviewable => :blurry
@@ -76,26 +72,23 @@ class Nugget < ActiveRecord::Base
         return
       end
 
+      n = Nugget.new(
+        submitter: message.from,
+        submission_method: "email",
+        submitted_at: Time.now
+      )
+
       jpg = EXIFR::JPEG.new(signage.file.path)
-      unless jpg.gps.compact.blank?
-        n = Nugget.new(
-          submitter: message.from,
-          latitude: jpg.gps[0],
-          longitude: jpg.gps[1],
-          submission_method: "email",
-          submitted_at: Time.now,
-          signage: signage
-        )
-        n.save!
-        logger.info "saving attachment #{i} of #{message.attachments.count}"
-      else
+      if jpg.gps.compact.blank?
         logger.warn "NO GPS FOUND!"
+        n.no_gps!
+        # note that when there's no GPS we don't even bother to save the file
+      else
+        n.latitude = jpg.gps[0]
+        n.longitude = jpg.gps[1]
+        n.signage = signage
+        n.signage_reviewable!
       end
-        # rescue Exception => e
-        #     # puts there was a problem storing attachments
-        #     logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
-        #     logger.error [e, *e.backtrace].join("\n")
-        # end
     }
   end
 
