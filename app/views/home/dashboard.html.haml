@@ -3,15 +3,14 @@
 %h4 All Nuggets (#{@nuggets.count})
 
 %h4{class: 'alert-success'} Intern Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
+%p Signage Received (#{@signage_received_nuggets.count})
 %p
-  Signage Received (#{@signage_reviewable_nuggets.count})
+  Signage Reviewable (#{@signage_reviewable_nuggets.count})
   -if @signage_reviewable_nuggets.last
     (most recent: #{time_ago_in_words(@signage_reviewable_nuggets.last.submitted_at)} ago)
 
   -#%span{class:"btn-group inline pull-left"}
     -#%button#no-gps{class:"btn"} No GPS
-
-%p Signage Reviewable (#{@signage_reviewable_nuggets.count})
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count})
 %p Ready to contact Broker (#{@ready_to_contact_broker_nuggets.count})
