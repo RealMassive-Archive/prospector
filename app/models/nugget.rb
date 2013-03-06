@@ -2,8 +2,8 @@ class Nugget < ActiveRecord::Base
   mount_uploader :signage, SignageUploader
 
   reverse_geocoded_by :latitude, :longitude, {address: :signage_address}
-  #after_validation :reverse_geocode
-
+  before_save :default_values, :process_geodata
+  
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter
   attr_accessible :state
@@ -13,8 +13,6 @@ class Nugget < ActiveRecord::Base
 
   validates_inclusion_of :nugget_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
-
-  before_save :default_values
 
   default_scope order(:submitted_at)
   scope :signage_received, -> { with_state(:signage_received) }
@@ -44,6 +42,10 @@ class Nugget < ActiveRecord::Base
     event :broker_contacted do
       transition :ready_to_contact_broker => :broker_contacted
     end
+  end
+
+  def latlong
+    "#{latitude},#{longitude}"
   end
 
   def default_values
@@ -91,4 +93,28 @@ class Nugget < ActiveRecord::Base
     }
   end
 
+  private
+  def process_geodata
+    if latitude_changed? or longitude_changed?
+      res = load_geodata
+      if res.present?
+        populate_address(res)
+      end
+    end
+  end
+
+  def load_geodata
+    res = Geocoder.search(latlong)
+    if res.present?
+      res.first
+    end
+  end
+
+  def populate_address(geo_addr)
+    self.signage_city = geo_addr.city
+    self.signage_state = geo_addr.state
+    self.signage_county = geo_addr.address_components_of_type('administrative_area_level_2').first['long_name']
+    self.signage_neighborhood = geo_addr.address_components_of_type('neighborhood').first['long_name']
+    self.signage_address = geo_addr.address
+  end
 end
