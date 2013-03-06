@@ -22,6 +22,9 @@ class Nugget < ActiveRecord::Base
   scope :inappropriate, -> { with_state(:inappropriate) }
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
   scope :broker_contacted, -> { with_state(:broker_contacted) }
+  #
+  scope :signage_reviewable_lock, -> { with_state(:signage_reviewable_lock) }
+  scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
 
   state_machine initial: :signage_received do
     event :no_gps do
@@ -30,17 +33,29 @@ class Nugget < ActiveRecord::Base
     event :signage_reviewable do
       transition :signage_received => :signage_reviewable
     end
+    event :signage_reviewable_lock do
+      transition :signage_reviewable => :signage_reviewable_lock
+    end
+    event :signage_reviewable_unlock do
+      transition :signage_reviewable_lock => :signage_reviewable
+    end
     event :blurry do
-      transition :signage_reviewable => :blurry
+      transition :signage_reviewable_lock => :blurry
     end
     event :inappropriate do
-      transition :signage_reviewable => :inappropriate
+      transition :signage_reviewable_lock => :inappropriate
     end
     event :extract_phone do
-      transition :signage_reviewable => :ready_to_contact_broker
+      transition :signage_reviewable_lock => :ready_to_contact_broker
+    end
+    event :ready_to_contact_broker_lock do
+      transition :ready_to_contact_broker => :ready_to_contact_broker_lock
+    end
+    event :ready_to_contact_broker_unlock do
+      transition :ready_to_contact_broker_lock => :ready_to_contact_broker
     end
     event :broker_contacted do
-      transition :ready_to_contact_broker => :broker_contacted
+      transition :ready_to_contact_broker_lock => :broker_contacted
     end
   end
 
