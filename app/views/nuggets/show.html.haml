@@ -14,8 +14,15 @@
   %br/
   = button_to "map me!", "https://maps.google.com/maps?q=#{@nugget.latitude},#{@nugget.longitude}"
 %p
-  %b signage url is:
-  = @nugget.signage.url
+  %b Address:
+  = @nugget.signage_address
+%p
+  %b State / County:
+  #{@nugget.signage_state} / #{@nugget.signage_county}
+%p
+  %b City / Neighborhood:
+  #{@nugget.signage_city} / #{@nugget.signage_neighborhood}
+
 %p
   = image_tag(@nugget.signage_url)
 
