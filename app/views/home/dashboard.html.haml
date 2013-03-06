@@ -31,11 +31,12 @@
   = button_tag("Lock while Contacting Broker", value: 'ready_to_contact_broker_lock', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
 
 %p Ready to contact Broker LOCKED (#{@ready_to_contact_broker_lock_nuggets.count})
-%p Broker Contacted (#{@broker_contacted_nuggets.count})
 = form_tag(transition_nuggets_path) do
   = hidden_field_tag('state', 'ready_to_contact_broker_lock')
-  = button_tag("Unlock", value: 'ready_to_contact_broker_unlock', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
-  = button_tag("Broker Contacted", value: 'broker_contacted', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
+  = button_tag("Unlock", value: 'ready_to_contact_broker_unlock', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_lock_nuggets.count == 0))
+  = button_tag("Broker Contacted", value: 'broker_contacted', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_lock_nuggets.count == 0))
+
+%p Broker Contacted (#{@broker_contacted_nuggets.count})
 
 %h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count})
 %p No GPS (#{@no_gps_nuggets.count})
