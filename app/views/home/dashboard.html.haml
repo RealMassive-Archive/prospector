@@ -21,7 +21,7 @@
   = hidden_field_tag('state', 'signage_reviewable_lock')
   = button_tag("Mark as Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
   = button_tag("Mark as Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
-  = button_tag("Unlock", value: 'signage_reviewable', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
+  = button_tag("Unlock", value: 'signage_reviewable_unlock', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
   = button_tag("Extract Phone Num", value: 'ready_to_contact_broker', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count + @ready_to_contact_broker_lock_nuggets.count})
@@ -34,7 +34,7 @@
 %p Broker Contacted (#{@broker_contacted_nuggets.count})
 = form_tag(transition_nuggets_path) do
   = hidden_field_tag('state', 'ready_to_contact_broker_lock')
-  = button_tag("Unlock", value: 'ready_to_contact_broker', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
+  = button_tag("Unlock", value: 'ready_to_contact_broker_unlock', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
   = button_tag("Broker Contacted", value: 'broker_contacted', name: 'event', type: 'submit', disabled: (@ready_to_contact_broker_nuggets.count == 0))
 
 %h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count})
