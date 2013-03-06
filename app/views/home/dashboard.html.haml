@@ -2,7 +2,7 @@
 
 %h4 All Nuggets (#{@nuggets.count})
 
-%h4{class: 'alert-success'} Intern Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count})
+%h4{class: 'alert-success'} Intern Elves: (#{@signage_received_nuggets.count + @signage_reviewable_nuggets.count + @signage_reviewable_lock_nuggets.count})
 %p Signage Received (#{@signage_received_nuggets.count})
 %p
   Signage Reviewable (#{@signage_reviewable_nuggets.count})
@@ -11,9 +11,11 @@
 
   -#%span{class:"btn-group inline pull-left"}
     -#%button#no-gps{class:"btn"} No GPS
+%p Signage Reviewable LOCKED (#{@signage_reviewable_lock_nuggets.count})
 
-%h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count})
+%h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count + @ready_to_contact_broker_lock_nuggets.count})
 %p Ready to contact Broker (#{@ready_to_contact_broker_nuggets.count})
+%p Ready to contact Broker LOCKED (#{@ready_to_contact_broker_lock_nuggets.count})
 %p Broker Contacted (#{@broker_contacted_nuggets.count})
 
 %h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count})
