@@ -83,6 +83,17 @@ class NuggetsController < ApplicationController
     end
   end
 
+  def transition
+    raise "no event provided" unless params[:state].present? and params[:event].present?
+    @nugget = Nugget.with_state(params[:state]).last
+    if @nugget.send(params[:event].to_sym)
+      flash[:notice] = "Nugget successfully transitioned via event #{params[:event]} to state #{@nugget.state}."
+    else
+      flash[:error] = "Nugget in state #{params[:state]} cannot perform event #{params[:event]}."
+    end
+    redirect_to root_path
+  end
+
   def no_gps
     nugget = Nugget.find(params[:id])
     nugget.no_gps!

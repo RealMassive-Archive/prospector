@@ -7,7 +7,9 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
   root :to => "home#index"
   devise_for :users
   resources :users
-  resources :nuggets
+  resources :nuggets do
+    post 'transition', on: :collection
+  end
 
   namespace :api do
     resources :nuggets, :only => [ :create ]
