@@ -22,7 +22,7 @@
   = button_tag("Mark as Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
   = button_tag("Mark as Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
   = button_tag("Unlock", value: 'signage_reviewable_unlock', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
-  = button_tag("Extract Phone Num", value: 'ready_to_contact_broker', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
+  = button_tag("Extract Phone Num", value: 'extract_phone', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count + @ready_to_contact_broker_lock_nuggets.count})
 %p Ready to contact Broker (#{@ready_to_contact_broker_nuggets.count})
