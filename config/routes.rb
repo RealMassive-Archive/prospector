@@ -3,7 +3,9 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
 
   authenticated :user do
     root :to => 'home#dashboard'
+    match "/index2" => "home#index2", :as => :index2, :via => :get
   end
+
   root :to => "home#index"
   devise_for :users
   resources :users

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305041505) do
+ActiveRecord::Schema.define(:version => 20130308001309) do
 
   create_table "nuggets", :force => true do |t|
     t.string   "state"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20130305041505) do
     t.string   "signage_state"
     t.string   "signage_county"
     t.string   "signage_neighborhood"
+    t.datetime "editable_until"
   end
 
   create_table "roles", :force => true do |t|

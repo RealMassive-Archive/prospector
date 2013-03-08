@@ -24,8 +24,8 @@ class Nugget < ActiveRecord::Base
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
   scope :broker_contacted, -> { with_state(:broker_contacted) }
   #
-  scope :signage_reviewable_lock, -> { with_state(:signage_reviewable_lock) }
-  scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
+  #scope :signage_reviewable_lock, -> { with_state(:signage_reviewable_lock) }
+  #scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
 
   state_machine initial: :signage_received do
     event :no_gps do
@@ -34,29 +34,29 @@ class Nugget < ActiveRecord::Base
     event :signage_reviewable do
       transition :signage_received => :signage_reviewable
     end
-    event :signage_reviewable_lock do
-      transition :signage_reviewable => :signage_reviewable_lock
-    end
-    event :signage_reviewable_unlock do
-      transition :signage_reviewable_lock => :signage_reviewable
-    end
+    # event :signage_reviewable_lock do
+    #   transition :signage_reviewable => :signage_reviewable_lock
+    # end
+    # event :signage_reviewable_unlock do
+    #   transition :signage_reviewable_lock => :signage_reviewable
+    # end
     event :blurry do
-      transition :signage_reviewable_lock => :blurry
+      transition :signage_reviewable => :blurry
     end
     event :inappropriate do
-      transition :signage_reviewable_lock => :inappropriate
+      transition :signage_reviewable => :inappropriate
     end
     event :extract_phone do
-      transition :signage_reviewable_lock => :ready_to_contact_broker
+      transition :signage_reviewable => :ready_to_contact_broker
     end
-    event :ready_to_contact_broker_lock do
-      transition :ready_to_contact_broker => :ready_to_contact_broker_lock
-    end
-    event :ready_to_contact_broker_unlock do
-      transition :ready_to_contact_broker_lock => :ready_to_contact_broker
-    end
+    # event :ready_to_contact_broker_lock do
+    #   transition :ready_to_contact_broker => :ready_to_contact_broker_lock
+    # end
+    # event :ready_to_contact_broker_unlock do
+    #   transition :ready_to_contact_broker_lock => :ready_to_contact_broker
+    # end
     event :broker_contacted do
-      transition :ready_to_contact_broker_lock => :broker_contacted
+      transition :ready_to_contact_broker => :broker_contacted
     end
   end
 
@@ -70,44 +70,9 @@ class Nugget < ActiveRecord::Base
     self.submitter ||= "Cato"
   end
 
-  # def self.create_from_postmark(message)
-  #   # ignore messages with no attachments
-  #   if message.attachments.empty?
-  #     logger.info "message #{message.message_id}: no attachments!; skipping."
-  #     return
-  #   end
-
-  #   message.attachments.each {|attachment, i|
-  #     logger.info "message #{message.message_id}: reading attachment #{i} ('#{attachment.file_name}') of type #{attachment.content_type}"
-  #     begin
-  #       signage = SignageUploader.new
-  #       signage.cache!(attachment.read)
-  #     rescue CarrierWave::IntegrityError => e
-  #       # puts there was a problem storing attachments
-  #       logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
-  #       logger.error [e, *e.backtrace].join("\n")
-  #       return
-  #     end
-
-  #     n = Nugget.new(
-  #       submitter: message.from,
-  #       submission_method: "email",
-  #       submitted_at: Time.now
-  #     )
-
-  #     jpg = EXIFR::JPEG.new(signage.file.path)
-  #     if jpg.gps.compact.blank?
-  #       logger.warn "NO GPS FOUND!"
-  #       n.no_gps!
-  #       # note that when there's no GPS we don't even bother to save the file
-  #     else
-  #       n.latitude = jpg.gps[0]
-  #       n.longitude = jpg.gps[1]
-  #       n.signage = signage
-  #       n.signage_reviewable!
-  #     end
-  #   }
-  # end
+  def editable?
+    self.editable_until.nil? || self.editable_until >= Time.now
+  end
 
   def process_geodata
     #if latitude_changed? or longitude_changed?
@@ -116,6 +81,25 @@ class Nugget < ActiveRecord::Base
     if res.present?
       populate_address(res.first)
     end
+  end
+
+
+  protected
+  def is_editable
+    self.errors[:editable_until] << "this record is locked" unless editable?
+  end
+
+  def set_editable_time
+    time_to_lock = case self.state_name
+      when :signage_reviewable
+        time_to_lock = 5.min
+      when :ready_to_contact_broker
+        time_to_lock = 10.min
+      else
+        time_to_lock = 1.min
+    end
+
+    self.editable_until ||= Time.now + time_to_lock
   end
 
   private

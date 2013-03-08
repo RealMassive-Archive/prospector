@@ -1,3 +1,66 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.box {  background-color:#666;
+        -moz-border-radius:3px;
+        -khtml-border-radius: 3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+
+
+-webkit-transition: all 300ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+   -moz-transition: all 300ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+    -ms-transition: all 300ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+     -o-transition: all 300ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+        transition: all 300ms cubic-bezier(1.000, 0.000, 0.000, 1.000); /* easeInOutExpo */
+
+  -webkit-transition-property: left, right, top;
+     -moz-transition-property: left, right, top;
+      -ms-transition-property: left, right, top;
+       -o-transition-property: left, right, top;
+          transition-property: left, right, top;
+      }
+
+#boxes { background: #333; text-align: center;}
+
+.size21, .size22, .size23, .twocols { background: #999 }
+.size31, .size32, .size33, .threecols { background: #ccc }
+
+/*
+from Solarized (http://ethanschoonover.com/solarized)
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+*/
+
+#boxes .box.metro { font-size: 125%; background: #b58900;}
+#boxes .box.micro { font-size: 125%; background: #268bd2;}
+#boxes .box.county { font-size: 90%; background: #cb4b16;}
+
+#boxes .box.metro .count {font-size:200%; color: #fff;}
+#boxes .box.micro .count {font-size:200%; color: #fff;}
+#boxes .box.county .count {font-size:150%; color: #fff;}
+
+a.btn {
+  margin-right: 1px;
+  line-height: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: inline-block;
+  width: 75px;
+  color: black;
+}
