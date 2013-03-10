@@ -2,7 +2,12 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
+  end
 
+  def index2
+  end
+
+  def index3
   end
 
   def dashboard
@@ -16,6 +21,4 @@ class HomeController < ApplicationController
     @broker_contacted_nuggets = Nugget.broker_contacted
   end
 
-  def index2
-  end
 end

@@ -1,38 +1,35 @@
-#boxes
-  .box.size44.metro
-    %div Austin
+#jobs
+  .box.size84.blue
+    .jobtype Review Signage
     %br
-    .count 543
-  .box.size22.county
-    %div Travis
     %br
-    .count 200
-  .box.size22.county
-    %div Bastrop
+    .count 75 jobs waiting for you
     %br
-    .count 193
-  .box.size22.county
-    %div Williamson
+    %a.btn WORK
+  .box.size84.green
+    .jobtype Norwich
     %br
-    .count 150
-  .box.size44.metro
-    %div Norwich
     %br
-    .count 75
-
--#%a.btn#append Append
-
+    .count 75 jobs waiting for you
+    %br
+    %a.btn WORK
+  .box.size84.yellow
+    .jobtype Call Brokers
+    %br
+    %br
+    .count 75 jobs waiting for you
+    %br
+    %a.btn WORK
+  .box.size84.red
+    .jobtype Norwich
+    %br
+    %br
+    .count 75 jobs waiting for you
+    %br
+    %a.btn WORK
 
 :javascript
   $(document).ready( function() {
-    $("#boxes").nested({selector: '.box'});
+    $("#jobs").nested({selector: '.box', resizeToFit: false});
 
-    $('#prepend').click(function(){
-      var boxes = makeBoxes();
-      $('#container').prepend(boxes).nested('prepend',boxes);
-    })
-    $('#append').click(function(){
-      var boxes = makeBoxes();
-      $('#container').append(boxes).nested('append',boxes);
-    })
   });

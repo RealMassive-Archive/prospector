@@ -7,6 +7,7 @@ gem 'carrierwave'
 gem "fog", "~> 1.3.1"
 gem 'geocoder'
 gem 'state_machine'
+gem 'state_machine-audit_trail'
 
 # receive emails
 gem 'postmark-mitt'
@@ -22,6 +23,7 @@ end
 gem 'jquery-rails'
 gem 'haml'
 gem 'haml-rails'
+gem 'annotate'
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 0.9.1", :group => :test

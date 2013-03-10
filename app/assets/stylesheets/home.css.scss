@@ -22,13 +22,10 @@
           transition-property: left, right, top;
       }
 
-#boxes { background: #333; text-align: center;}
-
-.size21, .size22, .size23, .twocols { background: #999 }
-.size31, .size32, .size33, .threecols { background: #ccc }
 
 /*
 from Solarized (http://ethanschoonover.com/solarized)
+*/
 $base03:    #002b36;
 $base02:    #073642;
 $base01:    #586e75;
@@ -45,22 +42,49 @@ $violet:    #6c71c4;
 $blue:      #268bd2;
 $cyan:      #2aa198;
 $green:     #859900;
-*/
 
-#boxes .box.metro { font-size: 125%; background: #b58900;}
-#boxes .box.micro { font-size: 125%; background: #268bd2;}
-#boxes .box.county { font-size: 90%; background: #cb4b16;}
 
-#boxes .box.metro .count {font-size:200%; color: #fff;}
-#boxes .box.micro .count {font-size:200%; color: #fff;}
-#boxes .box.county .count {font-size:150%; color: #fff;}
+.base03 {background: $base03;}
+.base02 {background: $base02;}
+.base01 {background: $base01;}
+.base00 {background: $base00;}
+.base0 {background: $base0;}
+.base1 {background: $base1;}
+.base2 {background: $base2;}
+.base3 {background: $base3;}
+.yellow {background: $yellow;}
+.orange {background: $orange;}
+.red {background: $red;}
+.magenta {background: $magenta;}
+.violet {background: $violet;}
+.blue {background: $blue;}
+.cyan {background: $cyan;}
+.green {background: $green;}
 
-a.btn {
+
+#boxes { background: #333; text-align: center;}
+#jobs { background: #eee; text-align: center;}
+
+.size21, .size22, .size23, .twocols { background: #999 }
+.size31, .size32, .size33, .threecols { background: #ccc }
+
+
+#boxes .box.metro { font-size: 125%; background: $yellow;}
+#boxes .box.micro { font-size: 125%; background: $blue;}
+#boxes .box.county { font-size: 90%; background: $orange;}
+
+#boxes .box.metro .count {font-size:200%; color: $base3;}
+#boxes .box.micro .count {font-size:200%; color: $base3;}
+#boxes .box.county .count {font-size:150%; color: $base3;}
+
+#jobs .box .jobtype {font-size: 125%; }
+#jobs .box .count {font-size: 125%; }
+#jobs .box a.btn {
   margin-right: 1px;
   line-height: 25px;
   height: 25px;
   cursor: pointer;
   display: inline-block;
   width: 75px;
-  color: black;
+  color: $base0;
 }

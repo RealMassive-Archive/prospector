@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: nuggets
+#
+#  id                   :integer          not null, primary key
+#  state                :string(255)
+#  latitude             :decimal(, )
+#  longitude            :decimal(, )
+#  submitter            :string(255)
+#  submission_method    :string(255)
+#  submitted_at         :datetime         not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  approx_address       :string(255)
+#  nugget_type          :string(255)
+#  nugget_phone         :string(255)
+#  signage              :string(255)
+#  signage_address      :string(255)
+#  signage_city         :string(255)
+#  signage_state        :string(255)
+#  signage_county       :string(255)
+#  signage_neighborhood :string(255)
+#  editable_until       :datetime
+#
+
 class Nugget < ActiveRecord::Base
   mount_uploader :signage, SignageUploader
 
@@ -28,6 +53,7 @@ class Nugget < ActiveRecord::Base
   #scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
 
   state_machine initial: :signage_received do
+    store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
     event :no_gps do
       transition  :signage_received => :no_gps
     end
@@ -58,6 +84,10 @@ class Nugget < ActiveRecord::Base
     event :broker_contacted do
       transition :ready_to_contact_broker => :broker_contacted
     end
+  end
+
+  def state_message
+    "by: #{}"
   end
 
   def latlong
