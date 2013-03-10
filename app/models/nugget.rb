@@ -136,8 +136,12 @@ class Nugget < ActiveRecord::Base
   def populate_address(geo_addr)
     self.signage_city = geo_addr.city
     self.signage_state = geo_addr.state
-    self.signage_county = geo_addr.address_components_of_type('administrative_area_level_2').first['long_name']
-    self.signage_neighborhood = geo_addr.address_components_of_type('neighborhood').first['long_name']
+    if geo_addr.address_components_of_type('administrative_area_level_2').present?
+      self.signage_county = geo_addr.address_components_of_type('administrative_area_level_2').first['long_name']
+    end
+    if geo_addr.address_components_of_type('neighborhood').present?
+      self.signage_neighborhood = geo_addr.address_components_of_type('neighborhood').first['long_name']
+    end
     self.signage_address = geo_addr.address
   end
 end
