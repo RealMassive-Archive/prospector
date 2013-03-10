@@ -30,6 +30,10 @@ class Nugget < ActiveRecord::Base
   before_save :default_values
   #before_save :process_geodata
 
+  has_many :nugget_state_transitions
+
+  attr_accessor :user
+
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter
   attr_accessible :state
@@ -44,10 +48,12 @@ class Nugget < ActiveRecord::Base
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
   scope :signage_reviewable, -> { with_state(:signage_reviewable) }
+  scope :signage_review_check, -> { with_state(:signage_review_check) }
   scope :blurry, -> { with_state(:blurry) }
   scope :inappropriate, -> { with_state(:inappropriate) }
+  scope :reject_signage_review, -> { with_state(:reject_signage_review) }
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
-  scope :broker_contacted, -> { with_state(:broker_contacted) }
+  scope :broker_contacted, -> { with_state(:awaiting_broker_info) }
   #
   #scope :signage_reviewable_lock, -> { with_state(:signage_reviewable_lock) }
   #scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
@@ -60,34 +66,29 @@ class Nugget < ActiveRecord::Base
     event :signage_reviewable do
       transition :signage_received => :signage_reviewable
     end
-    # event :signage_reviewable_lock do
-    #   transition :signage_reviewable => :signage_reviewable_lock
-    # end
-    # event :signage_reviewable_unlock do
-    #   transition :signage_reviewable_lock => :signage_reviewable
-    # end
+    event :signage_review_check do
+      transition :signage_reviewable => :signage_review_check
+    end
     event :blurry do
-      transition :signage_reviewable => :blurry
+      transition :signage_review_check => :blurry
     end
     event :inappropriate do
-      transition :signage_reviewable => :inappropriate
+      transition :signage_review_check => :inappropriate
     end
-    event :extract_phone do
-      transition :signage_reviewable => :ready_to_contact_broker
+    event :reject_signage_review do
+      transition :signage_review_check => :reject_signage_review
     end
-    # event :ready_to_contact_broker_lock do
-    #   transition :ready_to_contact_broker => :ready_to_contact_broker_lock
-    # end
-    # event :ready_to_contact_broker_unlock do
-    #   transition :ready_to_contact_broker_lock => :ready_to_contact_broker
-    # end
+    event :ready_to_contact_broker do
+      transition :signage_review_check => :ready_to_contact_broker
+    end
     event :broker_contacted do
-      transition :ready_to_contact_broker => :broker_contacted
+      transition :ready_to_contact_broker => :awaiting_broker_info
     end
   end
 
   def state_message
-    "by: #{}"
+    message = user.present? ? "#{user.name} (#{user.id})" : "SYSTEM"
+    "by: #{message}"
   end
 
   def latlong

@@ -86,6 +86,7 @@ class NuggetsController < ApplicationController
   def transition
     raise "no event provided" unless params[:state].present? and params[:event].present?
     @nugget = Nugget.with_state(params[:state]).last
+    @nugget.user = current_user
     if @nugget.send(params[:event].to_sym)
       flash[:notice] = "Nugget successfully transitioned via event #{params[:event]} to state #{@nugget.state}."
     else

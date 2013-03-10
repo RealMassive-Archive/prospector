@@ -14,9 +14,16 @@
     (most recent: #{time_ago_in_words(@signage_reviewable_nuggets.last.submitted_at)} ago)
 = form_tag(transition_nuggets_path) do
   = hidden_field_tag('state', 'signage_reviewable')
-  = button_tag("Mark as Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
-  = button_tag("Mark as Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
-  = button_tag("Extract Phone Num", value: 'extract_phone', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
+  = button_tag("Send to QA", value: 'signage_review_check', name: 'event', type: 'submit', disabled: (@signage_reviewable_nuggets.count == 0))
+
+%h4{class: 'alert-success'} Quality Hobbits: (#{@signage_review_check_nuggets.count})
+%p Perform QA (#{@signage_review_check_nuggets.count})
+= form_tag(transition_nuggets_path) do
+  = hidden_field_tag('state', 'signage_review_check')
+  = button_tag("Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_review_check_nuggets.count == 0))
+  = button_tag("Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_review_check_nuggets.count == 0))
+  = button_tag("REJECTED", value: 'reject_signage_review', name: 'event', type: 'submit', disabled: (@signage_review_check_nuggets.count == 0))
+  = button_tag("LOOKS GREAT!", value: 'ready_to_contact_broker', name: 'event', type: 'submit', disabled: (@signage_review_check_nuggets.count == 0))
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @broker_contacted_nuggets.count})
 %p Ready to contact Broker (#{@ready_to_contact_broker_nuggets.count})
@@ -30,3 +37,4 @@
 %p No GPS (#{@no_gps_nuggets.count})
 %p Blurry (#{@blurry_nuggets.count})
 %p Inappropriate (#{@inappropriate_nuggets.count})
+%p{class: 'alert-error'} REJECTED (#{@rejected_nuggets.count})
