@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310191306) do
+ActiveRecord::Schema.define(:version => 20130310224957) do
 
   create_table "nugget_state_transitions", :force => true do |t|
     t.integer  "nugget_id"
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(:version => 20130310191306) do
     t.string   "signage_county"
     t.string   "signage_neighborhood"
     t.datetime "editable_until"
+    t.string   "signage_phone"
+    t.string   "signage_listing_type"
   end
 
   create_table "roles", :force => true do |t|
