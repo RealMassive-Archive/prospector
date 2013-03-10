@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310180945) do
+ActiveRecord::Schema.define(:version => 20130310191306) do
 
   create_table "nugget_state_transitions", :force => true do |t|
     t.integer  "nugget_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20130310180945) do
     t.string   "from"
     t.string   "to"
     t.datetime "created_at"
+    t.string   "state_message"
   end
 
   add_index "nugget_state_transitions", ["nugget_id"], :name => "index_nugget_state_transitions_on_nugget_id"
