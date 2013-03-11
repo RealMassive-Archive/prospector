@@ -21,6 +21,8 @@
 #  signage_county       :string(255)
 #  signage_neighborhood :string(255)
 #  editable_until       :datetime
+#  signage_phone        :string(255)
+#  signage_listing_type :string(255)
 #
 
 require 'spec_helper'
