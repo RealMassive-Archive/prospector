@@ -8,6 +8,7 @@ gem "fog", "~> 1.3.1"
 gem 'geocoder'
 gem 'state_machine'
 gem 'state_machine-audit_trail'
+gem 'acts-as-taggable-on'
 
 # receive emails
 gem 'postmark-mitt'

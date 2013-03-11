@@ -32,7 +32,9 @@ class Nugget < ActiveRecord::Base
 
   has_many :nugget_state_transitions
 
-  attr_accessor :user
+  acts_as_taggable_on :signage_tags
+
+  attr_accessor :user  #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
 
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter
