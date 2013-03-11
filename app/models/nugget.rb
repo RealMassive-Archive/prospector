@@ -47,42 +47,44 @@ class Nugget < ActiveRecord::Base
   default_scope order(:submitted_at)
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
-  scope :signage_reviewable, -> { with_state(:signage_reviewable) }
-  scope :signage_review_check, -> { with_state(:signage_review_check) }
+  scope :signage_reviewed, -> { with_state(:signage_reviewed) }
+  scope :signage_rejected, -> { with_state(:signage_rejected) }
   scope :blurry, -> { with_state(:blurry) }
   scope :inappropriate, -> { with_state(:inappropriate) }
-  scope :reject_signage_review, -> { with_state(:reject_signage_review) }
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
-  scope :broker_contacted, -> { with_state(:awaiting_broker_info) }
-  #
-  #scope :signage_reviewable_lock, -> { with_state(:signage_reviewable_lock) }
-  #scope :ready_to_contact_broker_lock, -> { with_state(:ready_to_contact_broker_lock) }
+  scope :awaiting_broker_response, -> { with_state(:awaiting_broker_response) }
+  scope :initial, -> { with_state(:initial)}
 
-  state_machine initial: :signage_received do
+  state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
     event :no_gps do
-      transition  :signage_received => :no_gps
+      transition :initial => :no_gps
     end
-    event :signage_reviewable do
-      transition :signage_received => :signage_reviewable
+    event :signage_receive do
+      transition :initial => :signage_received
     end
-    event :signage_review_check do
-      transition :signage_reviewable => :signage_review_check
+    event :signage_review do
+      transition :signage_received => :signage_reviewed
     end
     event :blurry do
-      transition :signage_review_check => :blurry
+      transition :signage_reviewed => :blurry
     end
     event :inappropriate do
-      transition :signage_review_check => :inappropriate
+      transition :signage_reviewed => :inappropriate
     end
-    event :reject_signage_review do
-      transition :signage_review_check => :reject_signage_review
+    event :signage_reject do
+      transition :signage_reviewed => :signage_rejected
     end
-    event :ready_to_contact_broker do
-      transition :signage_review_check => :ready_to_contact_broker
+    event :signage_approve do
+      transition :signage_reviewed => :ready_to_contact_broker
     end
-    event :broker_contacted do
-      transition :ready_to_contact_broker => :awaiting_broker_info
+    event :broker_contact do
+      transition :ready_to_contact_broker => :awaiting_broker_response
+    end
+
+    # convenience:  push any nugget back to  initial state
+    event :reset do
+      transition :any => :initial
     end
   end
 

@@ -5,6 +5,7 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
     root :to => 'home#dashboard'
     match "/index2" => "home#index2", :as => :index2, :via => :get
     match "/index3" => "home#index3", :as => :index3, :via => :get
+    match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
   end
 
   root :to => "home#index"

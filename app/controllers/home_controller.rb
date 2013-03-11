@@ -12,15 +12,15 @@ class HomeController < ApplicationController
 
   def dashboard
     @nuggets = Nugget.all
+    @initial_nuggets = Nugget.initial
     @signage_received_nuggets = Nugget.signage_received
-    @signage_review_check_nuggets = Nugget.signage_review_check
+    @signage_reviewed_nuggets = Nugget.signage_reviewed
     @no_gps_nuggets = Nugget.no_gps
-    @signage_reviewable_nuggets = Nugget.signage_reviewable
     @blurry_nuggets = Nugget.blurry
     @inappropriate_nuggets = Nugget.inappropriate
-    @rejected_nuggets = Nugget.reject_signage_review
+    @rejected_nuggets = Nugget.signage_rejected
     @ready_to_contact_broker_nuggets = Nugget.ready_to_contact_broker
-    @broker_contacted_nuggets = Nugget.broker_contacted
+    @awaiting_broker_response_nuggets = Nugget.awaiting_broker_response
   end
 
 end
