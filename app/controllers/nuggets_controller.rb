@@ -92,35 +92,64 @@ class NuggetsController < ApplicationController
     else
       flash[:error] = "Nugget in state #{params[:state]} cannot perform event #{params[:event]}."
     end
-    redirect_to root_path
+    redirect_to dashboard_path
   end
 
-  def no_gps
-    nugget = Nugget.find(params[:id])
-    nugget.no_gps!
-
-    respond_to do |format|
-      format.html { redirect_to dashboard_url }
-      format.json { head :no_content }
+  # GET /nuggets/edit_signage
+  def edit_signage
+    @nugget = Nugget.read_signage_jobs.first
+    if @nugget.nil?
+      flash[:notice] = "No Signage jobs available."
+      redirect_to jobboard_path
+    else
+      @nugget.set_editable_time
+      @nugget.save
+      render :layout => false
     end
   end
 
-  def extract_metadata
+  # PUT /nuggets/1/update_signage
+  # PUT /nuggets/1/update_signage.json
+  def update_signage
+    @nugget = Nugget.find(params[:id])
+
+    respond_to do |format|
+      if @nugget.update_attributes(params[:nugget])
+        format.html { redirect_to jobboard_path, notice: 'Job completed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to jobboard_path, error: 'Something went wrong. Job not completed.' }
+        format.json { render json: @nugget.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
-  def saved_to_cdn
+  # GET /nuggets/1/tag_as_blurry
+  def tag_as_blurry
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    @nugget.signage_tag_list = "blurry"
+    @nugget.signage_review!
+    @nugget.save
+    redirect_to jobboard_path
   end
 
-  def blurry
+  # GET /nuggets/1/tag_as_inappropriate
+  def tag_as_inappropriate
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    @nugget.signage_tag_list = "inappropriate"
+    @nugget.signage_review!
+    @nugget.save
+    redirect_to jobboard_path
   end
 
-  def inappropriate
+  # GET /nuggets/1/unset_editable_time
+  def unset_editable_time
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    @nugget.save
+    #redirect_to jobboard_path
+    render :nothing => true
   end
-
-  def extract_phone
-  end
-
-  def broker_contacted
-  end
-
 end

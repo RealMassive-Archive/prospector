@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311031134) do
+ActiveRecord::Schema.define(:version => 20130311075725) do
 
   create_table "nugget_state_transitions", :force => true do |t|
     t.integer  "nugget_id"
@@ -33,9 +33,6 @@ ActiveRecord::Schema.define(:version => 20130311031134) do
     t.datetime "submitted_at",         :null => false
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
-    t.string   "approx_address"
-    t.string   "nugget_type"
-    t.string   "nugget_phone"
     t.string   "signage"
     t.string   "signage_address"
     t.string   "signage_city"

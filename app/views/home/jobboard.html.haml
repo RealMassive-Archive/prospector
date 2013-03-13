@@ -1,0 +1,54 @@
+#jobs
+  .box.size84.blue
+    %br
+    .jobtype Signage Received
+    %br
+    .count #{@read_signage_jobs_count} jobs waiting for you
+    %br
+    %a.btn{:href => edit_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
+
+  .box.size84.green
+    %br
+    .jobtype Review Signage
+    %br
+    .count #{@review_signage_jobs_count} jobs waiting for you
+    %br
+    %a.btn{disabled: @review_signage_jobs_count==0 ? true : false} DO WORK
+  .box.size84.yellow
+    %br
+    .jobtype Check Signage Duplicates
+    %br
+    .count (THIS STEP BY-PASSED FOR NOW)
+    %br
+    %a.btn{disabled: true} DO WORK
+  .box.size84.red
+    %br
+    .jobtype Contact Broker
+    %br
+    .count #{@ready_to_contact_broker_count} jobs waiting for you
+    %br
+    %a.btn{disabled: @ready_to_contact_broker_count==0 ? true : false} DO WORK
+  .box.size84.violet
+    %br
+    .jobtype Parse Info From Broker
+    %br
+    .count (THIS STEP NOT CODED YET)
+    %br
+    %a.btn{disabled: true} DO WORK
+
+
+#read_signage(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
+  .modal-header
+    %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+    %h3 Read Signage
+  .modal-body
+  .modal-footer
+    %button(type="button" data-dismiss="modal" class="btn") Close
+    %button(type="button" class="btn btn-primary") SAVE
+
+
+:javascript
+  $(document).ready( function() {
+    $("#jobs").nested({selector: '.box', resizeToFit: false});
+  });
+

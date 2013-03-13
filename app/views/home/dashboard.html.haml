@@ -19,9 +19,9 @@
 %p Perform QA (#{@signage_reviewed_nuggets.count})
 = form_tag(transition_nuggets_path) do
   = hidden_field_tag('state', 'signage_reviewed')
-  = button_tag("Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
-  = button_tag("Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
-  = button_tag("REJECTED", value: 'signage_reject', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
+  = button_tag("Confirm Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
+  = button_tag("Confirm Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
+  = button_tag("REJECT", value: 'signage_reject', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
   = button_tag("LOOKS GREAT!", value: 'signage_approve', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
 
 %h4{class: 'alert-success'} Veteran Gnomes: (#{@ready_to_contact_broker_nuggets.count + @awaiting_broker_response_nuggets.count})

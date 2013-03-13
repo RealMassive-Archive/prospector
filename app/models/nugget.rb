@@ -34,6 +34,7 @@ class Nugget < ActiveRecord::Base
 
   has_many :nugget_state_transitions
 
+  acts_as_taggable
   acts_as_taggable_on :signage_tags
 
   attr_accessor :user  #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
@@ -44,11 +45,13 @@ class Nugget < ActiveRecord::Base
   attr_accessible :nugget_type, :nugget_phone, :approx_address
   attr_accessible :signage
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
+  attr_accessible :signage_phone, :signage_listing_type
 
-  validates_inclusion_of :nugget_type, :in => %w(lease sale), :allow_nil => true
+  validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
 
-  default_scope order(:submitted_at)
+  default_scope order('submitted_at ASC')
+
   scope :signage_received, -> { with_state(:signage_received) }
   scope :no_gps, -> { with_state(:no_gps) }
   scope :signage_reviewed, -> { with_state(:signage_reviewed) }
@@ -58,6 +61,10 @@ class Nugget < ActiveRecord::Base
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
   scope :awaiting_broker_response, -> { with_state(:awaiting_broker_response) }
   scope :initial, -> { with_state(:initial)}
+
+  scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_received) }
+  scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
+  scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
@@ -108,7 +115,7 @@ class Nugget < ActiveRecord::Base
   end
 
   def editable?
-    self.editable_until.nil? || self.editable_until >= Time.now
+    self.editable_until.nil? || self.editable_until <= Time.now
   end
 
   def process_geodata
@@ -120,23 +127,27 @@ class Nugget < ActiveRecord::Base
     end
   end
 
-
-  protected
   def is_editable
     self.errors[:editable_until] << "this record is locked" unless editable?
   end
 
   def set_editable_time
     time_to_lock = case self.state_name
-      when :signage_reviewable
-        time_to_lock = 5.min
+      when :signage_received
+        time_to_lock = 2.minutes
+      when :signage_reviewed
+        time_to_lock = 5.minutes
       when :ready_to_contact_broker
-        time_to_lock = 10.min
+        time_to_lock = 10.minutes
       else
-        time_to_lock = 1.min
+        time_to_lock = 1.minutes
     end
 
     self.editable_until ||= Time.now + time_to_lock
+  end
+
+  def unset_editable_time
+    self.editable_until = nil
   end
 
   private

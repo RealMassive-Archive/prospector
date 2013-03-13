@@ -1,0 +1,54 @@
+.row-fluid
+  .span6.pagination-centered
+    = image_tag @nugget.signage_url
+  .span6
+    .row-fluid
+      %button(type="button" id="blurry" class="btn btn-danger pull-left") Too Blurry To Read
+      %button(type="button" id="inappropriate" class="btn btn-warning pull-left") Inappropriate Image
+      :javascript
+        // blurry
+        $('#blurry').on('click', function (e) {
+          $.ajax({
+            success: function( data ) {
+            //   $('#read_signage').modal('hide');
+            // do nothing
+            },
+            url: '#{tag_as_blurry_nugget_path(@nugget)}'
+          });
+        });
+        // inappropriate
+        $('#inappropriate').on('click', function (e) {
+          $.ajax({
+            success: function( data ) {
+            //   $('#read_signage').modal('hide');
+            // do nothing
+            },
+            url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
+          });
+        });
+        // cancel
+        ul[data-group='Companies']
+        $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
+          $.ajax({
+            success: function( data ) {
+            //   $('#read_signage').modal('hide');
+            // do nothing
+            },
+            url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
+          });
+        });
+    .row-fluid &nbsp;
+    .row-fluid
+      = simple_form_for(@nugget, :html => { :method => :post, :class => "form-horizontal" }) do |f|
+        - if @nugget.errors.any?
+          .row-fluid
+            #error_explanation
+              %h2= "#{pluralize(@nugget.errors.count, "error")} prohibited this nugget from being saved:"
+              %ul
+                - @nugget.errors.full_messages.each do |msg|
+                  %li= msg
+        %h5 Signage Phone
+        = f.input_field :signage_phone, placeholder: '512-555-1212', required: false
+        %h5 Listing Type
+        = f.input_field :signage_listing_type, as: :radio_buttons, collection: [ "lease", "sale"], :item_wrapper_class => 'inline'
+

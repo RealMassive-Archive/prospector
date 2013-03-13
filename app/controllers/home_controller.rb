@@ -1,10 +1,13 @@
 class HomeController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:please_login]
 
-  def index
+  def please_login
   end
 
-  def index2
+  def jobboard
+    @read_signage_jobs_count = Nugget.read_signage_jobs.count
+    @review_signage_jobs_count = Nugget.review_signage_jobs.count
+    @ready_to_contact_broker_count = Nugget.contact_broker_jobs.count
   end
 
   def index3

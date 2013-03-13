@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-  rescue_from ActionController::RoutingError, :with => :render_not_found
+  #rescue_from ActionController::RoutingError, :with => :render_not_found
 
   def routing_error
     raise ActionController::RoutingError.new(params[:path])
