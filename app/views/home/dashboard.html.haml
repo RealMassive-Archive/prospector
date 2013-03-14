@@ -7,13 +7,13 @@
 = form_tag(transition_nuggets_path) do
   = hidden_field_tag('state', 'initial')
   = button_tag("No GPS", value: 'no_gps', name: 'event', type: 'submit', disabled: (@initial_nuggets.count == 0))
-  = button_tag("Signage Received", value: 'signage_receive', name: 'event', type: 'submit', disabled: (@initial_nuggets.count == 0))
+  = button_tag("Read Signage", value: 'signage_read', name: 'event', type: 'submit', disabled: (@initial_nuggets.count == 0))
 
-%h4{class: 'alert-success'} Intern Elves: (#{@signage_received_nuggets.count + @signage_reviewed_nuggets.count})
-%p Signage Received (#{@signage_received_nuggets.count})
+%h4{class: 'alert-success'} Intern Elves: (#{@signage_read_nuggets.count + @signage_reviewed_nuggets.count})
+%p Signage Read (#{@signage_read_nuggets.count})
 = form_tag(transition_nuggets_path) do
-  = hidden_field_tag('state', 'signage_received')
-  = button_tag("Send to QA", value: 'signage_review', name: 'event', type: 'submit', disabled: (@signage_received_nuggets.count == 0))
+  = hidden_field_tag('state', 'signage_read')
+  = button_tag("Send to QA", value: 'signage_review', name: 'event', type: 'submit', disabled: (@signage_read_nuggets.count == 0))
 
 %h4{class: 'alert-success'} Quality Gnomes: (#{@signage_reviewed_nuggets.count})
 %p Perform QA (#{@signage_reviewed_nuggets.count})

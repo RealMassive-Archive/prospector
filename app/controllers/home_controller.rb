@@ -16,7 +16,7 @@ class HomeController < ApplicationController
   def dashboard
     @nuggets = Nugget.all
     @initial_nuggets = Nugget.initial
-    @signage_received_nuggets = Nugget.signage_received
+    @signage_read_nuggets = Nugget.signage_read
     @signage_reviewed_nuggets = Nugget.signage_reviewed
     @no_gps_nuggets = Nugget.no_gps
     @blurry_nuggets = Nugget.blurry

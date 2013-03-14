@@ -112,10 +112,12 @@ class NuggetsController < ApplicationController
   # PUT /nuggets/1/update_signage.json
   def update_signage
     @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
 
     respond_to do |format|
       if @nugget.update_attributes(params[:nugget])
-        format.html { redirect_to jobboard_path, notice: 'Job completed.' }
+        @nugget.signage_review!
+        format.html { redirect_to jobboard_path, notice: 'Read Signage Job completed.' }
         format.json { head :no_content }
       else
         format.html { redirect_to jobboard_path, error: 'Something went wrong. Job not completed.' }

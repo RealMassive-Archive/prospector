@@ -52,7 +52,7 @@ class Nugget < ActiveRecord::Base
 
   default_scope order('submitted_at ASC')
 
-  scope :signage_received, -> { with_state(:signage_received) }
+  scope :signage_read, -> { with_state(:signage_read) }
   scope :no_gps, -> { with_state(:no_gps) }
   scope :signage_reviewed, -> { with_state(:signage_reviewed) }
   scope :signage_rejected, -> { with_state(:signage_rejected) }
@@ -62,7 +62,7 @@ class Nugget < ActiveRecord::Base
   scope :awaiting_broker_response, -> { with_state(:awaiting_broker_response) }
   scope :initial, -> { with_state(:initial)}
 
-  scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_received) }
+  scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_read) }
   scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
 
@@ -71,11 +71,11 @@ class Nugget < ActiveRecord::Base
     event :no_gps do
       transition :initial => :no_gps
     end
-    event :signage_receive do
-      transition :initial => :signage_received
+    event :signage_read do
+      transition :initial => :signage_read
     end
     event :signage_review do
-      transition :signage_received => :signage_reviewed
+      transition :signage_read => :signage_reviewed
     end
     event :blurry do
       transition :signage_reviewed => :blurry
@@ -133,7 +133,7 @@ class Nugget < ActiveRecord::Base
 
   def set_editable_time
     time_to_lock = case self.state_name
-      when :signage_received
+      when :signage_read
         time_to_lock = 2.minutes
       when :signage_reviewed
         time_to_lock = 5.minutes

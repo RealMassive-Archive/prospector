@@ -27,7 +27,6 @@
           });
         });
         // cancel
-        ul[data-group='Companies']
         $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
           $.ajax({
             success: function( data ) {
@@ -37,9 +36,13 @@
             url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
           });
         });
+        // submit form
+        $('#read_signage_submit').on('click', function (e) {
+          $('#edit_nugget_#{@nugget.id}').submit();
+        });
     .row-fluid &nbsp;
     .row-fluid
-      = simple_form_for(@nugget, :html => { :method => :post, :class => "form-horizontal" }) do |f|
+      = simple_form_for(@nugget,:url => update_signage_nugget_path(@nugget), :html => { :method => :put, :class => "form-horizontal" }) do |f|
         - if @nugget.errors.any?
           .row-fluid
             #error_explanation
@@ -48,7 +51,7 @@
                 - @nugget.errors.full_messages.each do |msg|
                   %li= msg
         %h5 Signage Phone
-        = f.input_field :signage_phone, placeholder: '512-555-1212', required: false
+        = f.input_field :signage_phone, placeholder: '512-555-1212', pattern:"\d{3}[\-]\d{3}[\-]\d{4}", required: false
         %h5 Listing Type
         = f.input_field :signage_listing_type, as: :radio_buttons, collection: [ "lease", "sale"], :item_wrapper_class => 'inline'
 

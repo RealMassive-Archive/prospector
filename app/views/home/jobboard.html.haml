@@ -1,7 +1,7 @@
 #jobs
   .box.size84.blue
     %br
-    .jobtype Signage Received
+    .jobtype Read Signage
     %br
     .count #{@read_signage_jobs_count} jobs waiting for you
     %br
@@ -44,7 +44,7 @@
   .modal-body
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
-    %button(type="button" class="btn btn-primary") SAVE
+    %button(type="button" class="btn btn-primary" id="read_signage_submit") SAVE
 
 
 :javascript
