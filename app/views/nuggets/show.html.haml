@@ -29,3 +29,22 @@
 = link_to 'Edit', edit_nugget_path(@nugget)
 \|
 = link_to 'Back', nuggets_path
+
+%p Also saved the following size versions of the image:
+%p
+  raw (see above)
+%p
+  large (height 600)
+  = image_tag(@nugget.signage_url(:large))
+%p
+  medium (height 300)
+  = image_tag(@nugget.signage_url(:medium))
+%p
+  small (height 150)
+  = image_tag(@nugget.signage_url(:small))
+%p
+  thumb (height 75)
+  = image_tag(@nugget.signage_url(:thumb))
+%p
+  tiny (height 50)
+  = image_tag(@nugget.signage_url(:tiny))

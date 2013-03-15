@@ -64,7 +64,6 @@ class SignageUploader < CarrierWave::Uploader::Base
     end
   end
 
-
   version :medium do
     process resize_to_fit: [nil,300]
   end
