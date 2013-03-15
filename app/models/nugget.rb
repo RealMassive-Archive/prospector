@@ -58,6 +58,7 @@ class Nugget < ActiveRecord::Base
   scope :signage_rejected, -> { with_state(:signage_rejected) }
   scope :blurry, -> { with_state(:blurry) }
   scope :inappropriate, -> { with_state(:inappropriate) }
+  scope :needs_rotation, -> { with_state(:needs_rotation) }
   scope :ready_to_contact_broker, -> { with_state(:ready_to_contact_broker) }
   scope :awaiting_broker_response, -> { with_state(:awaiting_broker_response) }
   scope :initial, -> { with_state(:initial)}
@@ -82,6 +83,9 @@ class Nugget < ActiveRecord::Base
     end
     event :inappropriate do
       transition :signage_reviewed => :inappropriate
+    end
+    event :needs_rotation do
+      transition :signage_reviewed => :needs_rotation
     end
     event :signage_reject do
       transition :signage_reviewed => :signage_rejected
@@ -134,9 +138,9 @@ class Nugget < ActiveRecord::Base
   def set_editable_time
     time_to_lock = case self.state_name
       when :signage_read
-        time_to_lock = 2.minutes
+        time_to_lock = 1.minutes
       when :signage_reviewed
-        time_to_lock = 5.minutes
+        time_to_lock = 3.minutes
       when :ready_to_contact_broker
         time_to_lock = 10.minutes
       else

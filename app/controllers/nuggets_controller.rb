@@ -146,6 +146,16 @@ class NuggetsController < ApplicationController
     redirect_to jobboard_path
   end
 
+  # GET /nuggets/1/tag_as_needs_rotation
+  def tag_as_needs_rotation
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    @nugget.signage_tag_list = "needs rotation"
+    @nugget.signage_review!
+    @nugget.save
+    redirect_to jobboard_path
+  end
+
   # GET /nuggets/1/unset_editable_time
   def unset_editable_time
     @nugget = Nugget.find(params[:id])

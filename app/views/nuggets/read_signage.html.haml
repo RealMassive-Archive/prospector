@@ -2,9 +2,13 @@
   .span6.pagination-centered
     = image_tag @nugget.signage_url
   .span6
-    .row-fluid
-      %button(type="button" id="blurry" class="btn btn-danger pull-left") Too Blurry To Read
-      %button(type="button" id="inappropriate" class="btn btn-warning pull-left") Inappropriate Image
+    .row-fluid.pagination-centered
+      %h4 Do any of these apply?
+      %button(type="button" id="blurry" class="btn btn-danger") Too Blurry To Read
+      %h4
+      %button(type="button" id="inappropriate" class="btn btn-warning") Inappropriate Image
+      %h4
+      %button(type="button" id="needs_rotation" class="btn btn-info") Image Needs Rotation
       :javascript
         // blurry
         $('#blurry').on('click', function (e) {
@@ -26,6 +30,16 @@
             url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
           });
         });
+        // needs_rotation
+        $('#needs_rotation').on('click', function (e) {
+          $.ajax({
+            success: function( data ) {
+            //   $('#read_signage').modal('hide');
+            // do nothing
+            },
+            url: '#{tag_as_needs_rotation_nugget_path(@nugget)}'
+          });
+        });
         // cancel
         $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
           $.ajax({
@@ -42,6 +56,7 @@
         });
     .row-fluid &nbsp;
     .row-fluid
+      %h4 If none of above, then:
       = simple_form_for(@nugget,:url => update_signage_nugget_path(@nugget), :html => { :method => :put, :class => "form-horizontal" }) do |f|
         - if @nugget.errors.any?
           .row-fluid
