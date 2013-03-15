@@ -41,7 +41,7 @@ class Api::NuggetsController < ApplicationController
         n.longitude = jpg.gps[1]
         n.signage = signage
         n.process_geodata
-        n.signage_review!
+        n.signage_read!
       end
 
       logger.error "message #{message.message_id} from #{message.from}: nugget created"
