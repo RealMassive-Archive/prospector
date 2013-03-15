@@ -5,7 +5,7 @@
     %br
     .count #{@read_signage_jobs_count} jobs waiting for you
     %br
-    %a.btn{:href => edit_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
+    %a.btn{:href => read_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
 
   .box.size84.green
     %br
@@ -46,6 +46,15 @@
     %button(type="button" data-dismiss="modal" class="btn") Close
     %button(type="button" class="btn btn-primary" id="read_signage_submit") SAVE
 
+#review_signage(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
+  .modal-header
+    %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+    %h3 Review Signage
+  .modal-body
+  .modal-footer
+    %button(type="button" data-dismiss="modal" class="btn") Close
+    %button(type="button" class="btn btn-danger" id="review_signage_submit") REJECT
+    %button(type="button" class="btn btn-success" id="review_signage_submit") APPROVE
 
 :javascript
   $(document).ready( function() {

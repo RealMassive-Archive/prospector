@@ -4,6 +4,7 @@ gem 'pg'
 gem 'thin'
 
 gem 'carrierwave'
+gem "mini_magick"
 gem "fog", "~> 1.3.1"
 gem 'geocoder'
 gem 'state_machine'
@@ -12,7 +13,7 @@ gem 'acts-as-taggable-on'
 
 # receive emails
 gem 'postmark-mitt'
-# read metadata from photos (use for getting Lat/Log data)
+# read metadata from photos (use for getting Lat/Log data) Note: mini_magick supposedly does this as well , so exifr may be redundant (JCQ, March 2013)
 gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
 
 

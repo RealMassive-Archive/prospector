@@ -40,5 +40,9 @@
 %h4{class: 'alert-error'} Rejected nuggets: (#{@rejected_nuggets.count})
 %p{class: 'alert-error'} REJECTED (#{@rejected_nuggets.count})
 
+%h4{class: 'alert-warning'} Convenience methods:
 = form_tag(nuggets_path, method: "post") do
   = button_tag("Create Raw Nugget", type: 'submit')
+= form_tag(nuggets_path, method: "post") do
+  = hidden_field_tag('state', 'signage_read')
+  = button_tag("Create Read Signage Nugget", type: 'submit')

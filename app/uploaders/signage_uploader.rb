@@ -4,6 +4,8 @@ class SignageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
+  include CarrierWave::MiniMagick
+
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   # include Sprockets::Helpers::RailsHelper
   # include Sprockets::Helpers::IsolatedHelper
@@ -47,6 +49,83 @@ class SignageUploader < CarrierWave::Uploader::Base
   # version :thumb do
   #   process :scale => [50, 50]
   # end
+
+  version :large do
+    process resize_to_fit: [nil,600]
+  end
+
+  version :retina_large do
+    process :resize_to_fit => [nil, 1200]
+
+    def full_filename(for_file = Nugget.signage.file)
+      super.tap do |file_name|
+        file_name.gsub!('.', '@2x.').gsub!('retina_', '')
+      end
+    end
+  end
+
+
+  version :medium do
+    process resize_to_fit: [nil,300]
+  end
+
+  version :retina_medium do
+    process :resize_to_fit => [nil, 600]
+
+    def full_filename(for_file = Nugget.signage.file)
+      super.tap do |file_name|
+        file_name.gsub!('.', '@2x.').gsub!('retina_', '')
+      end
+    end
+  end
+
+  version :small do
+    process resize_to_fit: [nil,150]
+  end
+
+  version :retina_small do
+    process :resize_to_fit => [nil, 300]
+
+    def full_filename(for_file = Nugget.signage.file)
+      super.tap do |file_name|
+        file_name.gsub!('.', '@2x.').gsub!('retina_', '')
+      end
+    end
+  end
+
+  version :thumb do
+    process resize_to_fit: [nil,75]
+  end
+
+  version :retina_thumb do
+    process :resize_to_fit => [nil, 150]
+
+    def full_filename(for_file = Nugget.signage.file)
+      super.tap do |file_name|
+        file_name.gsub!('.', '@2x.').gsub!('retina_', '')
+      end
+    end
+  end
+
+  version :tiny do
+    process resize_to_fit: [nil,50]
+  end
+
+  version :retina_tiny do
+    process :resize_to_fit => [nil, 100]
+
+    def full_filename(for_file = Nugget.signage.file)
+      super.tap do |file_name|
+        file_name.gsub!('.', '@2x.').gsub!('retina_', '')
+      end
+    end
+  end
+
+
+
+
+
+
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

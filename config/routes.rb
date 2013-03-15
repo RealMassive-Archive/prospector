@@ -6,7 +6,7 @@ Prospector::Application.routes.draw do
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
     match "/index3" => "home#index3", :as => :index3, :via => :get
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
-    match "/edit_signage" => "nuggets#edit_signage", :as => :edit_signage, :via => :get
+    match "/read_signage" => "nuggets#read_signage", :as => :read_signage, :via => :get
   end
 
   root :to => "home#please_login"
@@ -15,7 +15,7 @@ Prospector::Application.routes.draw do
   resources :nuggets do
     collection do
       post 'transition'
-      get 'edit_signage'
+      get 'read_signage'
     end
     member do
       put 'update_signage'

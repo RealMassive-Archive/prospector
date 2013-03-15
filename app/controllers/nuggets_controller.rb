@@ -96,7 +96,7 @@ class NuggetsController < ApplicationController
   end
 
   # GET /nuggets/edit_signage
-  def edit_signage
+  def read_signage
     @nugget = Nugget.read_signage_jobs.first
     if @nugget.nil?
       flash[:notice] = "No Signage jobs available."
