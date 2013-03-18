@@ -6,7 +6,7 @@ Prospector::Application.routes.draw do
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
     match "/index3" => "home#index3", :as => :index3, :via => :get
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
-    match "/read_signage" => "nuggets#read_signage", :as => :read_signage, :via => :get
+    #match "/read_signage" => "nuggets#read_signage", :as => :read_signage, :via => :get
   end
 
   root :to => "home#please_login"
@@ -16,12 +16,15 @@ Prospector::Application.routes.draw do
     collection do
       post 'transition'
       get 'read_signage'
+      get 'review_signage'
     end
     member do
       put 'update_signage'
       get 'tag_as_blurry' # is this really a GET? It changes a nugget's state
       get 'tag_as_inappropriate' # is this really a GET? It changes a nugget's state
       get 'tag_as_needs_rotation' # is this really a GET? It changes a nugget's state
+      get 'approve_signage'
+      get 'reject_signage'
       get 'unset_editable_time' # is this really a GET? It changes a nugget's state
     end
   end

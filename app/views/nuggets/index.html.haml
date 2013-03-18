@@ -1,12 +1,15 @@
-%h1 Listing nuggets
+%h1 Nuggets
 
 %table{cellspacing: 5, border:1}
   %tr
     %th id
+    %th date submitted
+    %th neighborhood
+    %th approx address
+    %th city
+    %th county
     %th submitter
     %th submitted via
-    %th date submitted
-    %th google maps
     %th
     %th
     %th
@@ -14,10 +17,13 @@
   - @nuggets.each do |nugget|
     %tr
       %td= link_to nugget.id, edit_nugget_path(nugget)
+      %td #{time_ago_in_words(nugget.submitted_at)} ago
+      %td= nugget.signage_neighborhood
+      %td= nugget.signage_address
+      %td= nugget.signage_city
+      %td= nugget.signage_county
       %td= nugget.submitter
       %td= nugget.submission_method
-      %td #{time_ago_in_words(nugget.submitted_at)} ago
-      %td #{nugget.latitude},#{nugget.longitude}
 
       %td= link_to 'Show', nugget
       %td= link_to 'Edit', edit_nugget_path(nugget)
@@ -25,4 +31,6 @@
 
 %br
 
-= link_to 'New Nugget', new_nugget_path
+= will_paginate @nuggets, :renderer => BootstrapPagination::Rails
+
+-#= link_to 'New Nugget', new_nugget_path

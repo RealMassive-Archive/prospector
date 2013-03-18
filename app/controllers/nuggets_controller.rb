@@ -4,7 +4,7 @@ class NuggetsController < ApplicationController
   # GET /nuggets
   # GET /nuggets.json
   def index
-    @nuggets = Nugget.all
+    @nuggets = Nugget.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -95,7 +95,7 @@ class NuggetsController < ApplicationController
     redirect_to dashboard_path
   end
 
-  # GET /nuggets/edit_signage
+  # GET /nuggets/read_signage
   def read_signage
     @nugget = Nugget.read_signage_jobs.first
     if @nugget.nil?
@@ -154,6 +154,47 @@ class NuggetsController < ApplicationController
     @nugget.signage_review!
     @nugget.save
     redirect_to jobboard_path
+  end
+
+  # GET /nuggets/review_signage
+  def review_signage
+    @nugget = Nugget.review_signage_jobs.first
+    if @nugget.nil?
+      flash[:notice] = "No Review jobs available."
+      redirect_to jobboard_path
+    else
+      @nugget.set_editable_time
+      @nugget.save
+      render :layout => false
+    end
+  end
+
+  # GET /nuggets/1/approve_signage
+  def approve_signage
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    if @nugget.signage_tag_list.include? 'blurry'
+      @nugget.blurry!
+    elsif @nugget.signage_tag_list.include? 'inappropriate'
+      @nugget.inappropriate!
+    elsif @nugget.signage_tag_list.include? 'needs_rotation'
+      @nugget.need_rotation!
+    else
+      @nugget.signage_approve!
+    end
+    @nugget.save
+    #redirect_to jobboard_path
+    render :nothing => true
+  end
+
+  # GET /nuggets/1/reject_signage
+  def reject_signage
+    @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
+    @nugget.signage_reject!
+    @nugget.save
+    #redirect_to jobboard_path
+    render :nothing => true
   end
 
   # GET /nuggets/1/unset_editable_time

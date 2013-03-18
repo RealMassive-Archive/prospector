@@ -16,6 +16,8 @@ gem 'postmark-mitt'
 # read metadata from photos (use for getting Lat/Log data) Note: mini_magick supposedly does this as well , so exifr may be redundant (JCQ, March 2013)
 gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
 
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

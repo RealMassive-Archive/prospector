@@ -113,9 +113,8 @@ class Nugget < ActiveRecord::Base
   end
 
   def default_values
-    self.submission_method ||= 'email'
     self.submitted_at ||= Time.now
-    self.submitter ||= "Cato"
+    self.submitter ||= "SYSTEM"
   end
 
   def editable?

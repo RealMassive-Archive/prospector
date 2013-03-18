@@ -1,6 +1,6 @@
 .row-fluid
   .span6.pagination-centered
-    = image_tag @nugget.signage_url
+    = image_tag @nugget.signage_url(:medium)
   .span6
     .row-fluid.pagination-centered
       %h4 Do any of these apply?
@@ -11,43 +11,31 @@
       %button(type="button" id="needs_rotation" class="btn btn-info") Image Needs Rotation
       :javascript
         // blurry
-        $('#blurry').on('click', function (e) {
+        $('#read_signage #blurry').on('click', function (e) {
           $.ajax({
-            success: function( data ) {
-            //   $('#read_signage').modal('hide');
-            // do nothing
-            },
+            success: function( data ) {},
             url: '#{tag_as_blurry_nugget_path(@nugget)}'
           });
         });
         // inappropriate
-        $('#inappropriate').on('click', function (e) {
+        $('#read_signage #inappropriate').on('click', function (e) {
           $.ajax({
-            success: function( data ) {
-            //   $('#read_signage').modal('hide');
-            // do nothing
-            },
+            success: function( data ) {},
             url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
           });
         });
         // needs_rotation
-        $('#needs_rotation').on('click', function (e) {
+        $('#read_signage #needs_rotation').on('click', function (e) {
           $.ajax({
-            success: function( data ) {
-            //   $('#read_signage').modal('hide');
-            // do nothing
-            },
+            success: function( data ) {},
             url: '#{tag_as_needs_rotation_nugget_path(@nugget)}'
           });
         });
         // cancel
         $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
           $.ajax({
-            success: function( data ) {
-            //   $('#read_signage').modal('hide');
-            // do nothing
-            },
-            url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
+            success: function( data ) {},
+            url: '#{unset_editable_time_nugget_path(@nugget)}'
           });
         });
         // submit form

@@ -13,7 +13,7 @@
     %br
     .count #{@review_signage_jobs_count} jobs waiting for you
     %br
-    %a.btn{disabled: @review_signage_jobs_count==0 ? true : false} DO WORK
+    %a.btn{:href => review_signage_nuggets_path, :'data-target'=>"#review_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @review_signage_jobs_count==0 ? true : false}DO WORK
   .box.size84.yellow
     %br
     .jobtype Check Signage Duplicates
@@ -53,8 +53,6 @@
   .modal-body
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
-    %button(type="button" class="btn btn-danger" id="review_signage_submit") REJECT
-    %button(type="button" class="btn btn-success" id="review_signage_submit") APPROVE
 
 :javascript
   $(document).ready( function() {
