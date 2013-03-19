@@ -1,20 +1,6 @@
 class Api::NuggetsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
-  # POST /api/test
-  def test
-    message= Postmark::Mitt.new(request.body.read)
-    # ignore messages with no attachments
-    if message.attachments.empty?
-      logger.warning "message #{message.message_id} from #{messager.from}: no attachments!; skipping."
-      # great place to send an email alerting submitter of same
-      return
-    end
-
-
-    render :text => "ok, it works."
-  end
-
   # POST /api/nuggets
   def create
     # make sure the thing posting has rights to post here... maybe with
@@ -67,7 +53,7 @@ class Api::NuggetsController < ApplicationController
         n.process_geodata
         n.signage_read!
         # send an email to submitter that it's been received
-        #SignageMailer.success_signage_receipt(n, message.subject).deliver
+        SignageMailer.success_signage_receipt(n, message.subject).deliver
       end
 
       logger.info "message #{i} of message #{message.message_id} from #{message.from}: nugget created"
