@@ -22,7 +22,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     if Rails.env.development? || Rails.env.test?
-      dir_stub = "tmp/#{Rails.env}/"
+      dir_stub = "#{Rails.root}/tmp/#{Rails.env}/"
     else
       dir_stub = ""
     end
