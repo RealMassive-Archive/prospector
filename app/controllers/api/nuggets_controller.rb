@@ -41,8 +41,8 @@ class Api::NuggetsController < ApplicationController
         n.no_gps!
         # note that when there's no GPS we don't even bother to save the file
 
-        # this would be a good place to send an email to the user
-        #SignageMailer.no_gps_signage_receipt(n, message.subject).deliver
+        # send an email to submitter that there's no GPS in their upload
+        SignageMailer.no_gps_signage_receipt(n, message.subject).deliver
 
       else
         # yay! an image with actual GPS info!
