@@ -42,10 +42,9 @@ class Api::NuggetsController < ApplicationController
 
         return render :nothing => true
       end
-binding.pry
+
       n = Nugget.create!(
         submitter: message.from,
-        message_id: message.message_id,
         submission_method: "email",
         submitted_at: Time.now
       )
@@ -63,6 +62,7 @@ binding.pry
         # yay! an image with actual GPS info!
         n.latitude = jpg.gps[0]
         n.longitude = jpg.gps[1]
+        n.message_id = message.message_id
         n.signage = signage
         n.process_geodata
         n.signage_read!
