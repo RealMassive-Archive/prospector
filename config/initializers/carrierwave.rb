@@ -11,3 +11,28 @@ CarrierWave.configure do |config|
     config.fog_directory  = 'realmassive_nuggets'
   end
 end
+
+# module CarrierWave
+#   module MiniMagick
+
+#     # Rotates the image based on the EXIF Orientation
+#     def fix_exif_rotation
+#       manipulate! do |img|
+#         img.auto_orient  #note: if switching to RMagick, make this "auto_orient!" (bang at end)
+#         img = yield(img) if block_given?
+#         img
+#       end
+#     end
+
+#     # Strips out all embedded information from the image
+#     def strip
+#       manipulate! do |img|
+#         img.strip!
+#         img = yield(img) if block_given?
+#         img
+#       end
+#     end
+
+#   end
+# end
+

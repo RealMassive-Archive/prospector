@@ -11,6 +11,8 @@ gem 'state_machine'
 gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
 
+# send emails
+gem 'postmark-rails'
 # receive emails
 gem 'postmark-mitt'
 # read metadata from photos (use for getting Lat/Log data) Note: mini_magick supposedly does this as well , so exifr may be redundant (JCQ, March 2013)

@@ -11,9 +11,6 @@
 #  submitted_at         :datetime         not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  approx_address       :string(255)
-#  nugget_type          :string(255)
-#  nugget_phone         :string(255)
 #  signage              :string(255)
 #  signage_address      :string(255)
 #  signage_city         :string(255)
@@ -23,6 +20,7 @@
 #  editable_until       :datetime
 #  signage_phone        :string(255)
 #  signage_listing_type :string(255)
+#  message_id           :string(255)
 #
 
 require 'spec_helper'

@@ -15,3 +15,8 @@ ADMIN_NAME: First User
 ADMIN_EMAIL: user@example.com
 ADMIN_PASSWORD: changeme
 ROLES: [admin, user]
+
+development:
+  POSTMARK_OUTBOUND_API_KEY: "829a90e7-4c62-4c65-8c21-6cd65cde61c5"
+production:
+  POSTMARK_OUTBOUND_API_KEY: "ca3ab6bb-7321-4a3d-abc1-ccc092a40c72"

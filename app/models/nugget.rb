@@ -11,9 +11,6 @@
 #  submitted_at         :datetime         not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  approx_address       :string(255)
-#  nugget_type          :string(255)
-#  nugget_phone         :string(255)
 #  signage              :string(255)
 #  signage_address      :string(255)
 #  signage_city         :string(255)
@@ -23,6 +20,7 @@
 #  editable_until       :datetime
 #  signage_phone        :string(255)
 #  signage_listing_type :string(255)
+#  message_id           :string(255)
 #
 
 class Nugget < ActiveRecord::Base
@@ -40,7 +38,7 @@ class Nugget < ActiveRecord::Base
   attr_accessor :user  #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
 
   attr_accessible :latitude, :longitude
-  attr_accessible :submission_method, :submitted_at, :submitter
+  attr_accessible :submission_method, :submitted_at, :submitter, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
   attr_accessible :signage

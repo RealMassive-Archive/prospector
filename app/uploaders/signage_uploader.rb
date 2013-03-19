@@ -45,6 +45,9 @@ class SignageUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
 
+  #process :fix_exif_rotation
+  #process :strip
+
   # Create different versions of your uploaded files:
   # version :thumb do
   #   process :scale => [50, 50]
