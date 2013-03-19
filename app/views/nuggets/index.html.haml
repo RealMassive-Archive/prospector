@@ -9,7 +9,6 @@
     %th city
     %th county
     %th submitter
-    %th submitted via
     %th
     %th
     %th
@@ -19,11 +18,10 @@
       %td= link_to nugget.id, edit_nugget_path(nugget)
       %td #{time_ago_in_words(nugget.submitted_at)} ago
       %td= nugget.signage_neighborhood
-      %td= nugget.signage_address
+      %td= nugget.signage_address.split(",").first
       %td= nugget.signage_city
       %td= nugget.signage_county
       %td= nugget.submitter
-      %td= nugget.submission_method
 
       %td= link_to 'Show', nugget
       %td= link_to 'Edit', edit_nugget_path(nugget)
