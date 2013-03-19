@@ -30,11 +30,7 @@ Prospector::Application.routes.draw do
   end
 
   namespace :api do
-    resources :nuggets, :only => [ :create ] do
-      collection do
-        post 'test'
-      end
-    end
+    resources :nuggets, :only => [ :create ]
   end
 
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).

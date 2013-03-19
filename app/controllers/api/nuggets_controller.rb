@@ -42,7 +42,7 @@ class Api::NuggetsController < ApplicationController
 
         return render :nothing => true
       end
-
+binding.pry
       n = Nugget.create!(
         submitter: message.from,
         message_id: message.message_id,
