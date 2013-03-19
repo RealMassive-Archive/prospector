@@ -27,7 +27,7 @@ module CarrierWave
     # Strips out all embedded information from the image
     def strip
       manipulate! do |img|
-        img.strip!
+        img.strip #note: if switching to RMagick, make this "strip!" (bang at end)
         img = yield(img) if block_given?
         img
       end
