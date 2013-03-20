@@ -31,11 +31,7 @@
 = link_to 'Back', nuggets_path
 
 %p Also saved the following size versions of the image:
-%p
-  raw (see above)
-%p
-  large (height 600)
-  = image_tag(@nugget.signage_url(:large))
+
 %p
   medium (height 300)
   = image_tag(@nugget.signage_url(:medium))

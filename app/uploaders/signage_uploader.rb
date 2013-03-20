@@ -53,11 +53,11 @@ class SignageUploader < CarrierWave::Uploader::Base
   #   process :scale => [50, 50]
   # end
 
-  version :large do
-    process resize_to_fit: [nil,600]
-  end
+  # no matter how big original was we're just going to standardize its size
+  process resize_to_fit: [nil,600]
 
-  version :retina_large do
+
+  version :retina do
     process :resize_to_fit => [nil, 1200]
 
     def full_filename(for_file = Nugget.signage.file)
@@ -71,7 +71,7 @@ class SignageUploader < CarrierWave::Uploader::Base
     process resize_to_fit: [nil,300]
   end
 
-  version :retina_medium do
+  version :retina_medium, :from_version => :retina do
     process :resize_to_fit => [nil, 600]
 
     def full_filename(for_file = Nugget.signage.file)
@@ -81,11 +81,11 @@ class SignageUploader < CarrierWave::Uploader::Base
     end
   end
 
-  version :small do
+  version :small, :from_version => :medium do
     process resize_to_fit: [nil,150]
   end
 
-  version :retina_small do
+  version :retina_small, :from_version => :retina_medium do
     process :resize_to_fit => [nil, 300]
 
     def full_filename(for_file = Nugget.signage.file)
@@ -95,11 +95,11 @@ class SignageUploader < CarrierWave::Uploader::Base
     end
   end
 
-  version :thumb do
+  version :thumb, :from_version => :small do
     process resize_to_fit: [nil,75]
   end
 
-  version :retina_thumb do
+  version :retina_thumb, :from_version => :retina_small do
     process :resize_to_fit => [nil, 150]
 
     def full_filename(for_file = Nugget.signage.file)
@@ -109,11 +109,11 @@ class SignageUploader < CarrierWave::Uploader::Base
     end
   end
 
-  version :tiny do
+  version :tiny, :from_version => :thumb do
     process resize_to_fit: [nil,50]
   end
 
-  version :retina_tiny do
+  version :retina_tiny, :from_version => :retina_thumb do
     process :resize_to_fit => [nil, 100]
 
     def full_filename(for_file = Nugget.signage.file)

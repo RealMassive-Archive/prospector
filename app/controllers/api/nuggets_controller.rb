@@ -43,7 +43,7 @@ class Api::NuggetsController < ApplicationController
 
         # send an email to submitter that there's no GPS in their upload
         SignageMailer.no_gps_signage_receipt(n, message.subject).deliver
-
+        return render :text => "No GPS Nugget created.", :status => :created
       else
         # yay! an image with actual GPS info!
         n.latitude = jpg.gps[0]
