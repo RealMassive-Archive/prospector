@@ -26,6 +26,7 @@
       -"blue"
     -address = n.signage_address.nil? ? "" : "#{n.signage_address.split(',').first}"
     -image_stub = n.signage.file.exists? ? "<br/>#{image_tag(n.signage_url(:tiny))}" : ""
+    -image_stub = nil
     ="m = L.marker([#{n.latitude},#{n.longitude}], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: '#{color}', spin:true}) });"
     ="m.addTo(map).bindPopup('#{address}#{image_stub}');"
 
