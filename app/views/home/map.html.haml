@@ -1,6 +1,4 @@
-%link{rel:"stylesheet", href:"http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css"}
-%script{src:"http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js", type:"text/javascript"}
-=@nuggets.count
+
 #map{style:"height:600px;"}
 :javascript
   $(document).ready( function() {
@@ -13,7 +11,7 @@
   var austin = new L.LatLng(30.2669, -97.7428);
   map.setView(austin, 13)
   map.addLayer(cloudmade);
-  //L.marker([51.941196,4.512291], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: 'red', spin:true}) }).addTo(map);
+  //L.marker([30.2669, -97.7428], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: 'red', spin:true}) }).addTo(map);
 
 %script
   -@nuggets.each do |n|
