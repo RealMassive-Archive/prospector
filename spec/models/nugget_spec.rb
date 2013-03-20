@@ -21,6 +21,7 @@
 #  signage_phone        :string(255)
 #  signage_listing_type :string(255)
 #  message_id           :string(255)
+#  submitter_notes      :string(255)
 #
 
 require 'spec_helper'
