@@ -14,7 +14,7 @@ class HomeController < ApplicationController
   end
 
   def map
-    @nuggets = Nugget.where("latitude IS NOT NULL").limit(10)
+    @nuggets = Nugget.where("latitude IS NOT NULL")
   end
 
   def dashboard
