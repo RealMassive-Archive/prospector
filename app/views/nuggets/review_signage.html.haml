@@ -1,6 +1,10 @@
 .row-fluid
   .span6.pagination-centered
-    = image_tag @nugget.signage_url(:medium)
+    .row-fluid
+      = image_tag @nugget.signage_url(:medium)
+    .row-fluid
+      - if @nugget.submitter_notes.present?
+        ="submitter notes: #{@nugget.submitter_notes}"
   .span6
     .row-fluid.pagination-centered
       -if @nugget.signage_tag_list.include? 'blurry'
@@ -17,13 +21,15 @@
         %h4 phone: #{@nugget.signage_phone}
         %h4 lease or sale?: #{@nugget.signage_listing_type}
 
-    .row-fluid &nbsp;
+    .row-fluid
+      %h1 &nbsp;
+
     .row-fluid.pagination-centered
       .span6
         %button(type="button" id="approve" class="btn btn-success") I AGREE
         %p nugget will be moved along
       .span6
-        %button(type="button" id="reject" class="btn btn-danger") REJECT
+        %button(type="button" id="reject" class="btn btn-danger") I REJECT
         %p nugget has not been correctly handled
       :javascript
         // approve

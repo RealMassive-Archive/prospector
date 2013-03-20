@@ -38,7 +38,7 @@ class Nugget < ActiveRecord::Base
   attr_accessor :user  #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
 
   attr_accessible :latitude, :longitude
-  attr_accessible :submission_method, :submitted_at, :submitter, :message_id
+  attr_accessible :submission_method, :submitted_at, :submitter, :submitter_notes, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
   attr_accessible :signage

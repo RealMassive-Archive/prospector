@@ -31,6 +31,7 @@ class Api::NuggetsController < ApplicationController
 
       n = Nugget.create!(
         submitter: message.from,
+        submitter_notes: message.subject,
         submission_method: "email",
         submitted_at: Time.now
       )
