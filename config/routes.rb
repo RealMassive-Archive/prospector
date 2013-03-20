@@ -6,6 +6,7 @@ Prospector::Application.routes.draw do
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
     match "/index3" => "home#index3", :as => :index3, :via => :get
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
+    match "/map" => "home#map", :as => :map, :via => :get
     #match "/read_signage" => "nuggets#read_signage", :as => :read_signage, :via => :get
   end
 

@@ -1,0 +1,31 @@
+%link{rel:"stylesheet", href:"http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css"}
+%script{src:"http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js", type:"text/javascript"}
+=@nuggets.count
+#map{style:"height:600px;"}
+:javascript
+  $(document).ready( function() {
+  });
+
+  var map = new L.Map('map');
+  var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png',
+  cloudmadeAttrib = '',
+  cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttrib, key: 'B424A16093B140B5B0D44F900A7EB1D2',detectRetina: true});
+  var austin = new L.LatLng(30.2669, -97.7428);
+  map.setView(austin, 13)
+  map.addLayer(cloudmade);
+  //L.marker([51.941196,4.512291], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: 'red', spin:true}) }).addTo(map);
+
+%script
+  -@nuggets.each do |n|
+    -color = case
+    -when n.submitter.include?("mcclure")
+      -"green"
+    -when n.submitter.include?("craig")
+      -"orange"
+    -when n.submitter.include?("marissa")
+      -"purple"
+    -else
+      -"blue"
+
+    ="L.marker([#{n.latitude},#{n.longitude}], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: '#{color}', spin:true}) }).addTo(map);"
+

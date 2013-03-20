@@ -13,6 +13,10 @@ class HomeController < ApplicationController
   def index3
   end
 
+  def map
+    @nuggets = Nugget.where("latitude IS NOT NULL").limit(10)
+  end
+
   def dashboard
     @nuggets = Nugget.all
     @initial_nuggets = Nugget.initial
