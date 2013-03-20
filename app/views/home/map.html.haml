@@ -24,7 +24,7 @@
       -"purple"
     -else
       -"blue"
-    -address = nugget.signage_address.nil? ? "" : n.signage_address.split(',').first
+    -address = n.signage_address.nil? ? "" : n.signage_address.split(',').first
     -image = n.signage.file.exists? ? image_tag(n.signage_url(:tiny)) : ""
     ="L.marker([#{n.latitude},#{n.longitude}], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: '#{color}', spin:true}) }).addTo(map).bindPopup('#{address}#{image}');"
 
