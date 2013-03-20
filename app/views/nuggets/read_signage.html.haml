@@ -1,6 +1,10 @@
 .row-fluid
   .span6.pagination-centered
-    = image_tag @nugget.signage_url(:medium)
+    .row-fluid
+      = image_tag @nugget.signage_url(:medium)
+    .row-fluid
+      - if @nugget.submitter_notes.present?
+        ="submitter notes: #{@nugget.submitter_notes}"
   .span6
     .row-fluid.pagination-centered
       %h4 Do any of these apply?
