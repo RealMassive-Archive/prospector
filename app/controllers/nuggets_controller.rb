@@ -183,7 +183,7 @@ class NuggetsController < ApplicationController
     else
       @nugget.signage_approve!
     end
-    @nugget.save
+    #@nugget.save
     #redirect_to jobboard_path
     render :nothing => true
   end
@@ -193,7 +193,7 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.find(params[:id])
     @nugget.unset_editable_time
     @nugget.signage_reject!
-    @nugget.save
+    #@nugget.save
     #redirect_to jobboard_path
     render :nothing => true
   end

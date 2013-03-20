@@ -1,40 +1,38 @@
 #jobs
-  .box.size84.blue
+  .box.size85.blue
     %br
-    .jobtype Read Signage
+    %p.jobtype Read Signage
+    %h1.count #{@read_signage_jobs_count} jobs
     %br
-    .count #{@read_signage_jobs_count} jobs waiting for you
-    %br
-    %a.btn{:href => read_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
+    %a.btn.btn-large{:href => read_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
 
-  .box.size84.green
+  .box.size85.cyan
     %br
-    .jobtype Review Signage
+    %p.jobtype Review Signage
+    %h1.count #{@review_signage_jobs_count} jobs
     %br
-    .count #{@review_signage_jobs_count} jobs waiting for you
+    %a.btn.btn-large{:href => review_signage_nuggets_path, :'data-target'=>"#review_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @review_signage_jobs_count==0 ? true : false}DO WORK
+
+  .box.size85.green
     %br
-    %a.btn{:href => review_signage_nuggets_path, :'data-target'=>"#review_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @review_signage_jobs_count==0 ? true : false}DO WORK
-  .box.size84.yellow
+    %p.jobtype Check Signage Duplicates
+    %h5 (THIS STEP BY-PASSED FOR NOW)
     %br
-    .jobtype Check Signage Duplicates
+    -#%a.btn.btn-large{disabled: true} DO WORK
+
+  .box.size85.yellow
     %br
-    .count (THIS STEP BY-PASSED FOR NOW)
+    %p.jobtype Contact Broker
+    %h1.count #{@ready_to_contact_broker_count} jobs
     %br
-    %a.btn{disabled: true} DO WORK
-  .box.size84.red
+    %a.btn.btn-large{disabled: @ready_to_contact_broker_count==0 ? true : false} DO WORK
+
+  .box.size85.orange
     %br
-    .jobtype Contact Broker
+    %p.jobtype Parse Info From Broker
+    %h5 (THIS STEP NOT CODED YET)
     %br
-    .count #{@ready_to_contact_broker_count} jobs waiting for you
-    %br
-    %a.btn{disabled: @ready_to_contact_broker_count==0 ? true : false} DO WORK
-  .box.size84.violet
-    %br
-    .jobtype Parse Info From Broker
-    %br
-    .count (THIS STEP NOT CODED YET)
-    %br
-    %a.btn{disabled: true} DO WORK
+    -#%a.btn.btn-large{disabled: true} DO WORK
 
 
 #read_signage(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")

@@ -38,7 +38,7 @@
         // reject
         $('#review_signage #reject').on('click', function (e) {
           $.ajax({
-            url: '#{reject_signage_nugget_path(@nugget)}'
+            url: '#{reject_signage_nugget_path(@nugget)}',
             success: function( data ) {
               location.href = '#{jobboard_path}'
             }
