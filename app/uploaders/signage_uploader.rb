@@ -45,17 +45,22 @@ class SignageUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
 
-  #process :fix_exif_rotation
-  #process :strip
-
   # Create different versions of your uploaded files:
   # version :thumb do
   #   process :scale => [50, 50]
   # end
 
+  # correctly orient the image
+  def auto_orient
+    manipulate! do |image|
+      image.auto_orient
+      image
+    end
+  end
+  #process :auto_orient
+
   # no matter how big original was we're just going to standardize its size
   process resize_to_fit: [nil,600]
-  #process :fix_image_orientation
 
   version :retina do
     process :resize_to_fit => [nil, 1200]
