@@ -55,7 +55,7 @@ class SignageUploader < CarrierWave::Uploader::Base
 
   # no matter how big original was we're just going to standardize its size
   process resize_to_fit: [nil,600]
-
+  #process :fix_image_orientation
 
   version :retina do
     process :resize_to_fit => [nil, 1200]
@@ -123,12 +123,6 @@ class SignageUploader < CarrierWave::Uploader::Base
     end
   end
 
-
-
-
-
-
-
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list
@@ -140,5 +134,14 @@ class SignageUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  private
+  def strip_exif_data
+     manipulate! do |img|
+        img.strip
+        img = yield(img) if block_given?
+        img
+     end
+  end
 
 end

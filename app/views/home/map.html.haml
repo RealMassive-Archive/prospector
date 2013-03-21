@@ -11,7 +11,7 @@
   var austin = new L.LatLng(30.2669, -97.7428);
   map.setView(austin, 13)
   map.addLayer(cloudmade);
-  //L.marker([30.2669, -97.7428], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: 'red', spin:true}) }).addTo(map);
+  L.marker([30.2669, -97.7428], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: 'red', spin:true}) }).addTo(map).bindPopup('<h1>Hi</h1><img src="/tmp/development/nugget/signage/22/tiny_HP_test.jpeg" />');
 
 %script
   -@nuggets.each do |n|
@@ -25,8 +25,8 @@
     -else
       -"blue"
     -address = n.signage_address.nil? ? "" : "#{n.signage_address.split(',').first}"
-    -image_stub = n.signage.file.exists? ? "<br/>#{image_tag(n.signage_url(:tiny))}" : ""
-    -image_stub = nil
+    -image_stub = n.signage.file.exists? ? "#{image_tag(n.signage_url(:tiny))}" : ""
+    -popup = "<h4>#{address}</h4><br/>#{image_stub}"
     ="m = L.marker([#{n.latitude},#{n.longitude}], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: '#{color}', spin:true}) });"
-    ="m.addTo(map).bindPopup('#{address}#{image_stub}');"
+    ="m.addTo(map).bindPopup('#{address}');"
 
