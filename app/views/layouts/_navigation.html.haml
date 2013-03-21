@@ -1,4 +1,6 @@
 = link_to "Prospector", root_path, :class => 'brand'
+%ul.nav.pull-left
+  %li= link_to "Austin Map", map_path
 %ul.nav.pull-right
   - if user_signed_in?
     %li= link_to 'My Account', edit_user_registration_path
