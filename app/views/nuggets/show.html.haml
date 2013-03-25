@@ -23,24 +23,23 @@
   %b City / Neighborhood:
   #{@nugget.signage_city} / #{@nugget.signage_neighborhood}
 
-%p
-  = image_tag(@nugget.signage_url)
-
 = link_to 'Edit', edit_nugget_path(@nugget)
 \|
 = link_to 'Back', nuggets_path
 
-%p Also saved the following size versions of the image:
+-@nugget.nugget_signages.each do |s|
+  %p
+    = image_tag( s.signage_url :small )
+
+
+
+%p Also saved the following size versions of the image (above is 'small' version):
 
 %p
   medium (height 300)
-  = image_tag(@nugget.signage_url(:medium))
 %p
   small (height 150)
-  = image_tag(@nugget.signage_url(:small))
 %p
   thumb (height 75)
-  = image_tag(@nugget.signage_url(:thumb))
 %p
   tiny (height 50)
-  = image_tag(@nugget.signage_url(:tiny))

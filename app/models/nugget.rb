@@ -2,46 +2,53 @@
 #
 # Table name: nuggets
 #
-#  id                   :integer          not null, primary key
-#  state                :string(255)
-#  latitude             :decimal(, )
-#  longitude            :decimal(, )
-#  submitter            :string(255)
-#  submission_method    :string(255)
-#  submitted_at         :datetime         not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  signage              :string(255)
-#  signage_address      :string(255)
-#  signage_city         :string(255)
-#  signage_state        :string(255)
-#  signage_county       :string(255)
-#  signage_neighborhood :string(255)
-#  editable_until       :datetime
-#  signage_phone        :string(255)
-#  signage_listing_type :string(255)
-#  message_id           :string(255)
-#  submitter_notes      :string(255)
+#  id                         :integer          not null, primary key
+#  state                      :string(255)
+#  latitude                   :decimal(, )
+#  longitude                  :decimal(, )
+#  submitter                  :string(255)
+#  submission_method          :string(255)
+#  submitted_at               :datetime         not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  signage                    :string(255)
+#  signage_address            :string(255)
+#  signage_city               :string(255)
+#  signage_state              :string(255)
+#  signage_county             :string(255)
+#  signage_neighborhood       :string(255)
+#  editable_until             :datetime
+#  signage_phone              :string(255)
+#  signage_listing_type       :string(255)
+#  message_id                 :string(255)
+#  submitter_notes            :string(255)
+#  is_new_multisignage_nugget :boolean
 #
 
 class Nugget < ActiveRecord::Base
+  has_many :nugget_signages, :dependent => :destroy
+
+  # old
   mount_uploader :signage, SignageUploader
 
   reverse_geocoded_by :latitude, :longitude, {address: :signage_address}
-  before_save :default_values
+  before_create :default_values
   #before_save :process_geodata
 
   has_many :nugget_state_transitions
 
+  #might be old in light of multiple signages per nugget
   acts_as_taggable
+  #might be old in light of multiple signages per nugget
   acts_as_taggable_on :signage_tags
 
-  attr_accessor :user  #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
+  attr_accessor :user #note: we're decorating here to make gem 'state_machine-audit_trail' save a user.id kill this line if this gem is removed
 
   attr_accessible :latitude, :longitude
   attr_accessible :submission_method, :submitted_at, :submitter, :submitter_notes, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
+  # old
   attr_accessible :signage
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type
@@ -103,8 +110,8 @@ class Nugget < ActiveRecord::Base
   end
 
   def state_message
-    message = user.present? ? "#{user.name} (#{user.id})" : "SYSTEM"
-    "by: #{message}"
+    msg = user.present? ? "#{user.name} (#{user.id})" : "SYSTEM"
+    "by: #{msg}"
   end
 
   def latlong
@@ -114,6 +121,7 @@ class Nugget < ActiveRecord::Base
   def default_values
     self.submitted_at ||= Time.now
     self.submitter ||= "SYSTEM"
+    self.is_new_multisignage_nugget ||= true
   end
 
   def editable?
@@ -152,7 +160,6 @@ class Nugget < ActiveRecord::Base
     self.editable_until = nil
   end
 
-  private
   def populate_address(geo_addr)
     self.signage_city = geo_addr.city
     self.signage_state = geo_addr.state

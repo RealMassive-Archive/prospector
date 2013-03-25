@@ -1,7 +1,9 @@
 .row-fluid
   .span6.pagination-centered
     .row-fluid
-      = image_tag @nugget.signage_url(:medium)
+      - @nugget.nugget_signages.each do |s|
+        = image_tag s.signage_url(:small)
+        %br
     .row-fluid
       - if @nugget.submitter_notes.present?
         ="submitter notes: #{@nugget.submitter_notes}"

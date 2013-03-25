@@ -15,10 +15,17 @@ class Api::NuggetsController < ApplicationController
       return render :nothing => true
     end
 
+    n = Nugget.create!(
+      submitter: message.from,
+      submitter_notes: message.subject,
+      submission_method: "email",
+      message_id: message.message_id,
+      submitted_at: Time.now
+    )
+
     message.attachments.each_with_index { |attachment, i|
-      #logger.info "message #{message.message_id}: reading attachment #{i} ('#{attachment.file_name}') of type #{attachment.content_type}"
       begin
-        signage = SignageUploader.new
+        signage = NuggetSignageUploader.new
         signage.cache!(attachment.read)
       rescue CarrierWave::IntegrityError => e
         # puts there was a problem storing attachments
@@ -26,43 +33,43 @@ class Api::NuggetsController < ApplicationController
         # logger.error [e, *e.backtrace].join("\n")
         # great place to send ourselves an email warning us that some storage problem is occuring
 
-        return render :nothing => true
+        #return render :nothing => true
+        next
       end
-
-      n = Nugget.create!(
-        submitter: message.from,
-        submitter_notes: message.subject,
-        submission_method: "email",
-        submitted_at: Time.now
-      )
 
       jpg = EXIFR::JPEG.new(signage.file.path)
       if jpg.gps.compact.blank?
-        logger.warn "NO GPS FOUND!"
-        n.no_gps!
+        logger.warn "NO GPS FOUND! attachment #{i} of message_id #{message_id}"
         # note that when there's no GPS we don't even bother to save the file
-
-        # send an email to submitter that there's no GPS in their upload
-        SignageMailer.no_gps_signage_receipt(n, message.subject).deliver
-        return render :text => "No GPS Nugget created.", :status => :created
       else
         # yay! an image with actual GPS info!
-        n.latitude = jpg.gps[0]
-        n.longitude = jpg.gps[1]
-        n.message_id = message.message_id
-        n.signage = signage
-        n.process_geodata
-        n.signage_read!
-        # send an email to submitter that it's been received
-        SignageMailer.success_signage_receipt(n, message.subject).deliver
+        if i == 0  #only accept GPS info from the first attachment
+          n.latitude = jpg.gps[0]
+          n.longitude = jpg.gps[1]
+          n.process_geodata
+          n.save
+        end
+        ns = NuggetSignage.create(
+          nugget_id: n.id,
+          signage: signage
+        )
+        #n.nugget_signages << ns
       end
-
-      logger.info "message #{i} of message #{message.message_id} from #{message.from}: nugget created"
-
     }
 
-    render :text => "Nugget created.", :status => :created
-    #render :nothing => true
+    if n.latitude.nil?
+      n.no_gps!
+      # send an email to submitter that there was no GPS in their upload
+      SignageMailer.no_gps_signage_receipt(n, message.subject).deliver
+      return render :text => "No GPS Nugget created."
+    else
+      n.signage_read!
+      # send an email to submitter that it's been received
+      SignageMailer.success_signage_receipt(n, message.subject).deliver
+      return render :text => "Nugget created.", :status => :created
+    end
+
+    render :nothing => true
   end
 
   private

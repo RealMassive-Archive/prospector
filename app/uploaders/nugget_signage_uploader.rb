@@ -1,4 +1,4 @@
-class SignageUploader < CarrierWave::Uploader::Base
+class NuggetSignageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -26,8 +26,7 @@ class SignageUploader < CarrierWave::Uploader::Base
     else
       dir_stub = ""
     end
-    # this is legacy path below, the model refers to the Nugget model, not the NuggetSignage model
-    "#{dir_stub}nugget/signage/#{model.id}"
+    "#{dir_stub}nugget/#{model.nugget_id}/signage/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -66,7 +65,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   version :retina do
     process :resize_to_fit => [nil, 1200]
 
-    def full_filename(for_file = Nugget.signage.file)
+    def full_filename(for_file = NuggetSignage.signage.file)
       super.tap do |file_name|
         file_name.gsub!('.', '@2x.').gsub!('retina_', '')
       end
@@ -80,7 +79,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   version :retina_medium, :from_version => :retina do
     process :resize_to_fit => [nil, 600]
 
-    def full_filename(for_file = Nugget.signage.file)
+    def full_filename(for_file = NuggetSignage.signage.file)
       super.tap do |file_name|
         file_name.gsub!('.', '@2x.').gsub!('retina_', '')
       end
@@ -94,7 +93,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   version :retina_small, :from_version => :retina_medium do
     process :resize_to_fit => [nil, 300]
 
-    def full_filename(for_file = Nugget.signage.file)
+    def full_filename(for_file = NuggetSignage.signage.file)
       super.tap do |file_name|
         file_name.gsub!('.', '@2x.').gsub!('retina_', '')
       end
@@ -108,7 +107,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   version :retina_thumb, :from_version => :retina_small do
     process :resize_to_fit => [nil, 150]
 
-    def full_filename(for_file = Nugget.signage.file)
+    def full_filename(for_file = NuggetSignage.signage.file)
       super.tap do |file_name|
         file_name.gsub!('.', '@2x.').gsub!('retina_', '')
       end
@@ -122,7 +121,7 @@ class SignageUploader < CarrierWave::Uploader::Base
   version :retina_tiny, :from_version => :retina_thumb do
     process :resize_to_fit => [nil, 100]
 
-    def full_filename(for_file = Nugget.signage.file)
+    def full_filename(for_file = NuggetSignage.signage.file)
       super.tap do |file_name|
         file_name.gsub!('.', '@2x.').gsub!('retina_', '')
       end
@@ -149,5 +148,4 @@ class SignageUploader < CarrierWave::Uploader::Base
         img
      end
   end
-
 end
