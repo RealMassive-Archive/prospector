@@ -52,6 +52,7 @@ class Nugget < ActiveRecord::Base
   attr_accessible :signage
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type
+  attr_accessilbe :is_new_multisignage_nugget
 
   validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
