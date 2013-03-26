@@ -39,7 +39,7 @@ class Api::NuggetsController < ApplicationController
 
       jpg = EXIFR::JPEG.new(signage.file.path)
       if jpg.gps.compact.blank?
-        logger.warn "NO GPS FOUND! attachment #{i} of message_id #{message_id}"
+        logger.warn "NO GPS FOUND! attachment #{i} of message_id #{message.message_id}"
         # note that when there's no GPS we don't even bother to save the file
       else
         # yay! an image with actual GPS info!
