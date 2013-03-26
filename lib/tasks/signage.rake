@@ -4,6 +4,9 @@ namespace :signage do
 
     # use:
     # rake signage:merge_two_old_nuggets primary=X [secondary=Y]
+    #
+    # based almost completely on code from:
+    # https://github.com/akoppela/Awaredance/blob/master/lib/tasks/carrierwave.rake
 
     ENV['primary'] ||= nil
     ENV['secondary'] ||= nil
@@ -84,7 +87,12 @@ namespace :signage do
         # This file will be used as the base file to reprocess
         # the versions. Once all versions have been processed,
         # this temp file will be directly removed.
-        open(mounted_object.path) do |original_object|
+
+        # note use mounted_object.path in DEVELOPMENT and TEST
+        # but use mounted_object.url in PRODUCTION
+        # if Rails.env.test?  etc
+
+        open(mounted_object.url) do |original_object|
           File.open(File.join(TMP_PATH, filename), 'w') do |temp_file|
             temp_file.write(original_object.read)
           end
