@@ -6,7 +6,10 @@ namespace :signage do
     # rake signage:merge_two_old_nuggets primary=X [secondary=Y]
     #
     # based almost completely on code from:
-    # https://github.com/akoppela/Awaredance/blob/master/lib/tasks/carrierwave.rake
+    # https://gist.github.com/421736/3a50eb22b8ec2ffff20f0abc59c7433f353ea42f
+    # be sure to read the comments and notes.
+    # Might need to use .path for local file storange and .url for S3.
+    # Also beware encoding.
 
     ENV['primary'] ||= nil
     ENV['secondary'] ||= nil
@@ -94,6 +97,7 @@ namespace :signage do
 
         open(mounted_object.url) do |original_object|
           File.open(File.join(TMP_PATH, filename), 'w') do |temp_file|
+            temp_file.binmode
             temp_file.write(original_object.read)
           end
         end
