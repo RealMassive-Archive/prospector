@@ -29,7 +29,7 @@
       %td= nugget.signage_listing_type
       %td= nugget.message_id
       %td= nugget.state
-      %td= nugget.submitter
+      %td= truncate(nugget.submitter, :length => 12)
 
       %td= link_to 'Show', nugget
       %td= link_to 'Edit', edit_nugget_path(nugget)
