@@ -19,6 +19,7 @@ Prospector::Application.routes.draw do
       post 'transition'
       get 'read_signage'
       get 'review_signage'
+      get 'index2'
     end
     member do
       put 'update_signage'

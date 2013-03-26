@@ -1,0 +1,38 @@
+%h1 #{@count} Old style Nuggets
+
+%table{cellspacing: 5, border:1}
+  %tr
+    %th id
+    %th date submitted
+    %th neighborhood
+    %th approx address
+    %th city
+    %th county
+    %th msg id
+    %th state
+    %th submitter
+    %th
+    %th
+    %th
+
+  - @nuggets.each do |nugget|
+    %tr
+      %td= link_to nugget.id, edit_nugget_path(nugget)
+      %td #{time_ago_in_words(nugget.submitted_at)} ago
+      %td= nugget.signage_neighborhood
+      %td= nugget.signage_address.split(",").first unless nugget.signage_address.nil?
+      %td= nugget.signage_city
+      %td= nugget.signage_county
+      %td= nugget.message_id
+      %td= nugget.state
+      %td= nugget.submitter
+
+      %td= link_to 'Show', nugget
+      %td= link_to 'Edit', edit_nugget_path(nugget)
+      %td= link_to 'Destroy', nugget, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= will_paginate @nuggets, :renderer => BootstrapPagination::Rails
+
+-#= link_to 'New Nugget', new_nugget_path
