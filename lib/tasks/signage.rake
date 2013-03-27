@@ -74,9 +74,9 @@ namespace :signage do
       # Iterates through the objects
       objects.each do |object|
 
-        puts "object id: #{object.id}"
-        puts "object.signage.present? #{object.signage.present?}"
-        puts object.signage
+        #puts "object id: #{object.id}"
+        #puts "object.signage.present? #{object.signage.present?}"
+        #puts object.signage
 
         if object.signage.present?
           # Returns the mounted uploader object
@@ -139,6 +139,7 @@ namespace :signage do
           object.destroy
         end
       end
+
     end
   end
 
