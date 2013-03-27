@@ -21,7 +21,6 @@
   = hidden_field_tag('state', 'signage_reviewed')
   = button_tag("Confirm Blurry", value: 'blurry', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
   = button_tag("Confirm Inappropriate", value: 'inappropriate', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
-  = button_tag("Confirm Needs Rotation", value: 'needs_rotation', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
   = button_tag("REJECT", value: 'signage_reject', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
   = button_tag("LOOKS GREAT!", value: 'signage_approve', name: 'event', type: 'submit', disabled: (@signage_reviewed_nuggets.count == 0))
 
@@ -33,11 +32,10 @@
 
 %p Broker Contacted (#{@awaiting_broker_response_nuggets.count})
 
-%h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count + @needs_rotation_nuggets.count})
+%h4{class: 'alert-error'} Problem nuggets: (#{@no_gps_nuggets.count + @blurry_nuggets.count + @inappropriate_nuggets.count })
 %p No GPS (#{@no_gps_nuggets.count})
 %p Blurry (#{@blurry_nuggets.count})
 %p Inappropriate (#{@inappropriate_nuggets.count})
-%p Needs Rotation (#{@needs_rotation_nuggets.count})
 
 %h4{class: 'alert-error'} Rejected nuggets: (#{@rejected_nuggets.count})
 %p{class: 'alert-error'} REJECTED (#{@rejected_nuggets.count})

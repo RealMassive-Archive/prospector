@@ -2,7 +2,23 @@
   .span6.pagination-centered
     .row-fluid
       - @nugget.nugget_signages.each do |s|
-        = image_tag s.signage_url(:small)
+        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
+          = '&lArr; rotate'.html_safe
+        = image_tag s.signage_url(:small), {id: "signage_#{s.id}"}
+        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
+          = 'rotate &rArr;'.html_safe
+        :javascript
+            var angle = 0;
+            $('#read_signage #rotate_left').on('click', function (e) {
+              var id = $(this).data('id');
+              angle -= 90;
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle})
+            });
+            $('#read_signage #rotate_right').on('click', function (e) {
+              var id = $(this).data('id');
+              angle += 90;
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle})
+            });
         %br
     .row-fluid
       - if @nugget.submitter_notes.present?
@@ -13,35 +29,30 @@
       %button(type="button" id="blurry" class="btn btn-danger") Too Blurry To Read
       %h4
       %button(type="button" id="inappropriate" class="btn btn-warning") Inappropriate Image
-      %h4
-      %button(type="button" id="needs_rotation" class="btn btn-info") Image Needs Rotation
       :javascript
         // blurry
         $('#read_signage #blurry').on('click', function (e) {
           $.ajax({
-            success: function( data ) {},
-            url: '#{tag_as_blurry_nugget_path(@nugget)}'
+            url: '#{tag_as_blurry_nugget_path(@nugget)}',
+            success: function( data ) {
+              location.href = '#{jobboard_path}'
+            }
           });
         });
         // inappropriate
         $('#read_signage #inappropriate').on('click', function (e) {
           $.ajax({
-            success: function( data ) {},
-            url: '#{tag_as_inappropriate_nugget_path(@nugget)}'
-          });
-        });
-        // needs_rotation
-        $('#read_signage #needs_rotation').on('click', function (e) {
-          $.ajax({
-            success: function( data ) {},
-            url: '#{tag_as_needs_rotation_nugget_path(@nugget)}'
+            url: '#{tag_as_inappropriate_nugget_path(@nugget)}',
+            success: function( data ) {
+              location.href = '#{jobboard_path}'
+            }
           });
         });
         // cancel
         $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
           $.ajax({
-            success: function( data ) {},
-            url: '#{unset_editable_time_nugget_path(@nugget)}'
+            url: '#{unset_editable_time_nugget_path(@nugget)}',
+            success: function( data ) {}
           });
         });
         // submit form

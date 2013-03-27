@@ -25,7 +25,6 @@ Prospector::Application.routes.draw do
       put 'update_signage'
       get 'tag_as_blurry' # is this really a GET? It changes a nugget's state
       get 'tag_as_inappropriate' # is this really a GET? It changes a nugget's state
-      get 'tag_as_needs_rotation' # is this really a GET? It changes a nugget's state
       get 'approve_signage'
       get 'reject_signage'
       get 'unset_editable_time' # is this really a GET? It changes a nugget's state

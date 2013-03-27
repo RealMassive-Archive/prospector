@@ -157,16 +157,6 @@ class NuggetsController < ApplicationController
     redirect_to jobboard_path
   end
 
-  # GET /nuggets/1/tag_as_needs_rotation
-  def tag_as_needs_rotation
-    @nugget = Nugget.find(params[:id])
-    @nugget.unset_editable_time
-    @nugget.signage_tag_list = "needs rotation"
-    @nugget.signage_review!
-    @nugget.save
-    redirect_to jobboard_path
-  end
-
   # GET /nuggets/review_signage
   def review_signage
     @nugget = Nugget.review_signage_jobs.first
@@ -188,8 +178,6 @@ class NuggetsController < ApplicationController
       @nugget.blurry!
     elsif @nugget.signage_tag_list.include? 'inappropriate'
       @nugget.inappropriate!
-    elsif @nugget.signage_tag_list.include? 'needs_rotation'
-      @nugget.need_rotation!
     else
       @nugget.signage_approve!
     end

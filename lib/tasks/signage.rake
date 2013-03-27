@@ -74,55 +74,55 @@ namespace :signage do
       # Iterates through the objects
       objects.each do |object|
 
-        ##
-        # Returns the mounted uploader object
-        mounted_object = object.signage
+        if object.signage.present?
+          # Returns the mounted uploader object
+          mounted_object = object.signage
 
-        ##
-        # Retrieve Filename
-        filename = mounted_object.path.split('/').last
+          # Retrieve Filename
+          filename = mounted_object.path.split('/').last
 
-        ##
+          # Read out the original file from the remote location
+          # and write it out to the temp directory (TMP_PATH)
+          # This file will be used as the base file to reprocess
+          # the versions. Once all versions have been processed,
+          # this temp file will be directly removed.
 
-        ##
-        # Read out the original file from the remote location
-        # and write it out to the temp directory (TMP_PATH)
-        # This file will be used as the base file to reprocess
-        # the versions. Once all versions have been processed,
-        # this temp file will be directly removed.
-
-        # note use mounted_object.path in DEVELOPMENT and TEST
-        # but use mounted_object.url in PRODUCTION
-        # if Rails.env.test?  etc
-
-        open(mounted_object.url) do |original_object|
-          File.open(File.join(TMP_PATH, filename), 'w') do |temp_file|
-            temp_file.binmode
-            temp_file.write(original_object.read)
+          # note use mounted_object.path in DEVELOPMENT and TEST
+          # but use mounted_object.url in PRODUCTION
+          # if Rails.env.test?  etc
+          if Rails.env.test? || Rails.env.development?
+            mnt = mounted_object.path
+          else
+            mnt = mounted_object.url
           end
-        end
+          open(mnt) do |original_object|
+            File.open(File.join(TMP_PATH, filename), 'w') do |temp_file|
+              temp_file.binmode
+              temp_file.write(original_object.read)
+            end
+          end
 
-        ##
-        # By default it will add all available versions to the versions variable
-        # which means that all available versions will be reprocessed.
-        # If the "versions" argument has been provided, then only the specified
-        # version(s) will be set to the versions variable, and thus, only these
-        # will be reprocessed.
-        versions = mounted_object.versions.map {|version| version[0]}
-        versions = VERSIONS unless VERSIONS.empty?
-        puts versions.to_s
-        ##
-        # Reprocesses the versions
-        ns = NuggetSignage.create( nugget_id: ENV['primary'].to_i, signage: mounted_object )
-        new_mounted_object = ns.signage
-        versions.each do |version|
-          new_mounted_object.send(version).cache!(File.open(File.join(TMP_PATH, filename)))
-          new_mounted_object.send(version).store!
-        end
+          # By default it will add all available versions to the versions variable
+          # which means that all available versions will be reprocessed.
+          # If the "versions" argument has been provided, then only the specified
+          # version(s) will be set to the versions variable, and thus, only these
+          # will be reprocessed.
+          versions = mounted_object.versions.map {|version| version[0]}
+          versions = VERSIONS unless VERSIONS.empty?
+          puts "processing versions for #{object.id}: "
+          puts versions.to_s
 
-        ##
-        # Removes the temp file
-        %x(rm "#{TMP_PATH}/#{filename}")
+          # Reprocesses the versions
+          ns = NuggetSignage.create( nugget_id: ENV['primary'].to_i, signage: mounted_object )
+          new_mounted_object = ns.signage
+          versions.each do |version|
+            new_mounted_object.send(version).cache!(File.open(File.join(TMP_PATH, filename)))
+            new_mounted_object.send(version).store!
+          end
+
+          # Removes the temp file
+          %x(rm "#{TMP_PATH}/#{filename}")
+        end
 
         # remove the original
         if object.id == ENV['primary'].to_i

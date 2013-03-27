@@ -2,7 +2,23 @@
   .span6.pagination-centered
     .row-fluid
       - @nugget.nugget_signages.each do |s|
-        = image_tag s.signage_url(:small)
+        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
+          = '&lArr; rotate'.html_safe
+        = image_tag s.signage_url(:small), {id: "signage_#{s.id}"}
+        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
+          = 'rotate &rArr;'.html_safe
+        :javascript
+            var angle = 0;
+            $('#review_signage #rotate_left').on('click', function (e) {
+              var id = $(this).data('id');
+              angle -= 90;
+              $('#review_signage #signage_'+id).rotate({ animateTo:angle})
+            });
+            $('#review_signage #rotate_right').on('click', function (e) {
+              var id = $(this).data('id');
+              angle += 90;
+              $('#review_signage #signage_'+id).rotate({ animateTo:angle})
+            });
         %br
     .row-fluid
       - if @nugget.submitter_notes.present?
@@ -11,13 +27,10 @@
     .row-fluid.pagination-centered
       -if @nugget.signage_tag_list.include? 'blurry'
         %h4 This Nugget was marked as
-        %button(type="button" class="btn btn-large") Too Blurry To Read
+        %button(type="button" class="btn btn-large disabled") Too Blurry To Read
       -elsif @nugget.signage_tag_list.include? 'inappropriate'
         %h5 This Nugget was marked as
-        %button(type="button" class="btn btn-large") Inappropriate
-      -elsif @nugget.signage_tag_list.include? 'needs_rotation'
-        %h5 This Nugget was marked as
-        %button(type="button" class="btn btn-large") Image Needs Rotation
+        %button(type="button" class="btn btn-large disabled") Inappropriate
       -else
         %h5 This Nugget was read as:
         %h4 phone: #{@nugget.signage_phone}
