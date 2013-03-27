@@ -8,16 +8,16 @@
         %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
           = 'rotate &rArr;'.html_safe
         :javascript
-            var angle = 0;
-            $('#read_signage #rotate_left').on('click', function (e) {
+            var angle_#{s.id} = 0;
+            $('#read_signage #rotate_left[data-id=#{s.id}]').on('click', function (e) {
               var id = $(this).data('id');
-              angle -= 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle})
+              angle_#{s.id} -= 90;
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
             });
-            $('#read_signage #rotate_right').on('click', function (e) {
+            $('#read_signage #rotate_right[data-id=#{s.id}]').on('click', function (e) {
               var id = $(this).data('id');
-              angle += 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle})
+              angle_#{s.id} += 90;
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
             });
         %br
     .row-fluid
