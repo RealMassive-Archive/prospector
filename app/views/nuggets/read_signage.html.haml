@@ -1,28 +1,32 @@
 .row-fluid
   .span6.pagination-centered
     .row-fluid
-      - @nugget.nugget_signages.each do |s|
-        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
+      - if @nugget.submitter_notes.present?
+        ="notes: #{@nugget.submitter_notes}"
+    - @nugget.nugget_signages.each do |s|
+      .row-fluid
+        %span{id: "zoom_#{s.id}", style:"display:inline-block"}
+          = image_tag s.signage_url(:small), {id: "signage_#{s.id}", style:"display:block"}
+        %br
+        %button(type="button" data-id="#{s.id}" class="rotate_left btn btn-info btn-small")
           = '&lArr; rotate'.html_safe
-        = image_tag s.signage_url(:small), {id: "signage_#{s.id}"}
-        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
+        %button(type="button" data-id="#{s.id}" class="rotate_right btn btn-info btn-small")
           = 'rotate &rArr;'.html_safe
         :javascript
-            var angle_#{s.id} = 0;
-            $('#read_signage #rotate_left[data-id=#{s.id}]').on('click', function (e) {
+            $('#zoom_#{s.id}').zoom();
+            angle_#{s.id} = 0;
+            $('#read_signage .rotate_left[data-id=#{s.id}]').on('click', function (e) {
               var id = $(this).data('id');
               angle_#{s.id} -= 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
             });
-            $('#read_signage #rotate_right[data-id=#{s.id}]').on('click', function (e) {
+            $('#read_signage .rotate_right[data-id=#{s.id}]').on('click', function (e) {
               var id = $(this).data('id');
               angle_#{s.id} += 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
             });
         %br
-    .row-fluid
-      - if @nugget.submitter_notes.present?
-        ="submitter notes: #{@nugget.submitter_notes}"
+        %br
   .span6
     .row-fluid.pagination-centered
       %h4 Do any of these apply?
