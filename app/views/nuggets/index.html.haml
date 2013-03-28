@@ -10,7 +10,6 @@
     %th county
     %th phone
     %th type
-    %th msg id
     %th state
     %th submitter
     %th
@@ -27,7 +26,6 @@
       %td= nugget.signage_county
       %td= nugget.signage_phone
       %td= nugget.signage_listing_type
-      %td #{nugget.message_id.split("-").first + "-...-" + nugget.message_id.split("-").last unless nugget.message_id.nil?}
       %td= nugget.state
       %td= truncate(nugget.submitter, :length => 12)
 

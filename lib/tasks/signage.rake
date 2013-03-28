@@ -1,10 +1,20 @@
 namespace :signage do
   desc "merge two old style nugget signages, so that survivor gets both nuggets' images and non-survivor is then removed"
   task :merge_two_old_nuggets => :environment do
+    # AS OF 28 MARCH 2013 THIS MAY NO LONGER WORK. WE FINISHED CONVERTING OLD NUGGETS AND REMOVED SEVERAL NUGGET FIELDS NO LONGER IN USE
+    # leaving code in here so that a New Nugget Merge can later be written
+
+    # the first nugget should be the primary who survives, and the
+    # second nugget have its image copied over to the primary.
+    # also since we changed the uploader as part of the transition from an old nugget to a new nugget
+    # this process depends on the TWO carrierwave uploaders in apps/uploaders/nugget_signage_uploader.rb and apps/uploaders/signage_uploader.rb
+    # since we have to read the old nugget signage and then re-create it as new nugget signage
 
     # use:
     # rake signage:merge_two_old_nuggets primary=X [secondary=Y]
     #
+    # if no secondary is specified, this task simply converts the old nugget to a new nugget.
+
     # based almost completely on code from:
     # https://gist.github.com/421736/3a50eb22b8ec2ffff20f0abc59c7433f353ea42f
     # be sure to read the comments and notes.
@@ -21,11 +31,9 @@ namespace :signage do
     # to pull down and store the original file in a temp directory
     require 'open-uri'
 
-    ##
     # Default constants
     TMP_PATH          = "#{Rails.root}/tmp/carrierwave"
 
-    ##
     # Set environment constants
     CLASS             = 'Nugget'
     #ASSOCIATION       = 'signage' || nil
@@ -33,15 +41,12 @@ namespace :signage do
     MOUNTED_UPLOADER  = 'signage'.to_sym
     VERSIONS          = Array.new
 
-    ##
     # Find the Model
     MODEL = Kernel.const_get(CLASS)
 
-    ##
     # Create the temp directory
     %x(mkdir -p "#{TMP_PATH}")
 
-    ##
     # Find all records for the provided Model
     if ENV['secondary'].nil?
       records = Nugget.where('id = ?', ENV['primary'].to_i)
@@ -51,8 +56,6 @@ namespace :signage do
 
     # Run through all records
     records.each do |record|
-
-      ##
       # Set the mounted uploader object
       # If it has a one-to-one association (singular) then that object
       # will be returned and wrapped in an array so we can "iterate" through it below.
@@ -70,7 +73,6 @@ namespace :signage do
         objects = [record]
       end
 
-      ##
       # Iterates through the objects
       objects.each do |object|
 
@@ -143,10 +145,17 @@ namespace :signage do
     end
   end
 
+  desc "merge two or more nuggets"
+  task :merge_nuggets => :environmoent do
+    # not written yet
+    # the first nugget should be the primary who survives, and all
+    # remaining nuggets should have their data subsumed. Likely, that just
+    # means merging their images over to the primary.
+    # note that this depends on the  carrierwave uploader in apps/uploaders/nugget_signage_uploader.rb
+  end
+
   desc "given a Nugget, regenerate the versions"
   task :regenerate_versions => :environment do
   end
 
 end
-
-
