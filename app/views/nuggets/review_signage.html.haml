@@ -13,18 +13,18 @@
         %button(type="button" data-id="#{s.id}" class="rotate_right btn btn-info btn-small")
           = 'rotate &rArr;'.html_safe
         :javascript
-            $('#zoom_#{s.id}').zoom();
-            angle_#{s.id} = 0;
-            $('#review_signage .rotate_left[data-id=#{s.id}]').on('click', function (e) {
-              var id = $(this).data('id');
-              angle_#{s.id} -= 90;
-              $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
-            });
-            $('#review_signage .rotate_right[data-id=#{s.id}]').on('click', function (e) {
-              var id = $(this).data('id');
-              angle_#{s.id} += 90;
-              $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
-            });
+          //$('#zoom_#{s.id}').zoom();
+          angle_#{s.id} = 0;
+          $('#review_signage .rotate_left[data-id=#{s.id}]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} -= 90;
+            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
+          });
+          $('#review_signage .rotate_right[data-id=#{s.id}]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} += 90;
+            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
+          });
         %br
         %br
   .span6
