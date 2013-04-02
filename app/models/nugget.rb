@@ -31,7 +31,8 @@ class Nugget < ActiveRecord::Base
   # old
   mount_uploader :signage, SignageUploader
 
-  reverse_geocoded_by :latitude, :longitude, {address: :signage_address}
+  geocoded_by :address
+  reverse_geocoded_by :latitude, :longitude
   before_create :default_values
   #before_save :process_geodata
 
@@ -48,11 +49,12 @@ class Nugget < ActiveRecord::Base
   attr_accessible :submission_method, :submitted_at, :submitter, :submitter_notes, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
+
   # old
-  attr_accessible :signage
+  attr_accessible :signage, :is_new_multisignage_nugget
+
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type
-  attr_accessible :is_new_multisignage_nugget
 
   validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
@@ -113,6 +115,10 @@ class Nugget < ActiveRecord::Base
 
   def latlong
     "#{latitude},#{longitude}"
+  end
+
+  def address
+    self.signage_address
   end
 
   def default_values

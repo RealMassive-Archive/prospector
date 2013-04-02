@@ -32,7 +32,11 @@ Prospector::Application.routes.draw do
   end
 
   namespace :api do
-    resources :nuggets, :only => [ :create ]
+    resources :nuggets, :only => [ :create ] do
+      collection do
+        get 'geofind'
+      end
+    end
   end
 
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).

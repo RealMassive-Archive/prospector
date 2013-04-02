@@ -1,6 +1,17 @@
 class Api::NuggetsController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
+  # GET /api/nuggets/geofind.json
+  def geofind
+    #austin: 30.2669, -97.7428
+    latitude = params['latitude']
+    longitude = params['longitude']
+    distance = params['distance']
+    @nuggets = Nugget.near([latitude, longitude], distance)
+    render json: @nuggets
+  end
+
+
   # POST /api/nuggets
   def create
     # make sure the thing posting has rights to post here... maybe with

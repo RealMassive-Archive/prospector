@@ -1,28 +1,39 @@
 .row-fluid
   .span6.pagination-centered
     .row-fluid
+      - if @nugget.submitter_notes.present?
+        ="notes: #{@nugget.submitter_notes}"
+    .row-fluid.pagination-centered
       - @nugget.nugget_signages.each do |s|
+        =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
+        %br
         %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
           = '&lArr; rotate'.html_safe
-        = image_tag s.signage_url(:small), {id: "signage_#{s.id}"}
         %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
           = 'rotate &rArr;'.html_safe
         :javascript
-            var angle_#{s.id} = 0;
-            $('#read_signage #rotate_left[data-id="#{s.id}"]').on('click', function (e) {
-              var id = $(this).data('id');
-              angle_#{s.id} -= 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
-            });
-            $('#read_signage #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
-              var id = $(this).data('id');
-              angle_#{s.id} += 90;
-              $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
-            });
+          $("#signage_#{s.id}").mlens(
+          {
+            imgSrc: $("#signage_#{s.id}").attr("data-big"), // path of the hi-res version of the image
+            lensShape: "circle",        // shape of the lens (circle or square)
+            lensSize: 180,          // size of the lens (in px)
+            borderSize: 4,          // size of the lens border (in px)
+            borderColor: "#fff",        // color of the lens border (#hex)
+            borderRadius: 0         // border radius (optional, only if the shape is square)
+          });
+          var angle_#{s.id} = 0;
+          $('#read_signage #rotate_left[data-id="#{s.id}"]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} -= 90;
+            $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+          });
+          $('#read_signage #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} += 90;
+            $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+          });
         %br
-    .row-fluid
-      - if @nugget.submitter_notes.present?
-        ="submitter notes: #{@nugget.submitter_notes}"
+        %br
   .span6
     .row-fluid.pagination-centered
       %h4 Do any of these apply?
