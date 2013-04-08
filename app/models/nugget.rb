@@ -29,7 +29,8 @@ class Nugget < ActiveRecord::Base
   has_many :nugget_signages, :dependent => :destroy
 
   # old
-  mount_uploader :signage, SignageUploader
+  # mount_uploader :signage, SignageUploader
+  # attr_accessible :signage, :is_new_multisignage_nugget
 
   geocoded_by :address
   reverse_geocoded_by :latitude, :longitude
@@ -49,9 +50,6 @@ class Nugget < ActiveRecord::Base
   attr_accessible :submission_method, :submitted_at, :submitter, :submitter_notes, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
-
-  # old
-  attr_accessible :signage, :is_new_multisignage_nugget
 
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type
