@@ -21,7 +21,7 @@ class Api::NuggetsController < ApplicationController
     message= Postmark::Mitt.new(request.body.read)
     # ignore messages with no attachments
     if message.attachments.empty?
-      logger.warning "message #{message.message_id} from #{messager.from}: no attachments!; skipping."
+      logger.warning "message #{message.message_id} from #{message.from}: no attachments!; skipping."
       # great place to send an email alerting submitter of same
       return render :nothing => true
     end
