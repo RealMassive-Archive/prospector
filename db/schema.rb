@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130325202325) do
+ActiveRecord::Schema.define(:version => 20130408223553) do
 
   create_table "nugget_signages", :force => true do |t|
     t.integer  "nugget_id"
@@ -37,10 +37,9 @@ ActiveRecord::Schema.define(:version => 20130325202325) do
     t.decimal  "longitude"
     t.string   "submitter"
     t.string   "submission_method"
-    t.datetime "submitted_at",               :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.string   "signage"
+    t.datetime "submitted_at",         :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "signage_address"
     t.string   "signage_city"
     t.string   "signage_state"
@@ -51,7 +50,6 @@ ActiveRecord::Schema.define(:version => 20130325202325) do
     t.string   "signage_listing_type"
     t.string   "message_id"
     t.string   "submitter_notes"
-    t.boolean  "is_new_multisignage_nugget"
   end
 
   create_table "roles", :force => true do |t|
