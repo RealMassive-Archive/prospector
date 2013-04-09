@@ -25,7 +25,7 @@
     -else
       -"blue"
     -address = n.signage_address.nil? ? "" : "#{n.signage_address.split(',').first}"
-    -image_stub = n.signage.file.present? ? "#{image_tag(n.signage_url(:tiny))}" : ""
+    -image_stub = n.nugget_signages.first.signage.file.present? ? "#{image_tag(n.nugget_signages.first.signage_url(:tiny))}" : ""
     -popup = "<h4>#{address}</h4><br/>#{image_stub}"
     ="m = L.marker([#{n.latitude},#{n.longitude}], {icon: L.AwesomeMarkers.icon({icon: 'fire', color: '#{color}', spin:true}) });"
     ="m.addTo(map).bindPopup('#{address}');"

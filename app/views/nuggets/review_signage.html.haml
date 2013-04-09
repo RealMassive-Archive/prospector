@@ -3,27 +3,34 @@
     .row-fluid
       - if @nugget.submitter_notes.present?
         ="notes: #{@nugget.submitter_notes}"
-    - @nugget.nugget_signages.each do |s|
-      .row-fluid
-        %span{id: "zoom_#{s.id}", style:"display:inline-block"}
-          = image_tag s.signage_url(:small), {id: "signage_#{s.id}", style:"display:block"}
+    .row-fluid.pagination-centered
+      - @nugget.nugget_signages.each do |s|
+        =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
         %br
-        %button(type="button" data-id="#{s.id}" class="rotate_left btn btn-info btn-small")
+        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
           = '&lArr; rotate'.html_safe
-        %button(type="button" data-id="#{s.id}" class="rotate_right btn btn-info btn-small")
+        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
           = 'rotate &rArr;'.html_safe
         :javascript
-          //$('#zoom_#{s.id}').zoom();
-          angle_#{s.id} = 0;
-          $('#review_signage .rotate_left[data-id=#{s.id}]').on('click', function (e) {
+          $("#signage_#{s.id}").mlens(
+          {
+            imgSrc: $("#signage_#{s.id}").attr("data-big"), // path of the hi-res version of the image
+            lensShape: "circle",        // shape of the lens (circle or square)
+            lensSize: 180,          // size of the lens (in px)
+            borderSize: 4,          // size of the lens border (in px)
+            borderColor: "#fff",        // color of the lens border (#hex)
+            borderRadius: 0         // border radius (optional, only if the shape is square)
+          });
+          var angle_#{s.id} = 0;
+          $('#review_signage #rotate_left[data-id="#{s.id}"]').on('click', function (e) {
             var id = $(this).data('id');
             angle_#{s.id} -= 90;
-            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
+            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
           });
-          $('#review_signage .rotate_right[data-id=#{s.id}]').on('click', function (e) {
+          $('#review_signage #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
             var id = $(this).data('id');
             angle_#{s.id} += 90;
-            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id} })
+            $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
           });
         %br
         %br
@@ -46,7 +53,7 @@
     .row-fluid.pagination-centered
       .span6
         %button(type="button" id="approve" class="btn btn-success") I AGREE
-        %p nugget will be moved along
+        %p nugget will continue to process
       .span6
         %button(type="button" id="reject" class="btn btn-danger") I REJECT
         %p nugget has not been correctly handled
