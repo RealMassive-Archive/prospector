@@ -3,7 +3,7 @@
     .row-fluid
       - if @nugget.submitter_notes.present?
         ="notes: #{@nugget.submitter_notes}"
-    .row-fluid.pagination-centered
+    .row-fluid
       - @nugget.nugget_signages.each do |s|
         =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
         %br
@@ -26,11 +26,15 @@
             var id = $(this).data('id');
             angle_#{s.id} -= 90;
             $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#review_signage #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
           });
           $('#review_signage #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
             var id = $(this).data('id');
             angle_#{s.id} += 90;
             $('#review_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#review_signage #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
           });
         %br
         %br
@@ -52,11 +56,11 @@
 
     .row-fluid.pagination-centered
       .span6
-        %button(type="button" id="approve" class="btn btn-success") I AGREE
-        %p nugget will continue to process
-      .span6
-        %button(type="button" id="reject" class="btn btn-danger") I REJECT
+        %button(type="button" id="reject" class="btn btn-large btn-danger") I REJECT
         %p nugget has not been correctly handled
+      .span6
+        %button(type="button" id="approve" class="btn btn-large btn-success") I AGREE
+        %p nugget will continue to process
       :javascript
         // approve
         $('#review_signage #approve').on('click', function (e) {

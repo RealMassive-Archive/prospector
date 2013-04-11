@@ -39,6 +39,7 @@ gem "launchy", ">= 2.2.0", :group => :test
 gem "capybara", ">= 2.0.2", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
 gem "bootstrap-sass", ">= 2.3.0.0"
+gem 'bootstrap-x-editable-rails'
 gem "devise", ">= 2.2.3"
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"

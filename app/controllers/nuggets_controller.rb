@@ -204,4 +204,24 @@ class NuggetsController < ApplicationController
     #redirect_to jobboard_path
     render :nothing => true
   end
+
+  # GET /nuggets/contact_broker
+  def contact_broker
+    @nugget = Nugget.contact_broker_jobs.first
+    if @nugget.nil?
+      flash[:notice] = "No Contact Broker jobs available."
+      redirect_to jobboard_path
+    else
+      @name = "Jane Doe"
+      @email = "jane.doe.43@nuggetfund.com"
+      @address = @nugget.signage_address.nil? ? "{unknown]" : @nugget.signage_address.split(',').first
+      @city = @nugget.signage_city
+      @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
+      @nugget.set_editable_time
+      @nugget.save
+      render :layout => false
+    end
+  end
+
+
 end

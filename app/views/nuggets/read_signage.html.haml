@@ -3,7 +3,7 @@
     .row-fluid
       - if @nugget.submitter_notes.present?
         ="notes: #{@nugget.submitter_notes}"
-    .row-fluid.pagination-centered
+    .row-fluid
       - @nugget.nugget_signages.each do |s|
         =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
         %br
@@ -26,11 +26,15 @@
             var id = $(this).data('id');
             angle_#{s.id} -= 90;
             $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#read_signage #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
           });
           $('#read_signage #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
             var id = $(this).data('id');
             angle_#{s.id} += 90;
             $('#read_signage #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#read_signage #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
           });
         %br
         %br
@@ -83,10 +87,12 @@
                   %li= msg
 
         %h5 Signage Phone
-        = f.input_field :signage_phone, placeholder: '512-555-1212', required: false, :'data-validation-regex-regex' => "(?:(?:(\s*\(?([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*)|([2-9]1[02-9]|[2‌​-9][02-8]1|[2-9][02-8][02-9]))\)?\s*(?:[.-]\s*)?)([2-9]1[02-9]|[2-9][02-9]1|[2-9]‌​[02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})", :'data-validation-regex-message' => "Must be a phone number"
+        = f.input_field :signage_phone, placeholder: '512-555-1212', :'data-validation-regex-regex' => "(?:(?:(\s*\(?([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*)|([2-9]1[02-9]|[2‌​-9][02-8]1|[2-9][02-8][02-9]))\)?\s*(?:[.-]\s*)?)([2-9]1[02-9]|[2-9][02-9]1|[2-9]‌​[02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})", :'data-validation-regex-message' => "Must be a phone number"
+        -#= f.input_field :signage_phone
         :javascript
           $("#read_signage #nugget_signage_phone").jqBootstrapValidation();
-          //alert('hi');
+          //$("#read_signage #nugget_signage_phone").editable({ type: 'text', title: '512-555-1212'});
+          alert('hi');
 
         %h5 Listing Type
         = f.input_field :signage_listing_type, as: :radio_buttons, collection: [ "lease", "sale"], :item_wrapper_class => 'inline'

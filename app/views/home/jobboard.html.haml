@@ -25,7 +25,7 @@
     %p.jobtype Contact Broker
     %h1.count #{@ready_to_contact_broker_count} jobs
     %br
-    %a.btn.btn-large{disabled: @ready_to_contact_broker_count==0 ? true : false} DO WORK
+    %a.btn.btn-large{:href => contact_broker_nuggets_path, :'data-target'=>"#contact_broker", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @ready_to_contact_broker_count==0 ? true : false}DO WORK
 
   .box.size85.orange
     %br
@@ -51,6 +51,16 @@
   .modal-body
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
+
+#contact_broker(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
+  .modal-header
+    %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+    %h3 Contact Broker
+  .modal-body
+  .modal-footer
+    %button(type="button" data-dismiss="modal" class="btn") Close
+    %button(type="button" class="btn btn-primary" id="contact_broker_submit") BROKER CONTACTED
+
 
 :javascript
   $(document).ready( function() {

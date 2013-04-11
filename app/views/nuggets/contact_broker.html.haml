@@ -1,0 +1,69 @@
+.row-fluid
+  .span6.pagination-centered
+    .row-fluid
+      - if @nugget.submitter_notes.present?
+        ="notes: #{@nugget.submitter_notes}"
+    .row-fluid
+      - @nugget.nugget_signages.each do |s|
+        =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
+        %br
+        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
+          = '&lArr; rotate'.html_safe
+        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
+          = 'rotate &rArr;'.html_safe
+        :javascript
+          $("#signage_#{s.id}").mlens(
+          {
+            imgSrc: $("#signage_#{s.id}").attr("data-big"), // path of the hi-res version of the image
+            lensShape: "circle",        // shape of the lens (circle or square)
+            lensSize: 180,          // size of the lens (in px)
+            borderSize: 4,          // size of the lens border (in px)
+            borderColor: "#fff",        // color of the lens border (#hex)
+            borderRadius: 0         // border radius (optional, only if the shape is square)
+          });
+          var angle_#{s.id} = 0;
+          $('#contact_broker #rotate_left[data-id="#{s.id}"]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} -= 90;
+            $('#contact_broker #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#contact_broker #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
+          });
+          $('#contact_broker #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
+            var id = $(this).data('id');
+            angle_#{s.id} += 90;
+            $('#contact_broker #signage_'+id).rotate({ animateTo:angle_#{s.id}})
+            // also rotate the larger image mostly hidden except when zooming
+            $('#contact_broker #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
+          });
+        %br
+        %br
+  .span6
+    .row-fluid.pagination-centered
+      .span3
+        %h5 Your Name:
+        %h5 Your Email:
+        %h5 Call this num.:
+      %h4=@name
+      %h4=@email
+      %h4 #{@nugget.signage_phone}
+      %h5 And read this script:
+    .row-fluid
+      %p "Hi, this is #{@name}. I'm calling about a property my boss [or, "one of my co-workers"] saw for #{@listing_type} near #{@address} in #{@city}"
+      %p ""Could you email me the specs and some pics?"
+      %p
+      %p [If you get asked anything more specific, tell them it's your boss who saw the sign while he was driving and asked you to call and get the info.]
+
+      :javascript
+        // cancel
+        $('#contact_broker button[data-dismiss="modal"]').on('click', function (e) {
+          $.ajax({
+            url: '#{unset_editable_time_nugget_path(@nugget)}'
+          });
+        });
+        // submit form
+        $('#contact_broker_submit').on('click', function (e) {
+          alert("hey, you hit the BROKR CONTACTED BUTTON");
+          return false;
+          //$('#edit_nugget_#{@nugget.id}').submit();
+        });

@@ -147,7 +147,16 @@ class Nugget < ActiveRecord::Base
       when :signage_reviewed
         time_to_lock = 3.minutes
       when :ready_to_contact_broker
-        time_to_lock = 10.minutes
+        time_to_lock = 1.minutes
+        # probably should be 1 biz days
+        # time_to_lock = case (Time.now).wday % 7
+        #   when 5 # now is Friday
+        #     3.days
+        #   when 6 # now is Saturday
+        #     2.days
+        #   else
+        #     1.days
+        #   end
       else
         time_to_lock = 1.minutes
     end

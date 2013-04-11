@@ -48,6 +48,8 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
+    bootstrap-x-editable-rails (1.4.3)
+      railties (>= 3.0)
     builder (3.0.4)
     cancan (1.6.9)
     capybara (2.0.2)
@@ -277,6 +279,7 @@ DEPENDENCIES
   better_errors (>= 0.6.0)
   binding_of_caller (>= 0.7.1)
   bootstrap-sass (>= 2.3.0.0)
+  bootstrap-x-editable-rails
   cancan (>= 1.6.8)
   capybara (>= 2.0.2)
   carrierwave
