@@ -21,13 +21,20 @@ class Api::NuggetsController < ApplicationController
     message= Postmark::Mitt.new(request.body.read)
     # ignore messages with no attachments
     if message.attachments.empty?
-      logger.warning "message #{message.message_id} from #{message.from}: no attachments!; skipping."
+      logger.info "message #{message.message_id} from #{message.from}: no attachments!; skipping."
       # great place to send an email alerting submitter of same
       return render :nothing => true
     end
-
+    logger.info "token passed in was: #{message.mailbox_hash}"
+    logger.info "from #{message.from}"
+    # if this came from Mike and Ben's mobile app then use the hash for submitter
+    if (message.from == 'support@togethermobile.com' && message.mailbox_hash.present?)
+      submitter = Base64.decode64(message.mailbox_hash)
+    else
+      submitter = message.from
+    end
     n = Nugget.create!(
-      submitter: message.from,
+      submitter: submitter,
       submitter_notes: message.subject,
       submission_method: "email",
       message_id: message.message_id,

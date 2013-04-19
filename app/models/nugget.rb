@@ -120,7 +120,6 @@ class Nugget < ActiveRecord::Base
   def default_values
     self.submitted_at ||= Time.now
     self.submitter ||= "SYSTEM"
-    self.is_new_multisignage_nugget ||= true
   end
 
   def editable?
