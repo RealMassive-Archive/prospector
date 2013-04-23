@@ -21,6 +21,7 @@
 #  signage_listing_type :string(255)
 #  message_id           :string(255)
 #  submitter_notes      :string(255)
+#  signage_intersection :string(255)
 #
 
 class Nugget < ActiveRecord::Base
@@ -50,7 +51,7 @@ class Nugget < ActiveRecord::Base
   attr_accessible :nugget_type, :nugget_phone, :approx_address
 
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
-  attr_accessible :signage_phone, :signage_listing_type
+  attr_accessible :signage_phone, :signage_listing_type, :signage_intersection
 
   validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
   validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
@@ -175,6 +176,9 @@ class Nugget < ActiveRecord::Base
     end
     if geo_addr.address_components_of_type('neighborhood').present?
       self.signage_neighborhood = geo_addr.address_components_of_type('neighborhood').first['long_name']
+    end
+    if geo_addr.address_components_of_type('intersection').present?
+      self.signage_intersection = geo_addr.address_components_of_type('intersection').first['long_name']
     end
     self.signage_address = geo_addr.address
   end

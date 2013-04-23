@@ -212,8 +212,12 @@ class NuggetsController < ApplicationController
       flash[:notice] = "No Contact Broker jobs available."
       redirect_to jobboard_path
     else
-      @name = "Jane Doe"
-      @email = "jane.doe.43@nuggetfund.com"
+      fake = Faker::Name.name
+      @name = fake
+      @email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+      # note that we should be comparing to existing open "broker contacted" or "ready to contact broker" nuggets to see if this email has been assigned to any open jobs. If so, then re-generate it till it's unique.
+      # once the job comes back adn this nugget is no longer in ready to contact broker state, then the uniqueness of this doesn't matter (might be worth keeping for some tracking reason later, therefore not enforcing uniqueness in the DB)
+
       @address = @nugget.signage_address.nil? ? "{unknown]" : @nugget.signage_address.split(',').first
       @city = @nugget.signage_city
       @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
