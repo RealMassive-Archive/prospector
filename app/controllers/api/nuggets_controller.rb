@@ -30,7 +30,7 @@ class Api::NuggetsController < ApplicationController
     # if this came from Mike and Ben's mobile app then use the hash for submitter
     if ( message.from.include?('togethermobile.com') && message.mailbox_hash.present?)
       #submitter = Base64.decode64( message.mailbox_hash )
-      submitter = message.mailbox_hash
+      submitter = message.mailbox_hash.gsub('--at--', '@')
     else
       submitter = message.from
     end
