@@ -30,7 +30,15 @@ class Api::NuggetsController < ApplicationController
     # if this came from Mike and Ben's mobile app then use the hash for submitter
     if ( message.from.include?('togethermobile.com') && message.mailbox_hash.present?)
       #submitter = Base64.decode64( message.mailbox_hash )
-      submitter = message.mailbox_hash.gsub('--at--', '@')
+      together_hash = message.mailbox_hash.split('--together_id--')
+      together_id = together_hash.last
+      submitter = together_hash.first.gsub('--at--', '@')
+      together_url = "https://test.togethermobile.com/export/verify?script_key=6121659c-a5f6-11e2-89e7-000c290e656b&job_id="
+      begin
+        together_response = HTTParty.get(together_url + together_id)
+      rescue
+        return render :text => "Nugget received by RealMassive, but callback to TogetherMobile failed."
+      end
     else
       submitter = message.from
     end
