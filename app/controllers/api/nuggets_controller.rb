@@ -36,7 +36,9 @@ class Api::NuggetsController < ApplicationController
       together_url = "https://test.togethermobile.com/export/verify.json?job_id="
       begin
         together_response = HTTParty.get(together_url + together_id)
+        logger.info "from togethermobile: id=" + together_id
       rescue
+        logger.info "error when validating to togethermobile: id=" + together_id
         return render :text => "Nugget received by RealMassive, but callback to TogetherMobile failed."
       end
     else
