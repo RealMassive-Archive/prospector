@@ -33,7 +33,7 @@ class Api::NuggetsController < ApplicationController
       together_hash = message.mailbox_hash.split('--together_id--')
       together_id = together_hash.last
       submitter = together_hash.first.gsub('--at--', '@')
-      together_url = "https://test.togethermobile.com/export/verify?job_id="
+      together_url = "https://test.togethermobile.com/export/verify.json?job_id="
       begin
         together_response = HTTParty.get(together_url + together_id)
       rescue
