@@ -27,7 +27,9 @@ class Api::NuggetsController < ApplicationController
     end
     logger.info "token passed in was: #{message.mailbox_hash}"
     logger.info "from #{message.from}"
-    # if this came from Mike and Ben's mobile app then use the hash for submitter
+    # if this came from Mike and Ben's (TogetherMobile) mobile app then use the hash for submitter
+    # mail will come addressed to nugget+hash@realmassive.com
+    # where hash will have   true
     if ( message.from.include?('togethermobile.com') && message.mailbox_hash.present?)
       #submitter = Base64.decode64( message.mailbox_hash )
       together_hash = message.mailbox_hash.split('--together_id--')
