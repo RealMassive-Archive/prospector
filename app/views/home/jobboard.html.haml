@@ -15,10 +15,10 @@
 
   .box.size85.green
     %br
-    %p.jobtype Check Signage Duplicates
-    %h5 (THIS STEP BY-PASSED FOR NOW)
+    %p.jobtype De-dupe Signage
+    %h1.count #{@check_signage_duplicate_count} jobs
     %br
-    -#%a.btn.btn-large{disabled: true} DO WORK
+    %a.btn.btn-large{:href => dedupe_signage_nuggets_path, :'data-target'=>"#dedup_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @check_signage_duplicate_count==0 ? true : false}DO WORK
 
   .box.size85.yellow
     %br
@@ -48,6 +48,14 @@
   .modal-header
     %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
     %h3 Review Signage
+  .modal-body
+  .modal-footer
+    %button(type="button" data-dismiss="modal" class="btn") Close
+
+#dedup_signage(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
+  .modal-header
+    %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+    %h3 Dedup Signage
   .modal-body
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close

@@ -227,5 +227,10 @@ class NuggetsController < ApplicationController
     end
   end
 
+  # GET /nuggets/dedup_signage
+  def dedupe_signage
+    @nugget = Nugget.dedupe_jobs.first
+    render layout: false
+  end
 
 end

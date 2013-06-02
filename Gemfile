@@ -58,4 +58,5 @@ group :development do
 
   gem 'pry'
   gem 'pry-rails'
+  gem 'rb-readline', '~> 0.4.2'
 end

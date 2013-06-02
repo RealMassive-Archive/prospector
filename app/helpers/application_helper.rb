@@ -26,4 +26,7 @@ module ApplicationHelper
     end
   end
 
+  def render_date(date)
+    date.strftime("%m/%d/%Y")
+  end
 end

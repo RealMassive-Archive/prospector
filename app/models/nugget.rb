@@ -70,6 +70,7 @@ class Nugget < ActiveRecord::Base
 
   scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_read) }
   scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
+  scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
 
   state_machine initial: :initial do
@@ -93,7 +94,10 @@ class Nugget < ActiveRecord::Base
       transition :signage_reviewed => :signage_rejected
     end
     event :signage_approve do
-      transition :signage_reviewed => :ready_to_contact_broker
+      transition :signage_reviewed => :dupe_check
+    end
+    event :signage_unique do
+      transition :dupe_check => :ready_to_contact_broker
     end
     event :broker_contact do
       transition :ready_to_contact_broker => :awaiting_broker_response

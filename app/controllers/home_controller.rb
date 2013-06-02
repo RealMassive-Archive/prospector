@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   def jobboard
     @read_signage_jobs_count = Nugget.read_signage_jobs.count
     @review_signage_jobs_count = Nugget.review_signage_jobs.count
+    @check_signage_duplicate_count = Nugget.dedupe_jobs.count
     @ready_to_contact_broker_count = Nugget.contact_broker_jobs.count
   end
 
