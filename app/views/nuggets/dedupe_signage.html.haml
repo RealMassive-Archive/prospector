@@ -9,27 +9,9 @@
         %div.row-fluid
           %div.span12.pagination-centered
             =image_tag s.signage_url(:small)
-  .span6.pagination-centered.border
-    .row-fluid
-      %h5 Signage from #{render_date(@nugget.created_at)}
-      %p Lease at approximate address: #{@nugget.address}
-      %p #{@nugget.signage_phone}
-    .row-fluid
-      %div.span4.pagination-centered
-        %strong 0.10 miles
-        %br
-        %strong 32 days ago
-      %div.span4.pagination-centered
-        - @nugget.nugget_signages.each do |s|
-          %div.row-fluid
-            %div.span12.pagination-centered
-              =image_tag s.signage_url(:small)
-      %div.span4.pagination-centered
-        %strong 0.10 miles
-        %br
-        %strong 32 days ago
-    .row-fluid.top20
-      .span12.pagination-centered
-        %button(type="button" class="btn btn-info") No Match!
-        %button(type="button" class="btn btn-info") Unsure
-        %button(type="button" class="btn btn-info") Match!
+  .span6.pagination-centered.border#duplicate_holder
+    = render partial: "duplicate_signage",locals: {nugget: @nugget }
+.row-fluid
+  .span3.offset9
+    = form_tag "/", method: "post",remote: true do
+      = submit_tag "Done Completely", class: "btn btn-success btn-large span12"

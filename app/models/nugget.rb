@@ -26,7 +26,9 @@
 
 class Nugget < ActiveRecord::Base
   has_many :nugget_signages, :dependent => :destroy
-
+  has_many :duplicates, :dependent => :destroy
+  has_many :duplicate_nuggets, :through=> :duplicates
+  #belongs_to :duplicate,:foreign_key
   # old
   # mount_uploader :signage, SignageUploader
   # attr_accessible :signage, :is_new_multisignage_nugget
@@ -75,6 +77,7 @@ class Nugget < ActiveRecord::Base
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
+    before_transition  :signage_reviewed => :dupe_check, :do => :find_duplicates
     event :no_gps do
       transition :initial => :no_gps
     end
@@ -185,5 +188,15 @@ class Nugget < ActiveRecord::Base
       self.signage_intersection = geo_addr.address_components_of_type('intersection').first['long_name']
     end
     self.signage_address = geo_addr.address
+  end
+
+  def find_duplicates
+    #the query below finds the duplicate nuggets, modify it in future for better duplicate search
+    all_duplicate_nuggets =  Nugget.where("signage_phone like ? and id != ?", "%#{self.signage_phone}%",self.id)
+
+    duplicate_nuggets_ids = all_duplicate_nuggets.map &:id #collect only ids of duplicates
+    unique_duplicate_nuggets = duplicate_nuggets_ids - self.duplicate_nugget_ids  #collect only unique ids that are not already in duplicates
+    duplicate_nuggets = Nugget.find(unique_duplicate_nuggets)
+    self.duplicate_nuggets <<  duplicate_nuggets  #add duplicates to table
   end
 end

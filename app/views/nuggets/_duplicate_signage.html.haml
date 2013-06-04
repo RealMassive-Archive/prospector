@@ -1,0 +1,40 @@
+- if nugget.duplicates.pending.empty?
+  .success
+    %h3 No duplicate nuggets
+- else
+  - dupe_nugget = nugget.duplicates.pending.first.duplicate_nugget
+  .row-fluid
+    %h5 Signage from #{render_date(dupe_nugget.created_at)}
+    %p Lease at approximate address: #{dupe_nugget.address}
+    %p #{dupe_nugget.signage_phone}
+  .row-fluid
+    %div.span4.pagination-centered
+      %strong 0.10 miles
+      %br
+      %strong 32 days ago
+    %div.span4.pagination-centered
+      - dupe_nugget.nugget_signages.each do |s|
+        %div.row-fluid
+          %div.span12.pagination-centered
+            =image_tag s.signage_url(:small)
+    %div.span4.pagination-centered
+      %strong 0.10 miles
+      %br
+      %strong 32 days ago
+  .row-fluid.top20
+    .span12.pagination-centered
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", nugget.duplicates.pending.first.id
+          = hidden_field_tag "duplicate_status", "no_match"
+          = submit_tag "No match!", class: "btn btn-success span12"
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", nugget.duplicates.pending.first.id
+          = hidden_field_tag "duplicate_status", "unsure"
+          = submit_tag "Unsure", class: "btn btn-info span12"
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", nugget.duplicates.pending.first.id
+          = hidden_field_tag "duplicate_status", "match"
+          = submit_tag "Match!", class: "btn btn-warning span12"

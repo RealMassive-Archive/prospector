@@ -232,5 +232,10 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.dedupe_jobs.first
     render layout: false
   end
-
+  def dedupe
+    @nugget = Nugget.find(params[:id])
+    @duplicate = Duplicate.find(params[:duplicate])
+    @duplicate.update_attribute(:duplicate_status,params[:duplicate_status])
+    render :layout => false
+  end
 end

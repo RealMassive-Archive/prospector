@@ -30,6 +30,7 @@ Prospector::Application.routes.draw do
       get 'approve_signage'
       get 'reject_signage'
       get 'unset_editable_time' # is this really a GET? It changes a nugget's state
+      post 'dedupe' # to mark duplicate nuggets state
     end
   end
 

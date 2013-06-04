@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423200411) do
+ActiveRecord::Schema.define(:version => 20130602191124) do
+
+  create_table "duplicates", :force => true do |t|
+    t.integer  "nugget_id"
+    t.integer  "duplicate_nugget_id"
+    t.integer  "user_id"
+    t.string   "duplicate_status"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "nugget_signages", :force => true do |t|
     t.integer  "nugget_id"
