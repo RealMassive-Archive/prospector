@@ -234,8 +234,21 @@ class NuggetsController < ApplicationController
   end
   def dedupe
     @nugget = Nugget.find(params[:id])
-    @duplicate = Duplicate.find(params[:duplicate])
-    @duplicate.update_attribute(:duplicate_status,params[:duplicate_status])
-    render :layout => false
+    @duplicate_nugget= Nugget.find(params[:duplicate])
+    @duplicate = Duplicate.find_or_initialize_by_nugget_id_and_duplicate_nugget_id(
+        @nugget.id,
+        @duplicate_nugget.id
+    ).tap do |a|
+      a.duplicate_status = params[:duplicate_status]
+    end.save!
+    if params[:duplicate_status] == "match"
+      @nugget.signage_duplicate
+    end
+   render layout: false
+  end
+  def signage_unique
+    @nugget = Nugget.find(params[:id])
+    @nugget.signage_unique
+    redirect_to jobboard_path
   end
 end

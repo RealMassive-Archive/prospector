@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130602191124) do
+ActiveRecord::Schema.define(:version => 20130608135610) do
 
   create_table "duplicates", :force => true do |t|
     t.integer  "nugget_id"
@@ -55,13 +55,13 @@ ActiveRecord::Schema.define(:version => 20130602191124) do
     t.string   "signage_county"
     t.string   "signage_neighborhood"
     t.datetime "editable_until"
-    t.string   "signage_phone"
-    t.string   "signage_listing_type"
     t.string   "message_id"
     t.string   "submitter_notes"
     t.string   "signage_intersection"
     t.string   "contact_broker_fake_name"
     t.string   "contact_broker_fake_email"
+    t.string   "signage_phone"
+    t.string   "signage_listing_type"
   end
 
   create_table "roles", :force => true do |t|

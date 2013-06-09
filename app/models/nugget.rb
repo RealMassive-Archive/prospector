@@ -77,7 +77,6 @@ class Nugget < ActiveRecord::Base
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
-    before_transition  :signage_reviewed => :dupe_check, :do => :find_duplicates
     event :no_gps do
       transition :initial => :no_gps
     end
@@ -101,6 +100,9 @@ class Nugget < ActiveRecord::Base
     end
     event :signage_unique do
       transition :dupe_check => :ready_to_contact_broker
+    end
+    event :signage_duplicate do
+      transition :dupe_check => :duplicate
     end
     event :broker_contact do
       transition :ready_to_contact_broker => :awaiting_broker_response
@@ -190,13 +192,14 @@ class Nugget < ActiveRecord::Base
     self.signage_address = geo_addr.address
   end
 
-  def find_duplicates
-    #the query below finds the duplicate nuggets, modify it in future for better duplicate search
-    all_duplicate_nuggets =  Nugget.where("signage_phone like ? and id != ?", "%#{self.signage_phone}%",self.id)
-
-    duplicate_nuggets_ids = all_duplicate_nuggets.map &:id #collect only ids of duplicates
-    unique_duplicate_nuggets = duplicate_nuggets_ids - self.duplicate_nugget_ids  #collect only unique ids that are not already in duplicates
-    duplicate_nuggets = Nugget.find(unique_duplicate_nuggets)
-    self.duplicate_nuggets <<  duplicate_nuggets  #add duplicates to table
+  def find_duplicates()
+    within=1.5
+    Nugget.near(
+        [self.latitude,self.longitude], #passing lat longs
+        within, :order => :distance).  #within 1.5 miles
+        where([                        #will not return already compared or self
+           "id NOT IN (?) and created_at < ?",
+           self.duplicate_nugget_ids << self.id,self.created_at
+        ])
   end
 end
