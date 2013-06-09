@@ -1,5 +1,5 @@
 .row-fluid
-  .span6.pagination-centered.border
+  .span6.pagination-centered
     .row-fluid
       %h5 Signage from #{render_date(@nugget.created_at)}
       %p Lease at approximate address: #{@nugget.address}
@@ -10,7 +10,7 @@
         %div.row-fluid
           %div.span12.pagination-centered
             =image_tag s.signage_url(:small)
-  .span6.pagination-centered.border#duplicate_holder
+  .span6.pagination-centered#duplicate_holder
     = render partial: "duplicate_signage",locals: {nugget: @nugget }
 .row-fluid
   .span3.offset9
