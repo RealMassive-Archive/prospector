@@ -8,10 +8,10 @@
     %h5 Signage from #{render_date(dupe_nugget.created_at)}
     %p Lease at approximate address: #{dupe_nugget.address}
     %p #{dupe_nugget.signage_phone}
-    %p.border #{dupe_nugget.id}
+    -#%p.border #{dupe_nugget.id}
   .row-fluid
     %div.span4.pagination-centered
-      %strong #{dupe_nugget.distance_from([nugget.latitude,nugget.longitude])} miles
+      %strong #{number_with_precision(dupe_nugget.distance_from([nugget.latitude,nugget.longitude]),precision:2)} miles
       %br
       %strong #{time_ago_in_words(dupe_nugget.created_at,Time.now)} ago
     %div.span4.pagination-centered

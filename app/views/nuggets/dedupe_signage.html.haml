@@ -4,7 +4,7 @@
       %h5 Signage from #{render_date(@nugget.created_at)}
       %p Lease at approximate address: #{@nugget.address}
       %p #{@nugget.signage_phone}
-      %p.border #{@nugget.id}
+      -#%p.border #{@nugget.id}
     .row-fluid
       - @nugget.nugget_signages.each do |s|
         %div.row-fluid

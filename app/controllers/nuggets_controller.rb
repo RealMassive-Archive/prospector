@@ -234,12 +234,13 @@ class NuggetsController < ApplicationController
   end
   def dedupe
     @nugget = Nugget.find(params[:id])
-    @duplicate_nugget= Nugget.find(params[:duplicate])
-    @duplicate = Duplicate.find_or_initialize_by_nugget_id_and_duplicate_nugget_id(
+    @compared_to_nugget= Nugget.find(params[:duplicate])
+    @duplicate = Duplicate.find_or_initialize_by_nugget_id_and_compared_to_nugget_id(
         @nugget.id,
-        @duplicate_nugget.id
+        @compared_to_nugget.id
     ).tap do |a|
       a.duplicate_status = params[:duplicate_status]
+      a.user_id = current_user.id
     end.save!
     if params[:duplicate_status] == "match"
       @nugget.signage_duplicate

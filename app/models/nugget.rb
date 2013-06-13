@@ -27,7 +27,7 @@
 class Nugget < ActiveRecord::Base
   has_many :nugget_signages, :dependent => :destroy
   has_many :duplicates, :dependent => :destroy
-  has_many :duplicate_nuggets, :through=> :duplicates
+  has_many :compared_to_nuggets, :through=> :duplicates
   #belongs_to :duplicate,:foreign_key
   # old
   # mount_uploader :signage, SignageUploader
@@ -199,7 +199,7 @@ class Nugget < ActiveRecord::Base
         within, :order => :distance).  #within 1.5 miles
         where([                        #will not return already compared or self
            "id NOT IN (?) and created_at < ?",
-           self.duplicate_nugget_ids << self.id,self.created_at
+           self.compared_to_nugget_ids << self.id,self.created_at
         ])
   end
 end
