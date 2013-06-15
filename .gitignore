@@ -78,3 +78,6 @@ pickle-email-*.html
 /config/application.yml
 #ignore to solve migration conflicts
 /db/schema.rb
+# Ignore rvmrc file for ruby version conflictchanges requested.
+/Gemfile.lock
+/.rvmrc
