@@ -12,6 +12,7 @@
 class NuggetSignage < ActiveRecord::Base
   belongs_to :nugget
   mount_uploader :signage, NuggetSignageUploader
+  mount_uploader :signage2, NuggetSignage2Uploader
 
   attr_accessible :signage, :nugget_id
 

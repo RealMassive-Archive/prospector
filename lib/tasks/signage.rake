@@ -158,4 +158,18 @@ namespace :signage do
   task :regenerate_versions => :environment do
   end
 
+  desc "move signage to signage2"
+  task :move_signages => :environment do
+    puts "move images for the #{Rails.env} environment"
+    path = Rails.env=="development" ? "http://localhost:3000" : ""
+    NuggetSignage.all.each do |s|
+      s.remote_signage2_url = path+s.signage.url
+      s.save
+      puts s.id
+      puts "old signage path were=>"+s.signage.url.to_s
+      puts "new signage2 path is=>"+s.signage2.url.to_s
+      puts ""
+    end
+  end
+
 end
