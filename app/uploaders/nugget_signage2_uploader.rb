@@ -23,7 +23,7 @@ class NuggetSignage2Uploader < CarrierWave::Uploader::Base
     else
       dir_stub = ""
     end
-    "#{dir_stub}nugget/signage/#{model.id}"
+    "#{dir_stub}nugget/#{model.nugget_id}/signage"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
