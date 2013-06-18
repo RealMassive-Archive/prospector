@@ -81,3 +81,4 @@ pickle-email-*.html
 # Ignore rvmrc file for ruby version conflictchanges requested.
 /Gemfile.lock
 /.rvmrc
+/.ruby-version
