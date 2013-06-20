@@ -41,6 +41,7 @@ Prospector::Application.routes.draw do
         get 'geofind'
       end
     end
+    resources :broker_emails,:only=>[:create]
   end
 
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).
