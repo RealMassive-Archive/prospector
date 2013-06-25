@@ -21,4 +21,11 @@
         %h4 #{@email}
   .span6
     %h3.pagination-centered Call Results
-
+    :javascript
+      // cancel
+      $('#contact_broker button[data-dismiss="modal"]').on('click', function (e) {
+        $.ajax({
+          url: '#{unset_editable_time_nugget_path(@nugget)}',
+          success: function( data ) {}
+        });
+      });

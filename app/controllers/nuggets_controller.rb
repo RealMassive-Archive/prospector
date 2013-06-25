@@ -230,6 +230,10 @@ class NuggetsController < ApplicationController
   # GET /nuggets/dedup_signage
   def dedupe_signage
     @nugget = Nugget.dedupe_jobs.first
+    unless @nugget.nil?
+      @nugget.set_editable_time
+      @nugget.save
+    end
     render layout: false
   end
   def dedupe
