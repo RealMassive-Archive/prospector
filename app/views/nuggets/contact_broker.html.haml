@@ -21,6 +21,53 @@
         %h4 #{@email}
   .span6
     %h3.pagination-centered Call Results
+    = form_for @broker_call,:url=>save_call_nugget_path(@nugget) do |f|
+      .row-fluid
+        .span6
+          = f.label :broker_will_email_assets
+        .span1
+          = f.radio_button :call_result,"broker_will_email_assets"
+      .row-fluid
+        .span6
+          = f.label :"broker refused to email Reason"
+        .span1
+          = f.radio_button :call_result,"broker_refused_to_email",:onclick=>"enable_text_field($(this))"
+        .span5
+          = f.text_field :call_comments,:class=>"call_comments call_comment_one input-block-level",:placeholder=>"Reason",:disabled=>"disabled"
+      .row-fluid
+        .span6
+          = f.label :"Left voicemail for broker"
+        .span1
+          = f.radio_button :call_result,"left_voicemail_for_broker"
+      .row-fluid
+        .span6
+          = f.label :"Left message with human Name:"
+        .span1
+          = f.radio_button :call_result,"left_message_with_human",:onclick=>"enable_text_field($(this))"
+        .span5
+          = f.text_field :call_comments,:class=>"call_comment_one input-block-level span12",:placeholder=>"Name",:disabled=>"disabled"
+      .row-fluid
+        .span6
+          = f.label :"broker_directed_to_website_url"
+        .span1
+          = f.radio_button :call_result,"broker_directed_to_website_url",:onclick=>"enable_text_field($(this))"
+        .span8.pull-right
+          = f.text_field :call_comments,:type=>"url",:class=>"call_comment_one  input-block-level",:placeholder=>"Website url",:disabled=>"disabled"
+      .row-fluid.top20
+        .span4
+          = f.label :"broker_name"
+        .span8
+          = f.text_field :broker_name, :required => true,:class=>" input-block-level",:placeholder=>"Broker Name"
+      .row-fluid
+        .span4
+          = f.label :"broker_email"
+        .span8
+          = f.text_field :broker_email,:type=>"email", :required => true,:class=>" input-block-level",:placeholder=>"Broker email"
+      .row-fluid
+        .span12.pagination-right
+          = f.submit "Save",:class=>"btn btn-primary span3"
+
+
     :javascript
       // cancel
       $('#contact_broker button[data-dismiss="modal"]').on('click', function (e) {
@@ -29,3 +76,7 @@
           success: function( data ) {}
         });
       });
+      function enable_text_field(radio){
+        $(".call_comment_one").attr("disabled",true); //disable other call_comments
+        radio.parent().parent().find('input[type=text],input[type=url]').removeAttr("disabled"); //enable comment corresponding to the radio checked
+      }

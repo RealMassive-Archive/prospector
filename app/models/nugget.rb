@@ -28,6 +28,8 @@ class Nugget < ActiveRecord::Base
   has_many :nugget_signages, :dependent => :destroy
   has_many :duplicates, :dependent => :destroy
   has_many :compared_to_nuggets, :through=> :duplicates
+  has_many :broker_calls
+
   #belongs_to :duplicate,:foreign_key
   # old
   # mount_uploader :signage, SignageUploader
@@ -104,7 +106,7 @@ class Nugget < ActiveRecord::Base
     event :signage_duplicate do
       transition :dupe_check => :duplicate
     end
-    event :broker_contact do
+    event :broker_contacted do
       transition :ready_to_contact_broker => :awaiting_broker_response
     end
 

@@ -32,6 +32,7 @@ Prospector::Application.routes.draw do
       get 'unset_editable_time' # is this really a GET? It changes a nugget's state
       post 'dedupe' # to mark duplicate nuggets state
       post 'signage_unique'
+      post "save_call"
     end
   end
 

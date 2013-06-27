@@ -210,7 +210,7 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.contact_broker_jobs.first
     if @nugget.nil?
       flash[:notice] = "No Contact Broker jobs available."
-      redirect_to jobboard_path
+      render :text=> "No contact broker jobs available"
     else
       fake = Faker::Name.name
       @name = fake
@@ -223,6 +223,7 @@ class NuggetsController < ApplicationController
       @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
       @nugget.set_editable_time
       @nugget.save
+      @broker_call=BrokerCall.new
       render :layout => false
     end
   end
@@ -255,5 +256,21 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.find(params[:id])
     @nugget.signage_unique
     redirect_to jobboard_path
+  end
+  def save_call
+    @nugget=Nugget.where(:id=>params[:id]).first
+    @broker_call=@nugget.broker_calls.new(params[:broker_call])
+    @broker_call.caller = current_user
+    respond_to do |format|
+      if @broker_call.save
+        @nugget.broker_contacted
+        format.html { redirect_to jobboard_path, notice: 'Broker contacted.' }
+        format.json { head :no_content }
+      else
+        @nugget.unset_editable_time
+        format.html { redirect_to jobboard_path, notice: 'Something went wrong. Broker call not saved.' }
+        format.json { render json: @nugget.errors, status: :unprocessable_entity }
+      end
+    end
   end
 end
