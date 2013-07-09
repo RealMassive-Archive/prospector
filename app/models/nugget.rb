@@ -76,9 +76,12 @@ class Nugget < ActiveRecord::Base
   scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
   scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
+  scope :unique_fake_emails_to_contact_broker,->{with_state([:ready_to_contact_broker,:awaiting_broker_response])}
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
+
+    before_transition any => :ready_to_contact_broker,:do=>:assign_fake_name_email
     event :no_gps do
       transition :initial => :no_gps
     end
@@ -115,7 +118,14 @@ class Nugget < ActiveRecord::Base
       transition :any => :initial
     end
   end
-
+  def assign_fake_name_email
+    fake = Faker::Name.name
+    name = fake
+    email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+    self.contact_broker_fake_name = name
+    self.contact_broker_fake_email = email
+    #raise self.to_yaml
+  end
   def state_message
     msg = user.present? ? "#{user.name} (#{user.id})" : "SYSTEM"
     "by: #{msg}"

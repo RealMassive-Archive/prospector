@@ -1,0 +1,44 @@
+.row-fluid
+  .span8
+    .row-fluid
+      .span2
+        From:
+      .span10
+        = text_field_tag :from,"Deepak",:class=>"input-block-level",:disabled=>:disabled
+    .row-fluid
+      .span2
+        To:
+      .span10
+        = text_field_tag :to,"deepakhashwell@nuggetfund.com",:class=>"input-block-level",:disabled=>:disabled
+    .row-fluid
+      .span2
+        Subject:
+      .span10
+        = text_field_tag :subject,"Images here",:class=>"input-block-level",:disabled=>:disabled
+    .row-fluid
+      .span2
+        Body:
+      .span10
+        = text_area_tag :body,:body,:rows=>10,:class=>"input-block-level",:disabled=>:disabled
+  .span4
+    .row-fluid.pagination-centered
+      %a.btn.btn-danger Mark as Spam
+    .row-fluid.top20
+      %a.btn.btn-warning.btn-large.btn-block Need Supervisor Review
+    %hr
+    %h5 Attachments
+%hr
+.row-fluid
+  %h5 Nuggets to be created from this
+  .row-fluid
+    .tabbable
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to "Nugget 1","#nugget_to_create",:"data-toggle"=>"tab"
+        %li
+          = link_to "Add another nugget tab","#new_nugget",:"data-toggle"=>"tab"
+      .tab-content
+        .tab-pane.active#nugget_to_create
+          %p 1
+        .tab-pane#new_nugget
+          %p 2

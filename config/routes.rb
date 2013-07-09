@@ -21,6 +21,7 @@ Prospector::Application.routes.draw do
       get 'review_signage'
       get 'dedupe_signage'
       get 'contact_broker'
+      get 'parse_broker_email'
       get 'index2'
     end
     member do

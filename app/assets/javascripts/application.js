@@ -16,5 +16,6 @@
 //= require bootstrap-modalmanager
 //= require bootstrap-modal
 //= require bootstrap-editable
+//= require bootstrap-tab
 // or use this: require bootstrap-editable-inline   for inline editing
 //= require_tree .
