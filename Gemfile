@@ -52,7 +52,7 @@ gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri
 
 gem 'faker'
 gem 'httparty'
-
+gem 'jquery-ui-rails'
 group :development do
   gem 'html2haml'
   gem 'erb2haml'   # with this gem, call "rake haml:convert_erbs" or "rake haml:replace_erbs" to batch-convert any erb to haml (will not overwrite existing haml files

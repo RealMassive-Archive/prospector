@@ -18,4 +18,6 @@
 //= require bootstrap-editable
 //= require bootstrap-tab
 // or use this: require bootstrap-editable-inline   for inline editing
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
 //= require_tree .
