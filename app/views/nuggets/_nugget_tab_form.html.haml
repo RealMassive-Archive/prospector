@@ -1,0 +1,21 @@
+%ol.attachment_holder.clearfix
+.row-fluid
+  .span2
+    From:
+  .span10
+    = text_field_tag :from,"Deepak",:class=>"input-block-level",:disabled=>:disabled
+.row-fluid
+  .span2
+    To:
+  .span10
+    = text_field_tag :to,"deepakhashwell@nuggetfund.com",:class=>"input-block-level",:disabled=>:disabled
+.row-fluid
+  .span2
+    Subject:
+  .span10
+    = text_field_tag :subject,"Images here",:class=>"input-block-level",:disabled=>:disabled
+.row-fluid
+  .span2
+    Body:
+  .span10
+    = text_area_tag :body,:body,:rows=>10,:class=>"input-block-level",:disabled=>:disabled

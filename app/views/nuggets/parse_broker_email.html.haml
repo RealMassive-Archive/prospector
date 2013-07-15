@@ -28,10 +28,14 @@
     %hr
     %h5 Attachments
     %ul.attachments#all_attachments.clearfix
-      %li attachment1
-      %li attachment2
-      %li attachment3
-      %li attachment4
+      %li
+        = link_to "attachment1","#",:class=>"btn"
+      %li
+        = link_to "attachment2","#",:class=>"btn"
+      %li
+        = link_to "attachment3","#",:class=>"btn"
+      %li
+        = link_to "attachment4","#",:class=>"btn"
 %hr
 .row-fluid
   %h5 Nuggets to be created from this
@@ -40,15 +44,11 @@
       %ul.nav.nav-tabs
         %li.active
           = link_to "Nugget 1","#nugget_to_create",:"data-toggle"=>"tab"
-        %li
-          = link_to "Add another nugget tab","#new_nugget",:"data-toggle"=>"tab"
+        %li#add_new_tab
+          = link_to "add tab",add_nugget_tab_nugget_path(Nugget.last),:remote=>true
       .tab-content
         .tab-pane.active#nugget_to_create
-          %ol.attachment_holder.clearfix
-          %p 1
-        .tab-pane#new_nugget
-          %ol.attachment_holder.clearfix
-          %p 2
+          = render :partial=>"nugget_tab_form"
 :javascript
   $( "ul#all_attachments li" ).draggable({
     appendTo: "body",
@@ -60,6 +60,6 @@
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
       $( this ).find( ".placeholder" ).remove();
-      $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
+      $( "<li></li>" ).html( "<a href='#' class='btn'>"+ui.draggable.text()+"</a>" ).appendTo( this );
     }
   })

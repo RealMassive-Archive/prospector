@@ -34,6 +34,7 @@ Prospector::Application.routes.draw do
       post 'dedupe' # to mark duplicate nuggets state
       post 'signage_unique'
       post "save_call"
+      get  "add_nugget_tab"
     end
   end
 

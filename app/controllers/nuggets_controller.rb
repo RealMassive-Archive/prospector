@@ -285,5 +285,8 @@ class NuggetsController < ApplicationController
 
     render layout: false
   end
-
+  def add_nugget_tab
+    @nugget = Nugget.find(params[:id])
+    @tab_id = Time.now.to_i
+  end
 end

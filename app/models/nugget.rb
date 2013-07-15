@@ -119,11 +119,13 @@ class Nugget < ActiveRecord::Base
     end
   end
   def assign_fake_name_email
-    fake = Faker::Name.name
-    name = fake
-    email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
-    self.contact_broker_fake_name = name
-    self.contact_broker_fake_email = email
+    self.contact_broker_fake_email = loop do
+      fake = Faker::Name.name
+      name = fake
+      email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+      self.contact_broker_fake_name = name
+      break email unless Nugget.unique_fake_emails_to_contact_broker.where(contact_broker_fake_email: email).exists?
+    end
     #raise self.to_yaml
   end
   def state_message
