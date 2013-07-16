@@ -28,14 +28,14 @@
     %hr
     %h5 Attachments
     %ul.attachments#all_attachments.clearfix
-      %li
+      %li{"data-id"=>1}
         = link_to "attachment1","#",:class=>"btn"
-      %li
+      %li{"data-id"=>2}
         = link_to "attachment2","#",:class=>"btn"
-      %li
-        = link_to "attachment3","#",:class=>"btn"
-      %li
-        = link_to "attachment4","#",:class=>"btn"
+      %li{"data-id"=>3}
+        = link_to "attachment3","#",:class=>"btn","data-id"=>3
+      %li{"data-id"=>4}
+        = link_to "attachment4","#",:class=>"btn","data-id"=>4
 %hr
 .row-fluid
   %h5 Nuggets to be created from this
@@ -60,6 +60,7 @@
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
       $( this ).find( ".placeholder" ).remove();
+      alert(ui.draggable.data("id"));
       $( "<li></li>" ).html( "<a href='#' class='btn'>"+ui.draggable.text()+"</a>" ).appendTo( this );
     }
   })
