@@ -1,54 +1,68 @@
-.row-fluid
-  .span8
-    .row-fluid
-      .span2
-        From:
-      .span10
-        = text_field_tag :from,"Deepak",:class=>"input-block-level",:disabled=>:disabled
-    .row-fluid
-      .span2
-        To:
-      .span10
-        = text_field_tag :to,"deepakhashwell@nuggetfund.com",:class=>"input-block-level",:disabled=>:disabled
-    .row-fluid
-      .span2
-        Subject:
-      .span10
-        = text_field_tag :subject,"Images here",:class=>"input-block-level",:disabled=>:disabled
-    .row-fluid
-      .span2
-        Body:
-      .span10
-        = text_area_tag :body,:body,:rows=>10,:class=>"input-block-level",:disabled=>:disabled
-  .span4
-    .row-fluid.pagination-centered
-      %a.btn.btn-danger Mark as Spam
-    .row-fluid.top20
-      %a.btn.btn-warning.btn-large.btn-block Need Supervisor Review
-    %hr
-    %h5 Attachments
-    %ul.attachments#all_attachments.clearfix
-      %li{"data-id"=>1}
-        = link_to "attachment1","#",:class=>"btn"
-      %li{"data-id"=>2}
-        = link_to "attachment2","#",:class=>"btn"
-      %li{"data-id"=>3}
-        = link_to "attachment3","#",:class=>"btn","data-id"=>3
-      %li{"data-id"=>4}
-        = link_to "attachment4","#",:class=>"btn","data-id"=>4
-%hr
-.row-fluid
-  %h5 Nuggets to be created from this
+.row-fluid#pbk_container
   .row-fluid
-    .tabbable
-      %ul.nav.nav-tabs
-        %li.active
-          = link_to "Nugget 1","#nugget_to_create",:"data-toggle"=>"tab"
-        %li#add_new_tab
-          = link_to "add tab",add_nugget_tab_nugget_path(Nugget.last),:remote=>true
-      .tab-content
-        .tab-pane.active#nugget_to_create
-          = render :partial=>"nugget_tab_form"
+    .span8
+      .row-fluid
+        .span2
+          From:
+        .span10
+          = text_field_tag :from,"Deepak",:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          To:
+        .span10
+          = text_field_tag :to,"deepakhashwell@nuggetfund.com",:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          Subject:
+        .span10
+          = text_field_tag :subject,"Images here",:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          Body:
+        .span10
+          = text_area_tag :body,:body,:rows=>10,:class=>"input-block-level",:disabled=>:disabled
+    .span4
+      .row-fluid.pagination-centered
+        %a.btn.btn-danger Mark as Spam
+      .row-fluid.top20
+        %a.btn.btn-warning.btn-large.btn-block#need_review Need Supervisor Review
+      %hr
+      %h5 Attachments
+      %ul.attachments#all_attachments.clearfix
+        %li{"data-id"=>1}
+          = link_to "attachment1","#",:class=>"btn"
+        %li{"data-id"=>2}
+          = link_to "attachment2","#",:class=>"btn"
+        %li{"data-id"=>3}
+          = link_to "attachment3","#",:class=>"btn","data-id"=>3
+        %li{"data-id"=>4}
+          = link_to "attachment4","#",:class=>"btn","data-id"=>4
+  %hr
+  .row-fluid
+    %h5 Nuggets to be created from this
+    .row-fluid
+      .tabbable
+        %ul.nav.nav-tabs
+          %li.active
+            = link_to "Nugget 1","#nugget_to_create",:"data-toggle"=>"tab"
+          %li#add_new_tab
+            = link_to "add tab",add_nugget_tab_nugget_path(Nugget.last),:remote=>true
+        .tab-content
+          .tab-pane.active#nugget_to_create
+            = render :partial=>"nugget_tab_form"
+.row-fluid#nr_container
+  .row-fluid
+    .span3.offset9
+      .btn.btn-warning.btn-large.btn-block#back_to_pbk_container
+        Back
+  .row-fluid.top10
+    .span2
+      Reason:
+    .span10
+      = text_area_tag :reason,"",:rows=>10,:class=>"input-block-level",:placeholder=>"reason"
+  .row-fluid.top10
+    .span3.offset9
+      = button_tag :submit,:class=>"btn btn-large btn-block"
 :javascript
   $( "ul#all_attachments li" ).draggable({
     appendTo: "body",
@@ -64,3 +78,11 @@
       $( "<li></li>" ).html( "<a href='#' class='btn'>"+ui.draggable.text()+"</a>" ).appendTo( this );
     }
   })
+  $("#need_review").on("click",function(){
+    $("#pbk_container").hide();
+    $("#nr_container").delay(1000).show();
+  });
+  $("#back_to_pbk_container").on("click",function(){
+    $("#nr_container").hide();
+    $("#pbk_container").delay(1000).show();
+  });
