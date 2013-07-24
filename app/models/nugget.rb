@@ -29,7 +29,7 @@ class Nugget < ActiveRecord::Base
   has_many :duplicates, :dependent => :destroy
   has_many :compared_to_nuggets, :through=> :duplicates
   has_many :broker_calls
-
+  has_many :broker_emails
   #belongs_to :duplicate,:foreign_key
   # old
   # mount_uploader :signage, SignageUploader
@@ -77,6 +77,8 @@ class Nugget < ActiveRecord::Base
   scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
   scope :unique_fake_emails_to_contact_broker,->{with_state([:ready_to_contact_broker,:awaiting_broker_response])}
+  scope :awaiting_broker_response, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:awaiting_broker_response) }
+  scope :parse_info_from_broker_emails_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:broker_email_received) }
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
@@ -111,6 +113,9 @@ class Nugget < ActiveRecord::Base
     end
     event :broker_contacted do
       transition :ready_to_contact_broker => :awaiting_broker_response
+    end
+    event :broker_email_received do
+      transition :awaiting_broker_response => :broker_email_received
     end
 
     # convenience:  push any nugget back to  initial state
