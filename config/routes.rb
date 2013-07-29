@@ -38,6 +38,15 @@ Prospector::Application.routes.draw do
     end
   end
 
+  resources :broker_emails,:only=>[] do
+    collection do
+      get 'parse'
+    end
+    member do
+      get "add_nugget_tab"
+    end
+  end
+
   namespace :api do
     resources :nuggets, :only => [ :create ] do
       collection do

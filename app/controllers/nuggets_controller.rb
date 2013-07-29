@@ -279,14 +279,4 @@ class NuggetsController < ApplicationController
     end
   end
 
-  #Get /nuggets/parse_broker_email
-  def parse_broker_email
-    @nugget = Nugget.parse_info_from_broker_emails_jobs.first
-
-    render layout: false
-  end
-  def add_nugget_tab
-    @nugget = Nugget.find(params[:id])
-    @tab_id = Time.now.to_i
-  end
 end

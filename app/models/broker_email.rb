@@ -3,4 +3,6 @@ class BrokerEmail < ActiveRecord::Base
   belongs_to :nugget
   has_many   :broker_email_attachments,:dependent => :destroy
   validates :nugget_id, :from, :to, presence: true
+
+  scope :not_parsed, -> {where(parsed: false)}
 end

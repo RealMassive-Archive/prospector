@@ -13,9 +13,9 @@ class Api::BrokerEmailsController < ApplicationController
       return render :nothing => true
     end
     #nugget = Nugget.find_by_contact_broker_fake_email(message.to)#need to be used later when in
-    nugget = Nugget.awaiting_broker_response.first #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
-
-    if nugget
+    nugget = Nugget.find(10) #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
+    logger.info("Email received with #{message.attachments.count} attachments")
+    if nugget && !message.attachments.empty?
       broker_email = nugget.broker_emails.create(
           :from =>  message.from,
           :to   =>  nugget.contact_broker_fake_email,
@@ -40,7 +40,7 @@ class Api::BrokerEmailsController < ApplicationController
           next
         end
       }
-      nugget.broker_email_received! #now mark email received
+      nugget.broker_email_received #now mark email received
     else
       logger.info "message #{message.message_id} from #{message.from}: skipping. No nugget found with email id"
     end

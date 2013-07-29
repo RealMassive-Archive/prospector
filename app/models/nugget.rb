@@ -118,6 +118,10 @@ class Nugget < ActiveRecord::Base
       transition :awaiting_broker_response => :broker_email_received
     end
 
+    event :broker_email_parsed do
+      transition :broker_email_received => :broker_email_parsed, :if => :zero_broker_emails_to_parse
+    end
+
     # convenience:  push any nugget back to  initial state
     event :reset do
       transition :any => :initial
@@ -133,6 +137,11 @@ class Nugget < ActiveRecord::Base
     end
     #raise self.to_yaml
   end
+
+  def zero_broker_emails_to_parse
+    self.broker_emails.not_parsed.count==0
+  end
+
   def state_message
     msg = user.present? ? "#{user.name} (#{user.id})" : "SYSTEM"
     "by: #{msg}"
