@@ -1,0 +1,2 @@
+module BrokerEmailsHelper
+end

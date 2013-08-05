@@ -10,3 +10,27 @@ body { padding-top: 60px; }
 .top10{
   margin-top:10px;
 }
+textarea {
+  resize: none;
+}
+ul.attachments{
+  list-style-type:none;
+}
+ul.attachments li{
+  float:left;
+  cursor: move;
+  margin: 3px;
+}
+ol.attachment_holder{
+  background: #ccc;
+  min-height: 30px;
+  padding: 10px;
+}
+ol.attachment_holder li{
+  float:left;
+  list-style-type:none;
+  margin: 3px;
+}
+#nr_container{
+  display:none;
+}

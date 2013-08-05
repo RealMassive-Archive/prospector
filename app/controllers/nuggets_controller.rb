@@ -210,11 +210,10 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.contact_broker_jobs.first
     if @nugget.nil?
       flash[:notice] = "No Contact Broker jobs available."
-      redirect_to jobboard_path
+      render :text=> "No contact broker jobs available"
     else
-      fake = Faker::Name.name
-      @name = fake
-      @email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+      @name = @nugget.contact_broker_fake_name
+      @email = @nugget.contact_broker_fake_email
       # note that we should be comparing to existing open "broker contacted" or "ready to contact broker" nuggets to see if this email has been assigned to any open jobs. If so, then re-generate it till it's unique.
       # once the job comes back adn this nugget is no longer in ready to contact broker state, then the uniqueness of this doesn't matter (might be worth keeping for some tracking reason later, therefore not enforcing uniqueness in the DB)
 
@@ -223,6 +222,7 @@ class NuggetsController < ApplicationController
       @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
       @nugget.set_editable_time
       @nugget.save
+      @broker_call=BrokerCall.new
       render :layout => false
     end
   end
@@ -230,8 +230,13 @@ class NuggetsController < ApplicationController
   # GET /nuggets/dedup_signage
   def dedupe_signage
     @nugget = Nugget.dedupe_jobs.first
+    unless @nugget.nil?
+      @nugget.set_editable_time
+      @nugget.save
+    end
     render layout: false
   end
+  #Post /nuggets/:id/dedupe
   def dedupe
     @nugget = Nugget.find(params[:id])
     @compared_to_nugget= Nugget.find(params[:duplicate])
@@ -247,9 +252,31 @@ class NuggetsController < ApplicationController
     end
    render layout: false
   end
+
+  #Get /nuggets/:id/signage_unique
   def signage_unique
     @nugget = Nugget.find(params[:id])
+    @nugget.unset_editable_time
     @nugget.signage_unique
     redirect_to jobboard_path
   end
+
+  #Post /nuggets/:id/save_call
+  def save_call
+    @nugget=Nugget.where(:id=>params[:id]).first
+    @broker_call=@nugget.broker_calls.new(params[:broker_call])
+    @broker_call.caller = current_user
+    respond_to do |format|
+      if @broker_call.save
+        @nugget.broker_contacted
+        format.html { redirect_to jobboard_path, notice: 'Broker contacted.' }
+        format.json { head :no_content }
+      else
+        @nugget.unset_editable_time
+        format.html { redirect_to jobboard_path, notice: 'Something went wrong. Broker call not saved.' }
+        format.json { render json: @nugget.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
 end

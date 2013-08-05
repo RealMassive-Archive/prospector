@@ -16,3 +16,11 @@
   .span3.offset9
     = form_tag signage_unique_nugget_path(@nugget), method: "post" do
       = submit_tag "Done Completely", class: "btn btn-success btn-large span12"
+      :javascript
+        // cancel
+        $('#dedup_signage button[data-dismiss="modal"]').on('click', function (e) {
+          $.ajax({
+            url: '#{unset_editable_time_nugget_path(@nugget)}',
+            success: function( data ) {}
+          });
+        });

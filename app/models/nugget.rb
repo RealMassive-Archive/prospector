@@ -28,6 +28,8 @@ class Nugget < ActiveRecord::Base
   has_many :nugget_signages, :dependent => :destroy
   has_many :duplicates, :dependent => :destroy
   has_many :compared_to_nuggets, :through=> :duplicates
+  has_many :broker_calls
+  has_many :broker_emails
   #belongs_to :duplicate,:foreign_key
   # old
   # mount_uploader :signage, SignageUploader
@@ -54,9 +56,9 @@ class Nugget < ActiveRecord::Base
 
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type, :signage_intersection
-
+  attr_accessible :broker_email_from, :broker_email_to, :broker_email_subject, :broker_email_body
   validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
-  validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
+  validates_inclusion_of :submission_method, :in => %w(email sms parse_email), :allow_nil => true
 
   default_scope order('submitted_at ASC')
 
@@ -74,9 +76,14 @@ class Nugget < ActiveRecord::Base
   scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
   scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
+  scope :unique_fake_emails_to_contact_broker,->{with_state([:ready_to_contact_broker,:awaiting_broker_response])}
+  scope :awaiting_broker_response, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:awaiting_broker_response) }
+  scope :parse_info_from_broker_emails_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:broker_email_received) }
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
+
+    before_transition any => :ready_to_contact_broker,:do=>:assign_fake_name_email
     event :no_gps do
       transition :initial => :no_gps
     end
@@ -104,14 +111,35 @@ class Nugget < ActiveRecord::Base
     event :signage_duplicate do
       transition :dupe_check => :duplicate
     end
-    event :broker_contact do
+    event :broker_contacted do
       transition :ready_to_contact_broker => :awaiting_broker_response
+    end
+    event :broker_email_received do
+      transition :awaiting_broker_response => :broker_email_received
+    end
+
+    event :broker_email_parsed do
+      transition :broker_email_received => :broker_email_parsed, :if => :zero_broker_emails_to_parse
     end
 
     # convenience:  push any nugget back to  initial state
     event :reset do
       transition :any => :initial
     end
+  end
+  def assign_fake_name_email
+    self.contact_broker_fake_email = loop do
+      fake = Faker::Name.name
+      name = fake
+      email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+      self.contact_broker_fake_name = name
+      break email unless Nugget.unique_fake_emails_to_contact_broker.where(contact_broker_fake_email: email).exists?
+    end
+    #raise self.to_yaml
+  end
+
+  def zero_broker_emails_to_parse
+    self.broker_emails.not_parsed.count==0
   end
 
   def state_message

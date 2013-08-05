@@ -29,10 +29,10 @@
 
   .box.size85.orange
     %br
-    %p.jobtype Parse Info From Broker
-    %h5 (THIS STEP NOT CODED YET)
+    %p.jobtype Parse Info From Broker Email
+    %h1.count #{@parse_info_from_broker_emails_jobs_count} jobs
     %br
-    -#%a.btn.btn-large{disabled: true} DO WORK
+    %a.btn.btn-large{:href => parse_broker_emails_path, :'data-target'=>"#parse_broker_email", :remote => true, :role => "button", :'data-toggle' => "modal"}DO WORK
 
 
 #read_signage(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
@@ -60,18 +60,24 @@
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
 
-#contact_broker(class="modal hide fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false")
+#contact_broker(class="modal hide fade" tabindex="-1" data-width="820" data-backdrop="static" data-keyboard="false")
   .modal-header
     %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
     %h3 Contact Broker
   .modal-body
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
-    %button(type="button" class="btn btn-primary" id="contact_broker_submit") BROKER CONTACTED
+    -#%button(type="button" class="btn btn-primary" id="contact_broker_submit") BROKER CONTACTED
 
+#parse_broker_email(class="modal hide fade" tabindex="-1" data-width="820" data-backdrop="static" data-keyboard="false")
+  .modal-header
+    %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+    %h3 Parse Email From Broker
+  .modal-body
+  .modal-footer
+    %button(type="button" data-dismiss="modal" class="btn") Close
 
 :javascript
   $(document).ready( function() {
     $("#jobs").nested({selector: '.box', resizeToFit: false});
   });
-
