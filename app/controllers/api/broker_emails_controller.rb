@@ -20,7 +20,7 @@ class Api::BrokerEmailsController < ApplicationController
           :from =>  message.from,
           :to   =>  nugget.contact_broker_fake_email,
           :subject => message.subject,
-          :body =>  message.html_body
+          :body =>  message.text_body
       )
       message.attachments.each_with_index { |attachment, i|
         begin

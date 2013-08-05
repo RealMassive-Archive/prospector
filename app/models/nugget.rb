@@ -56,9 +56,9 @@ class Nugget < ActiveRecord::Base
 
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type, :signage_intersection
-
+  attr_accessible :broker_email_from, :broker_email_to, :broker_email_subject, :broker_email_body
   validates_inclusion_of :signage_listing_type, :in => %w(lease sale), :allow_nil => true
-  validates_inclusion_of :submission_method, :in => %w(email sms), :allow_nil => true
+  validates_inclusion_of :submission_method, :in => %w(email sms parse_email), :allow_nil => true
 
   default_scope order('submitted_at ASC')
 
