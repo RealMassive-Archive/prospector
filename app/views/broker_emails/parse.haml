@@ -29,14 +29,9 @@
       %hr
       %h5 Attachments
       %ul.attachments#all_attachments.clearfix
-        %li{"data-id"=>1}
-          = link_to "attachment1","#",:class=>"btn"
-        %li{"data-id"=>2}
-          = link_to "attachment2","#",:class=>"btn"
-        %li{"data-id"=>3}
-          = link_to "attachment3","#",:class=>"btn","data-id"=>3
-        %li{"data-id"=>4}
-          = link_to "attachment4","#",:class=>"btn","data-id"=>4
+        - @broker_email.broker_email_attachments.each_with_index do |attachment,i|
+          %li{"data-id"=>attachment.id}
+            = link_to "attachment #{i+1}","#",:class=>"btn"
   %hr
   .row-fluid
     %h5 Nuggets to be created from this
@@ -46,17 +41,17 @@
           %ul.nav.nav-tabs
             %li.active
               = link_to "Nugget 1","#origination_nugget",:"data-toggle"=>"tab"
-            - @nuggets.each do |n|
+            - @listing_nuggets.each do |n|
               %li
                 = link_to "Nugget","#existing_nugget_#{n.id}" ,:"data-toggle"=>"tab"
             %li#add_new_tab
               = link_to "add tab",add_nugget_tab_broker_email_path(@broker_email),:remote=>true
           .tab-content
             .tab-pane.active#origination_nugget
-              = render :partial=>"nugget_tab_form",:locals=>{:nugget=>@nugget}
-            - @nuggets.each do |n|
+              = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>@nugget}
+            - @listing_nuggets.each do |n|
               .tab-pane{:id=>"existing_nugget_#{n.id}"}
-                = render :partial=>"nugget_tab_form",:locals=>{:nugget=>n}
+                = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>n}
       .span3.text-center{:style => "padding-top:200px;"}
         = link_to "Done Parsing","#",:class=>"btn btn-primary btn-large "
 .row-fluid#nr_container

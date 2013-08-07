@@ -44,8 +44,6 @@ class Api::BrokerEmailsController < ApplicationController
     else
       logger.info "message #{message.message_id} from #{message.from}: skipping. No nugget found with email id"
     end
-
-
     render :nothing => true
   end
 end

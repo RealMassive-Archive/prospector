@@ -1,5 +1,6 @@
-%ol.attachment_holder.clearfix{:"data-tab_id"=>"#{nugget.id}"}
-= form_for nugget do |f|
+%ol.attachment_holder.clearfix{:"data-tab_id"=>"#{listing_nugget.id}"}
+%h3 #{listing_nugget.id}
+= form_for listing_nugget do |f|
   .row-fluid
     .span2
       From:

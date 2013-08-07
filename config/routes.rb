@@ -46,7 +46,7 @@ Prospector::Application.routes.draw do
       get "add_nugget_tab"
     end
   end
-
+  resources :listing_nuggets, :only=>[:update]
   namespace :api do
     resources :nuggets, :only => [ :create ] do
       collection do

@@ -3,6 +3,7 @@ class BrokerEmail < ActiveRecord::Base
   belongs_to :nugget
   has_many   :broker_email_attachments,:dependent => :destroy
   has_many   :created_nuggets,class_name: "Nugget",foreign_key: "origination_email_id"
+  has_many   :listing_nuggets
 
   validates :nugget_id, :from, :to, presence: true
 
