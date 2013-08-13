@@ -4,7 +4,7 @@ class BrokerEmailsController < ApplicationController
   def parse
     @nugget = Nugget.parse_info_from_broker_emails_jobs.first
     @broker_email = @nugget.broker_emails.not_parsed.first
-    @listing_nuggets=@broker_email.listing_nuggets
+    @listing_nuggets = @broker_email.listing_nuggets
     render layout: false
   end
 

@@ -31,7 +31,7 @@
       %ul.attachments#all_attachments.clearfix
         - @broker_email.broker_email_attachments.each_with_index do |attachment,i|
           %li{"data-id"=>attachment.id}
-            = link_to "attachment #{i+1}","#",:class=>"btn"
+            = link_to File.basename(attachment.file.to_s),"#",:class=>"btn btn-mini"
   %hr
   .row-fluid
     %h5 Nuggets to be created from this
@@ -78,8 +78,9 @@
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
       $( this ).find( ".placeholder" ).remove();
-      alert(ui.draggable.data("id"));
-      $( "<li></li>" ).html( "<a href='#' class='btn'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      alert(ui.draggable.data("id")+":"+$(this).data("tab_id"));
+
+      $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
     }
   })
   $("#need_review").on("click",function(){
