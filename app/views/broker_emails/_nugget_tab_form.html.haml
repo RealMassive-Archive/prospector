@@ -1,4 +1,8 @@
 %ol.attachment_holder.clearfix{:"data-tab_id"=>"#{listing_nugget.id}"}
+  -if listing_nugget.class.name == "ListingNugget"
+    - listing_nugget.broker_email_attachments.each do |attachment|
+      %li
+        = link_to File.basename(attachment.file.to_s),"#",:class=>"btn btn-mini"
 %h3 #{listing_nugget.id}
 = form_for listing_nugget do |f|
   .row-fluid

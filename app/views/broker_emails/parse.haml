@@ -72,15 +72,32 @@
     appendTo: "body",
     helper: "clone"
   });
+  $(".edit_listing_nugget input").blur(function(){
+    alert($(this).attr("id"))
+  });
+
   $( "ol.attachment_holder" ).droppable({
     activeClass: "ui-state-default",
     hoverClass: "ui-state-hover",
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
-      $( this ).find( ".placeholder" ).remove();
-      alert(ui.draggable.data("id")+":"+$(this).data("tab_id"));
+      //$( this ).find( ".placeholder" ).remove();
+       $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      //alert(+":"+);
+      postData = {
+                  listing_nugget_id: $(this).data("tab_id"),
+                  broker_email_attachment_id: ui.draggable.data("id")
+              };
+      $.ajax({
+          url: "/listing_nuggets/add_attachment",
+          type: "POST",
+          data: postData
+      }).done(function(){
 
-      $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      }).fail(function(){
+         alert("failed to add attachment")
+      });
+
     }
   })
   $("#need_review").on("click",function(){
