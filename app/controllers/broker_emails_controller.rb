@@ -19,4 +19,20 @@ class BrokerEmailsController < ApplicationController
     @listing_nugget.save
     @tab_id = @listing_nugget.id
   end
+
+  def update
+    @broker_email = BrokerEmail.find(params[:id])
+
+    respond_to do |format|
+      if @broker_email.update_attributes(params[:broker_email])
+        format.html { redirect_to root_path, notice: 'Broker Email was successfully parsed.' }
+        format.json { head :no_content }
+        format.js {render nothing: true}
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @broker_email.errors, status: :unprocessable_entity }
+        format.js {render nothing: true,status: 500}
+      end
+    end
+  end
 end

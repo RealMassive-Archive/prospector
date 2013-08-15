@@ -38,7 +38,7 @@ Prospector::Application.routes.draw do
     end
   end
 
-  resources :broker_emails,:only=>[] do
+  resources :broker_emails,:only=>[:update] do
     collection do
       get 'parse'
     end

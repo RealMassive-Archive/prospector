@@ -23,7 +23,9 @@
           = raw @broker_email.body
     .span4
       .row-fluid.pagination-centered
-        %a.btn.btn-danger Mark as Spam
+        = form_for @broker_email do |f|
+          = f.hidden_field :spam, :value=> true
+          = f.submit "Mark as Spam",:class=>"btn btn-danger"
       .row-fluid.top20
         %a.btn.btn-warning.btn-large.btn-block#need_review Need Supervisor Review
       %hr
@@ -53,27 +55,44 @@
               .tab-pane{:id=>"existing_nugget_#{n.id}"}
                 = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>n}
       .span3.text-center{:style => "padding-top:200px;"}
-        = link_to "Done Parsing","#",:class=>"btn btn-primary btn-large "
+        = form_for @broker_email do |f|
+          = f.hidden_field :parsed, :value=> true
+          = f.submit "Done Parsing",:class=>"btn btn-primary btn-large "
 .row-fluid#nr_container
   .row-fluid
     .span3.offset9
       .btn.btn-warning.btn-large.btn-block#back_to_pbk_container
         Back
-  .row-fluid.top10
-    .span2
-      Reason:
-    .span10
-      = text_area_tag :reason,"",:rows=>10,:class=>"input-block-level",:placeholder=>"reason"
-  .row-fluid.top10
-    .span3.offset9
-      = button_tag :submit,:class=>"btn btn-large btn-block"
+  = form_for @broker_email do |f|
+    .row-fluid.top10
+      .span2
+        Reason:
+      .span10
+        = f.hidden_field :need_supervisor_review, :value => true
+        = f.text_area :review_reason,:rows=>10,:class=>"input-block-level",:placeholder=>"reason"
+    .row-fluid.top10
+      .span3.offset9
+        = f.submit "Submit",:class=>"btn btn-large btn-block"
 :javascript
   $( "ul#all_attachments li" ).draggable({
     appendTo: "body",
     helper: "clone"
   });
   $(".edit_listing_nugget input").blur(function(){
-    alert($(this).attr("id"))
+    serializedData = $(this).closest('form').serialize();
+    formAction = $(this).closest('form').attr("action");
+    $.ajaxSetup({
+      'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
+    });
+     request = $.ajax({
+            url: formAction,
+            type: "post",
+            dataType: 'js',
+            data: serializedData
+     });
+     request.done(function(){
+      alert("form submitted");
+     })
   });
 
   $( "ol.attachment_holder" ).droppable({
@@ -97,7 +116,6 @@
       }).fail(function(){
          alert("failed to add attachment")
       });
-
     }
   })
   $("#need_review").on("click",function(){
