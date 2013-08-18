@@ -4,16 +4,16 @@ class Api::BrokerEmailsController < ApplicationController
     # http basic auth or a super secret token.
 
     #n = Nugget.create_from_postmark(Postmark::Mitt.new(request.body.read))
-    message= Postmark::Mitt.new(request.body.read)
+    message = Postmark::Mitt.new(request.body.read)
     # ignore messages with no attachments
-    if message.attachments.empty?
-      logger.info "message #{message.message_id} from #{message.from}: no attachments!; skipping."
+    if message.attachments.empty? or message.from == "support@postmarkapp.com"
+      logger.info "message #{message.message_id} from #{message.from}: no attachments! or support message; skipping."
       #logger.info "#{message.to_json}"
       # great place to send an email alerting submitter of same
       return render :nothing => true
     end
-    #nugget = Nugget.find_by_contact_broker_fake_email(message.to)#need to be used later when in
-    nugget = Nugget.find(10) #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
+    nugget = Nugget.find_by_contact_broker_fake_email(message.to)#need to be used later when in
+    #nugget = Nugget.find(10) #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
     logger.info("Email received with #{message.attachments.count} attachments")
     if nugget && !message.attachments.empty?
       broker_email = nugget.broker_emails.create(
@@ -44,8 +44,6 @@ class Api::BrokerEmailsController < ApplicationController
     else
       logger.info "message #{message.message_id} from #{message.from}: skipping. No nugget found with email id"
     end
-
-
     render :nothing => true
   end
 end

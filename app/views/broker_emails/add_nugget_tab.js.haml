@@ -1,6 +1,6 @@
 :plain
   $("#add_new_tab").before("<li><a href=\"##{@tab_id}\" id=\"tab_#{@tab_id}\" data-toggle=\"tab\" >New Nugget</a></li>");
-  $(".tab-content").append("<div class='tab-pane' id='#{@tab_id}' >#{j render :partial=>"broker_emails/nugget_tab_form",:locals=>{:nugget=>@nugget}}</div>");
+  $(".tab-content").append("<div class='tab-pane' id='#{@tab_id}' >#{j render :partial=>"broker_emails/nugget_tab_form",:locals=>{:listing_nugget=>@listing_nugget}}</div>");
   $("#tab_#{@tab_id}").trigger("click");
 
   $( "ul#all_attachments li" ).draggable({
@@ -13,7 +13,7 @@
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
       $( this ).find( ".placeholder" ).remove();
-      alert(ui.draggable.data("id"));
-      $( "<li></li>" ).html( "<a href='#' class='btn'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      alert(ui.draggable.data("id")+":"+$(this).data("tab_id"));
+      $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
     }
   })
