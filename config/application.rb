@@ -77,6 +77,6 @@ module Prospector
 
     # these are used by the "postmark-rails" gem
     config.action_mailer.delivery_method   = :postmark
-    config.action_mailer.postmark_settings = { :api_key => ENV["POSTMARK_OUTBOUND_API_KEY"] }
+    config.action_mailer.postmark_settings = { :api_key => ENV["bf86d324-b14c-4214-808b-e11fafd867cc"] }
   end
 end

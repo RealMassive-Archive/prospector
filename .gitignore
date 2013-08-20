@@ -22,6 +22,7 @@ db/*.sqlite3
 
 .ruby-version
 .rvmrc
+Gemfile.lock
 
 # various artifacts
 **.war
@@ -79,3 +80,9 @@ pickle-email-*.html
 
 # Ignore application configuration
 /config/application.yml
+#ignore to solve migration conflicts
+/db/schema.rb
+# Ignore rvmrc file for ruby version conflictchanges requested.
+/Gemfile.lock
+/.rvmrc
+/.ruby-version

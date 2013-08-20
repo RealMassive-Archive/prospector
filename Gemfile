@@ -28,6 +28,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
+
 gem 'jquery-rails'
 gem 'haml'
 gem 'haml-rails'
@@ -53,11 +54,12 @@ gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri
 
 gem 'faker'
 gem 'httparty'
-
+gem 'jquery-ui-rails'
 group :development do
   gem 'html2haml'
   gem 'erb2haml'   # with this gem, call "rake haml:convert_erbs" or "rake haml:replace_erbs" to batch-convert any erb to haml (will not overwrite existing haml files
 
   gem 'pry'
   gem 'pry-rails'
+  gem 'rb-readline', '~> 0.4.2'
 end

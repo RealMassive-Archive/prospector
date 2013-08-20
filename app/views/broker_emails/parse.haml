@@ -1,0 +1,128 @@
+.row-fluid#pbk_container
+  .row-fluid
+    .span8
+      .row-fluid
+        .span2
+          From:
+        .span10
+          = text_field_tag :from,@broker_email.from,:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          To:
+        .span10
+          = text_field_tag :to,@broker_email.to,:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          Subject:
+        .span10
+          = text_field_tag :subject,@broker_email.subject,:class=>"input-block-level",:disabled=>:disabled
+      .row-fluid
+        .span2
+          Body:
+        .span10
+          = raw @broker_email.body
+    .span4
+      .row-fluid.pagination-centered
+        = form_for @broker_email do |f|
+          = f.hidden_field :spam, :value=> true
+          = f.submit "Mark as Spam",:class=>"btn btn-danger"
+      .row-fluid.top20
+        %a.btn.btn-warning.btn-large.btn-block#need_review Need Supervisor Review
+      %hr
+      %h5 Attachments
+      %ul.attachments#all_attachments.clearfix
+        - @broker_email.broker_email_attachments.each_with_index do |attachment,i|
+          %li{"data-id"=>attachment.id}
+            = link_to File.basename(attachment.file.to_s),"#",:class=>"btn btn-mini"
+  %hr
+  .row-fluid
+    %h5 Nuggets to be created from this
+    .row-fluid
+      .span9
+        .tabbable
+          %ul.nav.nav-tabs
+            %li.active
+              = link_to "Nugget 1","#origination_nugget",:"data-toggle"=>"tab"
+            - @listing_nuggets.each do |n|
+              %li
+                = link_to "Nugget","#existing_nugget_#{n.id}" ,:"data-toggle"=>"tab"
+            %li#add_new_tab
+              = link_to "add tab",add_nugget_tab_broker_email_path(@broker_email),:remote=>true
+          .tab-content
+            .tab-pane.active#origination_nugget
+              = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>@nugget}
+            - @listing_nuggets.each do |n|
+              .tab-pane{:id=>"existing_nugget_#{n.id}"}
+                = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>n}
+      .span3.text-center{:style => "padding-top:200px;"}
+        = form_for @broker_email do |f|
+          = f.hidden_field :parsed, :value=> true
+          = f.submit "Done Parsing",:class=>"btn btn-primary btn-large "
+.row-fluid#nr_container
+  .row-fluid
+    .span3.offset9
+      .btn.btn-warning.btn-large.btn-block#back_to_pbk_container
+        Back
+  = form_for @broker_email do |f|
+    .row-fluid.top10
+      .span2
+        Reason:
+      .span10
+        = f.hidden_field :need_supervisor_review, :value => true
+        = f.text_area :review_reason,:rows=>10,:class=>"input-block-level",:placeholder=>"reason"
+    .row-fluid.top10
+      .span3.offset9
+        = f.submit "Submit",:class=>"btn btn-large btn-block"
+:javascript
+  $( "ul#all_attachments li" ).draggable({
+    appendTo: "body",
+    helper: "clone"
+  });
+  $(".edit_listing_nugget input").blur(function(){
+    serializedData = $(this).closest('form').serialize();
+    formAction = $(this).closest('form').attr("action");
+    $.ajaxSetup({
+      'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
+    });
+     request = $.ajax({
+            url: formAction,
+            type: "post",
+            dataType: 'js',
+            data: serializedData
+     });
+     request.done(function(){
+      alert("form submitted");
+     })
+  });
+
+  $( "ol.attachment_holder" ).droppable({
+    activeClass: "ui-state-default",
+    hoverClass: "ui-state-hover",
+    accept: ":not(.ui-sortable-helper)",
+    drop: function( event, ui ) {
+      //$( this ).find( ".placeholder" ).remove();
+       $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      //alert(+":"+);
+      postData = {
+                  listing_nugget_id: $(this).data("tab_id"),
+                  broker_email_attachment_id: ui.draggable.data("id")
+              };
+      $.ajax({
+          url: "/listing_nuggets/add_attachment",
+          type: "POST",
+          data: postData
+      }).done(function(){
+
+      }).fail(function(){
+         alert("failed to add attachment")
+      });
+    }
+  })
+  $("#need_review").on("click",function(){
+    $("#pbk_container").hide();
+    $("#nr_container").delay(1000).show();
+  });
+  $("#back_to_pbk_container").on("click",function(){
+    $("#nr_container").hide();
+    $("#pbk_container").delay(1000).show();
+  });

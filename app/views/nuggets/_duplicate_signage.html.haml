@@ -1,0 +1,44 @@
+- if nugget.find_duplicates.empty?
+  .success
+    %h3 No duplicate nuggets
+- else
+  - duplicates = nugget.find_duplicates
+  - dupe_nugget = duplicates.first
+  .row-fluid
+    %h5 Signage from #{render_date(dupe_nugget.created_at)}
+    %p Lease at approximate address: #{dupe_nugget.address}
+    %p #{dupe_nugget.signage_phone}
+    -#%p.border #{dupe_nugget.id}
+  .row-fluid
+    %div.span4.pagination-centered
+      %strong #{number_with_precision(dupe_nugget.distance_from([nugget.latitude,nugget.longitude]),precision:2)} miles
+      %br
+      %strong #{time_ago_in_words(dupe_nugget.created_at,Time.now)} ago
+    %div.span4.pagination-centered
+      - dupe_nugget.nugget_signages.each do |s|
+        %div.row-fluid
+          %div.span12.pagination-centered
+            =image_tag s.signage_url(:small)
+    %div.span4.pagination-centered
+      %strong status: #{nugget.state.humanize}
+      %br
+      %strong
+  .row-fluid.top20
+    .span12.pagination-centered
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", dupe_nugget.id
+          = hidden_field_tag "duplicate_status", "no_match"
+          = submit_tag "No match!", class: "btn btn-success span12"
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", dupe_nugget.id
+          = hidden_field_tag "duplicate_status", "unsure"
+          = submit_tag "Unsure", class: "btn btn-info span12"
+      .span4
+        = form_tag dedupe_nugget_path(nugget), method: "post",remote: true do
+          = hidden_field_tag "duplicate", dupe_nugget.id
+          = hidden_field_tag "duplicate_status", "match"
+          = submit_tag "Match!", class: "btn btn-warning span12"
+    .span12.pagination-centered
+      %p  #{duplicates.count > 0 ? duplicates.count-1 : duplicates.count } more potential duplicates to examine

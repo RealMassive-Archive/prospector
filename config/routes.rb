@@ -19,7 +19,9 @@ Prospector::Application.routes.draw do
       post 'transition'
       get 'read_signage'
       get 'review_signage'
+      get 'dedupe_signage'
       get 'contact_broker'
+      get 'parse_broker_email'
       get 'index2'
     end
     member do
@@ -29,15 +31,33 @@ Prospector::Application.routes.draw do
       get 'approve_signage'
       get 'reject_signage'
       get 'unset_editable_time' # is this really a GET? It changes a nugget's state
+      post 'dedupe' # to mark duplicate nuggets state
+      post 'signage_unique'
+      post "save_call"
+      get  "add_nugget_tab"
     end
   end
 
+  resources :broker_emails,:only=>[:update] do
+    collection do
+      get 'parse'
+    end
+    member do
+      get "add_nugget_tab"
+    end
+  end
+  resources :listing_nuggets, :only=>[:update] do
+    collection do
+      post "add_attachment"
+    end
+  end
   namespace :api do
     resources :nuggets, :only => [ :create ] do
       collection do
         get 'geofind'
       end
     end
+    resources :broker_emails,:only=>[:create]
   end
 
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).

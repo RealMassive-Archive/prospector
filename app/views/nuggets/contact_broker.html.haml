@@ -1,69 +1,82 @@
 .row-fluid
-  .span6.pagination-centered
+  .span6.well
     .row-fluid
-      - if @nugget.submitter_notes.present?
-        ="notes: #{@nugget.submitter_notes}"
-    .row-fluid
-      - @nugget.nugget_signages.each do |s|
-        =image_tag s.signage_url(:small), {id:"signage_#{s.id}", :"data-big"=>"#{s.signage_url(:medium)}"}
-        %br
-        %button(type="button" id="rotate_left" data-id="#{s.id}" class="btn btn-info btn-small")
-          = '&lArr; rotate'.html_safe
-        %button(type="button" id="rotate_right" data-id="#{s.id}" class="btn btn-info btn-small")
-          = 'rotate &rArr;'.html_safe
-        :javascript
-          $("#signage_#{s.id}").mlens(
-          {
-            imgSrc: $("#signage_#{s.id}").attr("data-big"), // path of the hi-res version of the image
-            lensShape: "circle",        // shape of the lens (circle or square)
-            lensSize: 180,          // size of the lens (in px)
-            borderSize: 4,          // size of the lens border (in px)
-            borderColor: "#fff",        // color of the lens border (#hex)
-            borderRadius: 0         // border radius (optional, only if the shape is square)
-          });
-          var angle_#{s.id} = 0;
-          $('#contact_broker #rotate_left[data-id="#{s.id}"]').on('click', function (e) {
-            var id = $(this).data('id');
-            angle_#{s.id} -= 90;
-            $('#contact_broker #signage_'+id).rotate({ animateTo:angle_#{s.id}})
-            // also rotate the larger image mostly hidden except when zooming
-            $('#contact_broker #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
-          });
-          $('#contact_broker #rotate_right[data-id="#{s.id}"]').on('click', function (e) {
-            var id = $(this).data('id');
-            angle_#{s.id} += 90;
-            $('#contact_broker #signage_'+id).rotate({ animateTo:angle_#{s.id}})
-            // also rotate the larger image mostly hidden except when zooming
-            $('#contact_broker #signage_'+id+' + div').rotate({ animateTo:angle_#{s.id}})
-          });
-        %br
-        %br
-  .span6
-    .row-fluid.pagination-centered
-      .span3
-        %h5 Your Name:
-        %h5 Your Email:
-        %h5 Call this num.:
-      %h4=@name
-      %h4=@email
-      %h4 #{@nugget.signage_phone}
-      %h5 And read this script:
+      .span12
+        %h4 Instructions
+        %p
+          Call this number:
+          %strong
+            = @nugget.signage_phone
+      %h5 And tell them this:
     .row-fluid
       %p "Hi, this is #{@name}. I'm calling about a property my boss [or, "one of my co-workers"] saw for #{@listing_type} near #{@address} in #{@city}"
-      %p ""Could you email me the specs and some pics?"
+      %p "Could you email me the specs and some pics?"
       %p
-      %p [If you get asked anything more specific, tell them it's your boss who saw the sign while he was driving and asked you to call and get the info.]
+        [If you get asked anything more specific, tell them it's your boss who saw the sign while he was driving and asked you to call and get the info.]
+    .row-fluid
+      %h5 Your Name & Email
+    .row-fluid
+      .span12.pagination-centered
+        %h4 #{@name}
+        %h4 #{@email}
+  .span6
+    %h3.pagination-centered Call Results
+    = form_for @broker_call,:url=>save_call_nugget_path(@nugget) do |f|
+      .row-fluid
+        .span6
+          = f.label :broker_will_email_assets
+        .span1
+          = f.radio_button :call_result,"broker_will_email_assets"
+      .row-fluid
+        .span6
+          = f.label :"broker refused to email Reason"
+        .span1
+          = f.radio_button :call_result,"broker_refused_to_email",:onclick=>"enable_text_field($(this))"
+        .span5
+          = f.text_field :call_comments,:class=>"call_comments call_comment_one input-block-level",:placeholder=>"Reason",:disabled=>"disabled"
+      .row-fluid
+        .span6
+          = f.label :"Left voicemail for broker"
+        .span1
+          = f.radio_button :call_result,"left_voicemail_for_broker"
+      .row-fluid
+        .span6
+          = f.label :"Left message with human Name:"
+        .span1
+          = f.radio_button :call_result,"left_message_with_human",:onclick=>"enable_text_field($(this))"
+        .span5
+          = f.text_field :call_comments,:class=>"call_comment_one input-block-level span12",:placeholder=>"Name",:disabled=>"disabled"
+      .row-fluid
+        .span6
+          = f.label :"broker_directed_to_website_url"
+        .span1
+          = f.radio_button :call_result,"broker_directed_to_website_url",:onclick=>"enable_text_field($(this))"
+        .span8.pull-right
+          = f.text_field :call_comments,:type=>"url",:class=>"call_comment_one  input-block-level",:placeholder=>"Website url",:disabled=>"disabled"
+      .row-fluid.top20
+        .span4
+          = f.label :"broker_name"
+        .span8
+          = f.text_field :broker_name, :required => true,:class=>" input-block-level",:placeholder=>"Broker Name"
+      .row-fluid
+        .span4
+          = f.label :"broker_email"
+        .span8
+          = f.text_field :broker_email,:type=>"email", :required => true,:class=>" input-block-level",:placeholder=>"Broker email"
+      .row-fluid
+        .span12.pagination-right
+          = f.submit "Save",:class=>"btn btn-primary span3"
 
-      :javascript
-        // cancel
-        $('#contact_broker button[data-dismiss="modal"]').on('click', function (e) {
-          $.ajax({
-            url: '#{unset_editable_time_nugget_path(@nugget)}'
-          });
+
+    :javascript
+      // cancel
+      $('#contact_broker button[data-dismiss="modal"]').on('click', function (e) {
+        $.ajax({
+          url: '#{unset_editable_time_nugget_path(@nugget)}',
+          success: function( data ) {}
         });
-        // submit form
-        $('#contact_broker_submit').on('click', function (e) {
-          alert("hey, you hit the BROKR CONTACTED BUTTON");
-          return false;
-          //$('#edit_nugget_#{@nugget.id}').submit();
-        });
+      });
+      function enable_text_field(radio){
+        $(".call_comment_one").attr("disabled",true); //disable other call_comments
+        radio.parent().parent().find('input[type=text],input[type=url]').removeAttr("disabled"); //enable comment corresponding to the radio checked
+      }
