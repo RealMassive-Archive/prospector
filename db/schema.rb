@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130729112502) do
+ActiveRecord::Schema.define(:version => 20130815174951) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -31,18 +31,23 @@ ActiveRecord::Schema.define(:version => 20130729112502) do
     t.datetime "updated_at",      :null => false
   end
 
+  create_table "broker_email_attachments_listing_nuggets", :id => false, :force => true do |t|
+    t.integer "broker_email_attachment_id"
+    t.integer "listing_nugget_id"
+  end
+
   create_table "broker_emails", :force => true do |t|
     t.integer  "nugget_id"
     t.string   "from"
     t.string   "to"
     t.string   "subject"
     t.text     "body"
-    t.boolean  "spam"
-    t.boolean  "need_supervisor_review"
     t.string   "review_reason"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.boolean  "parsed",                 :default => false
+    t.boolean  "spam",                   :default => false
+    t.boolean  "need_supervisor_review", :default => false
   end
 
   create_table "duplicates", :force => true do |t|
@@ -52,6 +57,16 @@ ActiveRecord::Schema.define(:version => 20130729112502) do
     t.string   "duplicate_status"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+  end
+
+  create_table "listing_nuggets", :force => true do |t|
+    t.integer  "broker_email_id"
+    t.string   "broker_email_to"
+    t.string   "broker_email_from"
+    t.string   "broker_email_subject"
+    t.text     "broker_email_body"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "nugget_signages", :force => true do |t|
