@@ -11,13 +11,55 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423200411) do
+ActiveRecord::Schema.define(:version => 20130729112502) do
+
+  create_table "broker_calls", :force => true do |t|
+    t.integer  "caller_id"
+    t.integer  "nugget_id"
+    t.string   "call_result"
+    t.string   "call_comments"
+    t.string   "broker_name"
+    t.string   "broker_email"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "broker_email_attachments", :force => true do |t|
+    t.integer  "broker_email_id"
+    t.string   "file"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "broker_emails", :force => true do |t|
+    t.integer  "nugget_id"
+    t.string   "from"
+    t.string   "to"
+    t.string   "subject"
+    t.text     "body"
+    t.boolean  "spam"
+    t.boolean  "need_supervisor_review"
+    t.string   "review_reason"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.boolean  "parsed",                 :default => false
+  end
+
+  create_table "duplicates", :force => true do |t|
+    t.integer  "nugget_id"
+    t.integer  "compared_to_nugget_id"
+    t.integer  "user_id"
+    t.string   "duplicate_status"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
 
   create_table "nugget_signages", :force => true do |t|
     t.integer  "nugget_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "signage"
+    t.string   "signage2"
   end
 
   create_table "nugget_state_transitions", :force => true do |t|
@@ -53,6 +95,12 @@ ActiveRecord::Schema.define(:version => 20130423200411) do
     t.string   "signage_intersection"
     t.string   "contact_broker_fake_name"
     t.string   "contact_broker_fake_email"
+    t.integer  "origination_nugget_id"
+    t.string   "broker_email_to"
+    t.string   "broker_email_from"
+    t.string   "broker_email_subject"
+    t.text     "broker_email_body"
+    t.integer  "origination_email_id"
   end
 
   create_table "roles", :force => true do |t|

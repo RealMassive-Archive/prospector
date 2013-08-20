@@ -20,6 +20,9 @@ db/*.sqlite3
 /log/*
 /tmp/*
 
+.ruby-version
+.rvmrc
+
 # various artifacts
 **.war
 *.rbc
