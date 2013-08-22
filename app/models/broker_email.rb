@@ -8,4 +8,7 @@ class BrokerEmail < ActiveRecord::Base
   validates :nugget_id, :from, :to, presence: true
 
   scope :not_parsed, -> {where(parsed: false,:spam => false,:need_supervisor_review => false)}
+  scope :parsed, -> {where(parsed: true)}
+  scope :spam, -> {where(spam: true)}
+  scope :need_supervisor_review, -> {where(:need_supervisor_review => true)}
 end

@@ -46,3 +46,12 @@
 = form_tag(nuggets_path, method: "post") do
   = hidden_field_tag('state', 'signage_read')
   = button_tag("Create Read Signage Nugget", type: 'submit')
+
+%h4{class: 'alert-success'} Dedupe jobs(#{@dedupe_jobs.count})
+%h4{class: "alert-success"} Broker emails recieved for (#{@parse_info_from_broker_emails.count}) nuggets
+
+%h2 Broker Emails(#{@broker_emails.count})
+%h4{class: "alert-success"} Parsed (#{@parsed_broker_emails.count})
+%h4{class: "alert-warning"} Need Parsing (#{@need_parsing_broker_emails.count})
+%h4{class: "alert-warning"} Need Supervisor Review (#{@need_supervisor_review.count})
+%h4{class: "alert-error"} Spam (#{@spam_broker_emails.count})

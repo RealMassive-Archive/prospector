@@ -27,10 +27,19 @@ class HomeController < ApplicationController
     @no_gps_nuggets = Nugget.no_gps
     @blurry_nuggets = Nugget.blurry
     @inappropriate_nuggets = Nugget.inappropriate
-    @needs_rotation_nuggets = Nugget.needs_rotation
+    #@needs_rotation_nuggets = Nugget.needs_rotation
     @rejected_nuggets = Nugget.signage_rejected
     @ready_to_contact_broker_nuggets = Nugget.ready_to_contact_broker
     @awaiting_broker_response_nuggets = Nugget.awaiting_broker_response
+    @dedupe_jobs = Nugget.dedupe_jobs
+    @parse_info_from_broker_emails = Nugget.parse_info_from_broker_emails_jobs
+
+    #broker emails
+    @broker_emails = BrokerEmail.all
+    @spam_broker_emails = BrokerEmail.spam
+    @need_supervisor_review = BrokerEmail.need_supervisor_review
+    @parsed_broker_emails = BrokerEmail.parsed
+    @need_parsing_broker_emails = BrokerEmail.not_parsed
   end
 
 end
