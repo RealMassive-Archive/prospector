@@ -10,6 +10,7 @@ class HomeController < ApplicationController
     @check_signage_duplicate_count = Nugget.dedupe_jobs.count
     @ready_to_contact_broker_count = Nugget.contact_broker_jobs.count
     @parse_info_from_broker_emails_jobs_count = BrokerEmail.not_parsed.count
+    @listing_jobs = ListingNugget.listing_nuggets_of_parsed_broker_emails.count
   end
 
   def index3

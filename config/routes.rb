@@ -59,7 +59,11 @@ Prospector::Application.routes.draw do
     end
     resources :broker_emails,:only=>[:create]
   end
-
+  resources :listings, :only => [:create,:update] do
+    collection do
+      get "extract_listing"
+    end
+  end
   # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).
   #match "*path", :to => "application#routing_error"
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815174951) do
+ActiveRecord::Schema.define(:version => 20130822132901) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(:version => 20130815174951) do
   create_table "duplicates", :force => true do |t|
     t.integer  "nugget_id"
     t.integer  "compared_to_nugget_id"
-    t.integer  "user_id"
     t.string   "duplicate_status"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.integer  "user_id"
   end
 
   create_table "listing_nuggets", :force => true do |t|
@@ -67,6 +67,41 @@ ActiveRecord::Schema.define(:version => 20130815174951) do
     t.text     "broker_email_body"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+  end
+
+  create_table "listings", :force => true do |t|
+    t.string   "listing_type"
+    t.string   "metro_listed_in"
+    t.string   "building_name"
+    t.string   "unit_number"
+    t.string   "street_address"
+    t.string   "street_address2"
+    t.string   "street_address3"
+    t.string   "city"
+    t.string   "state_province"
+    t.string   "country"
+    t.decimal  "latitude"
+    t.decimal  "longitude"
+    t.string   "neighborhood"
+    t.string   "zip_postal_code"
+    t.decimal  "space"
+    t.string   "space_units"
+    t.string   "description"
+    t.string   "title"
+    t.decimal  "lease_rate"
+    t.string   "lease_rate_units"
+    t.string   "broker_first_name"
+    t.string   "broker_last_name"
+    t.string   "broker_email"
+    t.string   "broker_phone"
+    t.string   "broker2_first_name"
+    t.string   "broker2_last_name"
+    t.string   "broker2_email"
+    t.string   "broker2_phone"
+    t.string   "brokerage_name"
+    t.string   "landlord_name"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "nugget_signages", :force => true do |t|
@@ -103,13 +138,13 @@ ActiveRecord::Schema.define(:version => 20130815174951) do
     t.string   "signage_county"
     t.string   "signage_neighborhood"
     t.datetime "editable_until"
-    t.string   "signage_phone"
-    t.string   "signage_listing_type"
     t.string   "message_id"
     t.string   "submitter_notes"
     t.string   "signage_intersection"
     t.string   "contact_broker_fake_name"
     t.string   "contact_broker_fake_email"
+    t.string   "signage_phone"
+    t.string   "signage_listing_type"
     t.integer  "origination_nugget_id"
     t.string   "broker_email_to"
     t.string   "broker_email_from"

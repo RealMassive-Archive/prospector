@@ -33,7 +33,7 @@
       %ul.attachments#all_attachments.clearfix
         - @broker_email.broker_email_attachments.each_with_index do |attachment,i|
           %li{"data-id"=>attachment.id}
-            = link_to File.basename(attachment.file.to_s),"#",:class=>"btn btn-mini"
+            = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini"
   %hr
   .row-fluid
     %h5 Nuggets to be created from this
@@ -74,6 +74,11 @@
       .span3.offset9
         = f.submit "Submit",:class=>"btn btn-large btn-block"
 :javascript
+  $("ul#all_attachments li a").click(function(){
+
+    window.open($(this).attr("href"), 'attachment', "menubar=0,location=0,height=700,width=700");
+    return false;
+  })
   $( "ul#all_attachments li" ).draggable({
     appendTo: "body",
     helper: "clone"

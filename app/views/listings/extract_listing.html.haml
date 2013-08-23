@@ -1,0 +1,37 @@
+.row-fluid
+  .span6
+    hello
+  .span6
+    %section#wizard
+      #rootwizard
+        %ul
+          %li
+            %a{"data-toggle" => "tab", :href => "#tab1"} Basic Info
+          %li
+            %a{"data-toggle" => "tab", :href => "#tab2"} Building Info
+          %li
+            %a{"data-toggle" => "tab", :href => "#tab3"} Listing Info
+          %li
+            %a{"data-toggle" => "tab", :href => "#tab4"} Broker Info
+
+        = form_for @listing do |f|
+          .tab-content
+            #tab1.tab-pane
+              1
+            #tab2.tab-pane
+              2
+            #tab3.tab-pane
+              3
+            #tab4.tab-pane
+              4
+          %ul.pager.wizard
+            %li.previous.first{:style => "display:none;"}
+              %a{:href => "#"} First
+            %li.previous
+              %a{:href => "#"} Previous
+            %li.next.last{:style => "display:none;"}
+              %a{:href => "#"} Last
+            %li.next
+              %a{:href => "#"} Next
+            :javascript
+              $('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
