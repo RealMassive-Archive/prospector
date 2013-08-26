@@ -4,34 +4,76 @@
   .span6
     %section#wizard
       #rootwizard
-        %ul
-          %li
-            %a{"data-toggle" => "tab", :href => "#tab1"} Basic Info
-          %li
-            %a{"data-toggle" => "tab", :href => "#tab2"} Building Info
-          %li
-            %a{"data-toggle" => "tab", :href => "#tab3"} Listing Info
-          %li
-            %a{"data-toggle" => "tab", :href => "#tab4"} Broker Info
-
-        = form_for @listing do |f|
+        .navbar
+          .navbar-inner
+            .container
+              %ul
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab1"} Basic Info
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab2"} Building Info
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab3"} Listing Info
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab4"} Broker Info
+        = simple_form_for(@listing, :html => {:class => "form-horizontal" }) do |f|
           .tab-content
             #tab1.tab-pane
-              1
+              %h4 What type of listing?
+              = f.input_field :listing_type, as: :radio_buttons, collection: ["lease"], :item_wrapper_class => 'inline',:selected=>"selected"
+              = f.input_field :listing_type, as: :radio_buttons, collection: ["sale"], :item_wrapper_class => 'inline', :disabled => "disabled"
+              %h4 Which Metro to list in?
+              = f.input_field :listing_type, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
+              = f.input_field :listing_type, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
             #tab2.tab-pane
-              2
+              %h4 Building Info
+              = f.input :building_name
+              = f.input :unit_number
+              = f.input :street_address
+              = f.input :street_address2
+              = f.input :street_address3
+              = f.input :city
+              = f.input :state_province,as: :select,collection: ["Tx"], include_blank: false
+              -#= f.input :country
             #tab3.tab-pane
-              3
+              %h4 Listing Info
+              = f.input :unit_number
+              = f.input :space
+              = f.input :space_units,as: :select, collection: ["sq/ft"],include_blank: false
+              = f.input :description
+              = f.input :title
+              = f.input :lease_rate
+              = f.input :lease_rate_units,as: :select, collection: ["$/mo."],include_blank: false
             #tab4.tab-pane
-              4
-          %ul.pager.wizard
-            %li.previous.first{:style => "display:none;"}
-              %a{:href => "#"} First
-            %li.previous
-              %a{:href => "#"} Previous
-            %li.next.last{:style => "display:none;"}
-              %a{:href => "#"} Last
-            %li.next
-              %a{:href => "#"} Next
-            :javascript
-              $('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
+              = f.input :broker_first_name
+              = f.input :broker_last_name
+              = f.input :broker_email
+              = f.input :broker_phone
+              = f.input :broker2_first_name
+              = f.input :broker2_last_name
+              = f.input :broker2_email
+              = f.input :broker2_phone
+              = f.input :brokerage_name
+              = f.input :landlord_name
+            %div#next_btn{:style => "float:right"}
+              %input.btn.button-next{:name => "next", :type => "button", :value => "Next"}/
+            %div#finish_btn{:style => "float:right;display:none;"}
+              %input.btn.button-finish{:name => "submit", :type => "button", :value => "Finish"}/
+            %div{:style => "float:left"}
+              %input.btn.button-previous{:name => "previous", :type => "button", :value => "Previous"}/
+        :javascript
+          $('#rootwizard').bootstrapWizard({
+            'nextSelector': '.button-next',
+            'previousSelector': '.button-previous',
+            onTabShow: function(tab, navigation, index) {
+              var $total = navigation.find('li').length;
+              var $current = index+1;
+              if($current >= $total) {
+                $('#rootwizard').find('#next_btn').hide();
+                $('#rootwizard').find('#finish_btn').show();
+              } else {
+                $('#rootwizard').find('#next_btn').show();
+                $('#rootwizard').find('#finish_btn').hide();
+              }
+            }
+          });
