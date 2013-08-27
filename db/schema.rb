@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130822132901) do
+ActiveRecord::Schema.define(:version => 20130827120049) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20130822132901) do
     t.string   "landlord_name"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.string   "state"
   end
 
   create_table "nugget_signages", :force => true do |t|

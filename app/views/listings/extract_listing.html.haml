@@ -1,6 +1,34 @@
 .row-fluid
   .span6
-    hello
+    %section#wizard1
+      #rootwizard1
+        .navbar
+          .navbar-inner
+            .container
+              %ul
+                %li
+                  %a{"data-toggle"=>"tab",:href=>"#btab1"} Email Info
+                %li
+                  %a{"data-toggle"=>"tab",:href=>"#btab2"} Building Info
+                %li
+                  %a{"data-toggle"=>"tab",:href=>"#btab3"} Listing Info
+                %li
+                  %a{"data-toggle"=>"tab",:href=>"#btab4"} Broker Info
+        .tab-content
+          #btab1.tab-pane
+            .row-fluid
+              .span5.border
+                hi
+              .span7.border
+                hi
+          #btab2.tab-pane
+            2
+          #btab3.tab-pane
+            3
+          #btab4.tab-pane
+            4
+
+
   .span6
     %section#wizard
       #rootwizard
@@ -16,15 +44,15 @@
                   %a{"data-toggle" => "tab", :href => "#tab3"} Listing Info
                 %li
                   %a{"data-toggle" => "tab", :href => "#tab4"} Broker Info
-        = simple_form_for(@listing, :html => {:class => "form-horizontal" }) do |f|
+        = simple_form_for(@listing, :html => {:class => "form-horizontal",:id=>"new_listing_form" }) do |f|
           .tab-content
             #tab1.tab-pane
               %h4 What type of listing?
-              = f.input_field :listing_type, as: :radio_buttons, collection: ["lease"], :item_wrapper_class => 'inline',:selected=>"selected"
+              = f.input_field :listing_type, as: :radio_buttons, collection: ["lease"], :item_wrapper_class => 'inline',:checked=>"lease"
               = f.input_field :listing_type, as: :radio_buttons, collection: ["sale"], :item_wrapper_class => 'inline', :disabled => "disabled"
               %h4 Which Metro to list in?
-              = f.input_field :listing_type, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
-              = f.input_field :listing_type, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
+              = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
+              = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
             #tab2.tab-pane
               %h4 Building Info
               = f.input :building_name
@@ -58,7 +86,7 @@
             %div#next_btn{:style => "float:right"}
               %input.btn.button-next{:name => "next", :type => "button", :value => "Next"}/
             %div#finish_btn{:style => "float:right;display:none;"}
-              %input.btn.button-finish{:name => "submit", :type => "button", :value => "Finish"}/
+              %input.btn.button-finish{:name => "btn", :type => "button", :value => "Finish"}/
             %div{:style => "float:left"}
               %input.btn.button-previous{:name => "previous", :type => "button", :value => "Previous"}/
         :javascript
@@ -77,3 +105,7 @@
               }
             }
           });
+          $("#rootwizard1").bootstrapWizard();
+          $(".button-finish").click(function(){
+            $("#new_listing_form")[0].submit();
+          })

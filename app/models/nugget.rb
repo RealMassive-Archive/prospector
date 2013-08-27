@@ -130,8 +130,9 @@ class Nugget < ActiveRecord::Base
   def assign_fake_name_email
     self.contact_broker_fake_email = loop do
       fake = Faker::Name.name
-      name = fake
-      email = (fake.gsub(" ", ".") + "@nuggetfund.com").downcase
+      array = ["Mr.","Ms.", "Dr.", "Sr.","Mrs."]
+      name = fake.sub(Regexp.union(array), '').strip
+      email = (name.gsub(" ", ".") + "@nuggetfund.com").downcase
       self.contact_broker_fake_name = name
       break email unless Nugget.unique_fake_emails_to_contact_broker.where(contact_broker_fake_email: email).exists?
     end
