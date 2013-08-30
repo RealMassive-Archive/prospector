@@ -1,35 +1,45 @@
 .row-fluid
   .span6
-    %section#wizard1
-      #rootwizard1
-        .navbar
-          .navbar-inner
-            .container
-              %ul
-                %li
-                  %a{"data-toggle"=>"tab",:href=>"#btab1"} Email Info
-                %li
-                  %a{"data-toggle"=>"tab",:href=>"#btab2"} Building Info
-                %li
-                  %a{"data-toggle"=>"tab",:href=>"#btab3"} Listing Info
-                %li
-                  %a{"data-toggle"=>"tab",:href=>"#btab4"} Broker Info
-        .tab-content
-          #btab1.tab-pane
-            .row-fluid
-              .span5.border
-                hi
-              .span7.border
-                hi
-          #btab2.tab-pane
-            2
-          #btab3.tab-pane
-            3
-          #btab4.tab-pane
-            4
+    %h2 Existing Info
+    .existing_info_div
+      %table.table.table-striped.table-hover
+        %tr
+          %td.span5
+            From
+          %td.span7
+            = @broker_email.from
+        %tr
+          %td.span5
+            Subject
+          %td.span7
+            = @broker_email.subject
+        %tr
+          %td.span5
+            Body
+          %td.span7
+            = @broker_email.body
+        %tr
+          %td.span5
+            Selected Attachments
+          %td.span7#listing_attachments_container
+            - @listing_nugget.broker_email_attachments.each do |attachment|
+              = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
+        %tr
+          %td.span5
+            Emailed Attachments
+          %td.span7#listing_attachments_container
+            - @broker_email.broker_email_attachments.each do |attachment|
+              = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
+        %tr
+          %td.span5
+            Nugget Attachments
+          %td.span7#nugget_attachments_container
+            - @broker_email.nugget.nugget_signages.each do |signage|
+              = link_to File.basename(signage.signage.to_s),signage.signage.url,:class=>"btn btn-mini",:target=>"_blank"
 
 
   .span6
+    %h2 New Listing Info
     %section#wizard
       #rootwizard
         .navbar
@@ -109,3 +119,12 @@
           $(".button-finish").click(function(){
             $("#new_listing_form")[0].submit();
           })
+          $("#listing_attachments_container a").click(function(){
+            filename = $(this).attr('href');
+            ext = filename.substr(filename.lastIndexOf('.') + 1);
+            image_extensions=["jpg","jpeg","png","gif"]
+            if ($.inArray(ext,image_extensions > -1 )){
+              alert("inarray")
+            }
+            return false;
+          });
