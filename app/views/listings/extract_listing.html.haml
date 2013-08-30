@@ -23,19 +23,46 @@
             Selected Attachments
           %td.span7#listing_attachments_container
             - @listing_nugget.broker_email_attachments.each do |attachment|
+              = check_box_tag :listing_nugget_attachment,attachment.id,true,:onclick=>"alert('add #{attachment.id}')"
               = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
+              %br
         %tr
           %td.span5
             Emailed Attachments
           %td.span7#listing_attachments_container
             - @broker_email.broker_email_attachments.each do |attachment|
+              = check_box_tag :broker_email_attachment,attachment.id,false,:onclick=>"alert('add #{attachment.id}')"
               = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
+              %br
         %tr
           %td.span5
             Nugget Attachments
           %td.span7#nugget_attachments_container
             - @broker_email.nugget.nugget_signages.each do |signage|
+              = check_box_tag :nugget_signage,signage.id,false,:onclick=>"alert('add #{signage.id}')"
               = link_to File.basename(signage.signage.to_s),signage.signage.url,:class=>"btn btn-mini",:target=>"_blank"
+              %br
+
+        %tr
+          %td.span5
+            Address
+          %td.span7
+            = @nugget.signage_address
+        %tr
+          %td.span5
+            City
+          %td.span7
+            = @nugget.signage_city
+        %tr
+          %td.span5
+            State
+          %td.span7
+            = @nugget.signage_state
+        %tr
+          %td.span5
+            Country
+          %td.span7
+            = @nugget.signage_county
 
 
   .span6
