@@ -17,31 +17,26 @@
           %td.span5
             Body
           %td.span7
-            = @broker_email.body
+            = simple_format @broker_email.body
         %tr
           %td.span5
-            Selected Attachments
+            Attachments
           %td.span7#listing_attachments_container
             - @listing_nugget.broker_email_attachments.each do |attachment|
-              = check_box_tag :listing_nugget_attachment,attachment.id,true,:onclick=>"alert('add #{attachment.id}')"
+              = check_box_tag :listing_nugget_attachment,attachment.id,true
               = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
               %br
-        %tr
-          %td.span5
-            Emailed Attachments
-          %td.span7#listing_attachments_container
-            - @broker_email.broker_email_attachments.each do |attachment|
-              = check_box_tag :broker_email_attachment,attachment.id,false,:onclick=>"alert('add #{attachment.id}')"
-              = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
               %br
-        %tr
-          %td.span5
-            Nugget Attachments
-          %td.span7#nugget_attachments_container
-            - @broker_email.nugget.nugget_signages.each do |signage|
-              = check_box_tag :nugget_signage,signage.id,false,:onclick=>"alert('add #{signage.id}')"
-              = link_to File.basename(signage.signage.to_s),signage.signage.url,:class=>"btn btn-mini",:target=>"_blank"
-              %br
+        - if true#@listing_nugget.broker_email_attachments.count == 0
+          %tr
+            %td.span5
+              Nugget Attachments
+            %td.span7#nugget_attachments_container
+              - @broker_email.nugget.nugget_signages.each do |signage|
+                = check_box_tag :nugget_signage,signage.id,true
+                = link_to File.basename(signage.signage.to_s),signage.signage.url,:class=>"btn btn-mini",:target=>"_blank"
+                %br
+                %br
 
         %tr
           %td.span5
@@ -63,6 +58,8 @@
             Country
           %td.span7
             = @nugget.signage_county
+    #preview_box.span12
+
 
 
   .span6
@@ -90,6 +87,9 @@
               %h4 Which Metro to list in?
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
+              = f.input :listing_nugget_id, as: :hidden, input_html: {value: @listing_nugget.id}
+              = text_field_tag :email_attachment_ids
+              = text_field_tag :nugget_attachment_ids
             #tab2.tab-pane
               %h4 Building Info
               = f.input :building_name
@@ -146,12 +146,15 @@
           $(".button-finish").click(function(){
             $("#new_listing_form")[0].submit();
           })
-          $("#listing_attachments_container a").click(function(){
+          $("#listing_attachments_container a, #nugget_attachments_container a").click(function(){
             filename = $(this).attr('href');
             ext = filename.substr(filename.lastIndexOf('.') + 1);
             image_extensions=["jpg","jpeg","png","gif"]
-            if ($.inArray(ext,image_extensions > -1 )){
-              alert("inarray")
+            if( $.inArray(ext, image_extensions) > -1 ){
+               $("#preview_box").html('<img src="'+ filename + '" />');
+            }else{
+             window.open($(this).attr("href"), 'attachment', "menubar=0,location=0,height=700,width=700");
+             return false;
             }
             return false;
           });

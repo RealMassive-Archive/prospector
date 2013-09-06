@@ -20,7 +20,7 @@
         .span2
           Body:
         .span10
-          = raw @broker_email.body
+          = simple_format @broker_email.body
     .span4
       .row-fluid.pagination-centered
         = form_for @broker_email do |f|

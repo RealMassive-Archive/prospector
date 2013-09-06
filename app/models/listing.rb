@@ -14,4 +14,6 @@ class Listing < ActiveRecord::Base
   state_machine :initial => :open do
 
   end
+
+
 end

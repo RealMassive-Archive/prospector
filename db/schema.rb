@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830151851) do
+ActiveRecord::Schema.define(:version => 20130906164030) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -72,8 +72,9 @@ ActiveRecord::Schema.define(:version => 20130830151851) do
     t.string   "broker_email_from"
     t.string   "broker_email_subject"
     t.text     "broker_email_body"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.boolean  "listing_extracted",    :default => false
   end
 
   create_table "listings", :force => true do |t|
@@ -110,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20130830151851) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.string   "state"
+    t.integer  "listing_nugget_id"
   end
 
   create_table "nugget_signages", :force => true do |t|

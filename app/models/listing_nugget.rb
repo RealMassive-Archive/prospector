@@ -4,4 +4,5 @@ class ListingNugget < ActiveRecord::Base
   has_and_belongs_to_many :broker_email_attachments
 
   scope :listing_nuggets_of_parsed_broker_emails,joins(:broker_email).where("broker_emails.parsed=?",true)
+
 end

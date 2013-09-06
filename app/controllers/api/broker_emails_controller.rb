@@ -20,7 +20,7 @@ class Api::BrokerEmailsController < ApplicationController
     end
 
     logger.info("Email received with #{message.attachments.count} attachments")
-    if nugget && !message.attachments.empty?
+    if nugget #&& !message.attachments.empty?
       broker_email = nugget.broker_emails.create(
           :from =>  message.from,
           :to   =>  nugget.contact_broker_fake_email,
