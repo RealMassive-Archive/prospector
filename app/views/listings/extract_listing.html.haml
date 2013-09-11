@@ -27,7 +27,7 @@
               = link_to File.basename(attachment.file.to_s),attachment.file.url,:class=>"btn btn-mini",:target=>"_blank"
               %br
               %br
-        - if true#@listing_nugget.broker_email_attachments.count == 0
+        - if @listing_nugget.broker_email_attachments.count == 0
           %tr
             %td.span5
               Nugget Attachments
@@ -88,8 +88,8 @@
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
               = f.input :listing_nugget_id, as: :hidden, input_html: {value: @listing_nugget.id}
-              = text_field_tag :email_attachment_ids
-              = text_field_tag :nugget_attachment_ids
+              = text_field_tag :email_attachment_ids,@listing_nugget.broker_email_attachment_ids.collect{|c| c.to_s+";"}
+              = text_field_tag :nugget_attachment_ids,@nugget.nugget_signage_ids.collect{|c| c.to_s+";"} if @listing_nugget.broker_email_attachments.count == 0
             #tab2.tab-pane
               %h4 Building Info
               = f.input :building_name
@@ -158,3 +158,46 @@
             }
             return false;
           });
+          $("#listing_attachments_container input[type=checkbox]").click(function(){
+            if ($(this).is(':checked')){
+             id = $(this).val();
+             s = $("#email_attachment_ids").val();
+             s = s.concat(id+";");
+             $("#email_attachment_ids").val(s);
+            }else{
+             id = $(this).val();
+             s = $("#email_attachment_ids").val();
+             s = s.replace(id+";","");
+             $("#email_attachment_ids").val(s);
+            }
+          });
+          $("#nugget_attachments_container input[type=checkbox]").click(function(){
+            if ($(this).is(':checked')){
+             id = $(this).val();
+             s = $("#nugget_attachment_ids").val();
+             s = s.concat(id+";");
+             $("#nugget_attachment_ids").val(s);
+            }else{
+             id = $(this).val();
+             s = $("#nugget_attachment_ids").val();
+             s = s.replace(id+";","");
+             $("#nugget_attachment_ids").val(s);
+            }
+          });
+          //$("#nugget_attachments_container input[type=checkbox]").click(function(){
+          //  if ($(this).is(':checked')){
+          //   id = $(this).val();
+          //   s = $("#nugget_attachment_ids").val();
+          //   s = s.replace("]","");
+          //   s = s=="[" ? s.concat(id+"]") : s.concat(","+id+"]");
+          //   $("#nugget_attachment_ids").val(s);
+          //  }else{
+          //   id = $(this).val();
+          //   s = $("#nugget_attachment_ids").val();
+          //   s = s.replace(id,"");
+          //   s = s.replace(",,",",");
+          //   s = s.replace(",]","]");
+          //   s = s.replace("[,","[");
+          //   $("#nugget_attachment_ids").val(s);
+          //  }
+          //});
