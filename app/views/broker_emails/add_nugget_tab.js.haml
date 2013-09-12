@@ -1,19 +1,50 @@
 :plain
-  $("#add_new_tab").before("<li><a href=\"##{@tab_id}\" id=\"tab_#{@tab_id}\" data-toggle=\"tab\" >New Nugget</a></li>");
-  $(".tab-content").append("<div class='tab-pane' id='#{@tab_id}' >#{j render :partial=>"broker_emails/nugget_tab_form",:locals=>{:listing_nugget=>@listing_nugget}}</div>");
+  $("#add_new_tab").before("<li><a href=\"#existing_nugget_#{@tab_id}\" id=\"tab_#{@tab_id}\" data-toggle=\"tab\" >New Nugget</a></li>");
+  $(".tab-content").append("<div class='tab-pane' id='existing_nugget_#{@tab_id}' >#{j render :partial=>"broker_emails/nugget_tab_form",:locals=>{:listing_nugget=>@listing_nugget}}</div>");
   $("#tab_#{@tab_id}").trigger("click");
 
   $( "ul#all_attachments li" ).draggable({
     appendTo: "body",
     helper: "clone"
   });
+
   $( "ol.attachment_holder" ).droppable({
     activeClass: "ui-state-default",
     hoverClass: "ui-state-hover",
     accept: ":not(.ui-sortable-helper)",
     drop: function( event, ui ) {
-      $( this ).find( ".placeholder" ).remove();
-      alert(ui.draggable.data("id")+":"+$(this).data("tab_id"));
-      $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      //$( this ).find( ".placeholder" ).remove();
+       $( "<li></li>" ).html( "<a href='#' class='btn btn-mini'>"+ui.draggable.text()+"</a>" ).appendTo( this );
+      //alert(+":"+);
+      postData = {
+                  listing_nugget_id: $(this).data("tab_id"),
+                  broker_email_attachment_id: ui.draggable.data("id")
+              };
+      $.ajax({
+          url: "/listing_nuggets/add_attachment",
+          type: "POST",
+          data: postData
+      }).done(function(){
+
+      }).fail(function(){
+         alert("failed to add attachment")
+      });
     }
   })
+
+  $(".edit_listing_nugget input").blur(function(){
+    serializedData = $(this).closest('form').serialize();
+    formAction = $(this).closest('form').attr("action");
+    $.ajaxSetup({
+      'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
+    });
+     request = $.ajax({
+            url: formAction,
+            type: "post",
+            dataType: 'js',
+            data: serializedData
+     });
+     request.done(function(){
+      alert("form submitted");
+     })
+  });
