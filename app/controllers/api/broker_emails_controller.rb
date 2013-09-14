@@ -6,7 +6,7 @@ class Api::BrokerEmailsController < ApplicationController
     #n = Nugget.create_from_postmark(Postmark::Mitt.new(request.body.read))
     message = Postmark::Mitt.new(request.body.read)
     # ignore messages with no attachments
-    if message.attachments.empty? or message.from == "support@postmarkapp.com"
+    if message.from == "support@postmarkapp.com"
       logger.info "message #{message.message_id} from #{message.from}: no attachments! or support message; skipping."
       #logger.info "#{message.to_json}"
       # great place to send an email alerting submitter of same
