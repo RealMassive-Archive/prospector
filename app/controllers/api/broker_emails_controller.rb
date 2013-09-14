@@ -14,7 +14,7 @@ class Api::BrokerEmailsController < ApplicationController
     end
 
     if Rails.env.development?
-      nugget = Nugget.last #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
+      nugget = Nugget.awaiting_broker_response.last #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
     else
       nugget = Nugget.find_by_contact_broker_fake_email(message.to)
     end
@@ -46,6 +46,12 @@ class Api::BrokerEmailsController < ApplicationController
         end
       }
       nugget.broker_email_received #now mark email received
+      broker_email.listing_nuggets.create(
+          :broker_email_from => broker_email.from,
+          :broker_email_to => broker_email.to,
+          :broker_email_subject => broker_email.subject,
+          :broker_email_body => broker_email.body
+      )
     else
       logger.info "message #{message.message_id} from #{message.from}: skipping. No nugget found with email id"
     end
