@@ -45,9 +45,8 @@
               %li
                 = link_to "Nugget","#existing_nugget_#{n.id}" ,:"data-toggle"=>"tab"
             %li#add_new_tab
-              = link_to "add tab",add_nugget_tab_broker_email_path(@broker_email),:remote=>true
+              = link_to "add another Nugget",add_nugget_tab_broker_email_path(@broker_email),:remote=>true
           .tab-content
-            .tab-pane.active#origination_nugget
             - @listing_nuggets.each do |n|
               .tab-pane{:id=>"existing_nugget_#{n.id}"}
                 = render :partial=>"nugget_tab_form",:locals=>{:listing_nugget=>n}

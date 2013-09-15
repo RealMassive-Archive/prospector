@@ -19,6 +19,7 @@ class Api::BrokerEmailsController < ApplicationController
       nugget = Nugget.find_by_contact_broker_fake_email(message.to)
     end
 
+    logger.info("Nugget found #{nugget.id}")
     logger.info("Email received with #{message.attachments.count} attachments")
     if nugget #&& !message.attachments.empty?
       broker_email = nugget.broker_emails.create(
