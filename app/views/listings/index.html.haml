@@ -9,7 +9,6 @@
     %th status
     %th last update
     %th
-    %th
 
   - @listings.each do |listing|
     %tr
@@ -20,7 +19,6 @@
       %td= listing.state
       %td #{time_ago_in_words(listing.updated_at)} ago
 
-      %td= link_to 'Show', listing
       %td= link_to 'Destroy', listing, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
