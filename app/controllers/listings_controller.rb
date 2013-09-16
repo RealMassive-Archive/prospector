@@ -31,24 +31,36 @@ class ListingsController < ApplicationController
         arr = params["email_attachment_ids"].split(";")
         arr.each do |a|
           email_attachment = BrokerEmailAttachment.find(a)
-          attachment = ListingAttachmentUploader.new
-          attachment.cache!(File.open("#{email_attachment.file.current_path}"))
-          attach = ListingAttachment. create(
-              :listing_id=> @listing.id,
-              :file=> attachment
-          )
+          if Rails.env.development? || Rails.env.test?
+            attachment = ListingAttachmentUploader.new
+            attachment.cache!(File.open("#{email_attachment.file.current_path}"))
+            attach = ListingAttachment. create(
+                :listing_id=> @listing.id,
+                :file=> attachment
+            )
+          else
+            attachment = @listing.listing_attachments.new
+            attachment.remote_file_url = email_attachment.file.url
+            attachment.save
+          end
         end
       # if attachments are nugget attachments
       elsif params["nugget_attachment_ids"] && params["nugget_attachment_ids"].strip != ""
         arr = params["nugget_attachment_ids"].split(";")
         arr.each do |a|
           nugget_signage = NuggetSignage.find(a)
-          attachment = ListingAttachmentUploader.new
-          attachment.cache!(File.open("#{nugget_signage.signage.current_path}"))
-          attach = ListingAttachment. create(
-              :listing_id=> @listing.id,
-              :file=> attachment
-          )
+          if Rails.env.development? || Rails.env.test?
+            attachment = ListingAttachmentUploader.new
+            attachment.cache!(File.open("#{nugget_signage.signage.current_path}"))
+            attach = ListingAttachment. create(
+                :listing_id=> @listing.id,
+                :file=> attachment
+            )
+          else
+            attachment = @listing.listing_attachments.new
+            attachment.remote_file_url = nugget_signage.signage.url
+            attachment.save
+          end
         end
       end
     end
