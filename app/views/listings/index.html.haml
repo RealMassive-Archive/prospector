@@ -4,6 +4,7 @@
   %tr
     %th id
     %th street_address
+    %th unit number
     %th city
     %th status
     %th last update
@@ -14,6 +15,7 @@
     %tr
       %td= listing.id
       %td= listing.street_address
+      %td= listing.unit_number
       %td= listing.city
       %td= listing.state
       %td #{time_ago_in_words(listing.updated_at)} ago

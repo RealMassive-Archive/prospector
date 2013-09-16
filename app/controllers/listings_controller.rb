@@ -4,7 +4,7 @@ class ListingsController < ApplicationController
   # POST /listings.json
   def index
     @count = Listing.all.count
-    @nuggets = Listing.paginate(:page => params[:page], :per_page => 50)
+    @listings = Listing.paginate(:page => params[:page], :per_page => 50)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @listings }
