@@ -81,10 +81,11 @@
         = simple_form_for(@listing, :html => {:class => "form-horizontal",:id=>"new_listing_form" }) do |f|
           .tab-content
             #tab1.tab-pane
-              %h4 What type of listing?
+              %h4 Basic Info
+              %h5 What type of listing?
               = f.input_field :listing_type, as: :radio_buttons, collection: ["lease"], :item_wrapper_class => 'inline',:checked=>"lease"
               = f.input_field :listing_type, as: :radio_buttons, collection: ["sale"], :item_wrapper_class => 'inline', :disabled => "disabled"
-              %h4 Which Metro to list in?
+              %h5 Which Metro to list in?
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Austin", "San Antonio"]
               = f.input_field :metro_listed_in, as: :radio_buttons, collection: [ "Houston","Dallas"], :disabled => "disabled"
               = f.input :listing_nugget_id, as: :hidden, input_html: {value: @listing_nugget.id}
@@ -110,6 +111,7 @@
               = f.input :lease_rate
               = f.input :lease_rate_units,as: :select, collection: ["$/mo."],include_blank: false
             #tab4.tab-pane
+              %h4 Broker Info
               = f.input :broker_first_name
               = f.input :broker_last_name
               = f.input :broker_email

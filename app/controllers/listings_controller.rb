@@ -8,6 +8,8 @@ class ListingsController < ApplicationController
     render :layout => false
   end
 
+  # POST /listings
+  # POST /listings.json
   def create
     @listing = Listing.new(params[:listing])
 

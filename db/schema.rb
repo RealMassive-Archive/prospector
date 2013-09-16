@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(:version => 20130906164030) do
   create_table "duplicates", :force => true do |t|
     t.integer  "nugget_id"
     t.integer  "compared_to_nugget_id"
+    t.integer  "user_id"
     t.string   "duplicate_status"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
-    t.integer  "user_id"
   end
 
   create_table "listing_attachments", :force => true do |t|
@@ -148,13 +148,13 @@ ActiveRecord::Schema.define(:version => 20130906164030) do
     t.string   "signage_county"
     t.string   "signage_neighborhood"
     t.datetime "editable_until"
+    t.string   "signage_phone"
+    t.string   "signage_listing_type"
     t.string   "message_id"
     t.string   "submitter_notes"
     t.string   "signage_intersection"
     t.string   "contact_broker_fake_name"
     t.string   "contact_broker_fake_email"
-    t.string   "signage_phone"
-    t.string   "signage_listing_type"
     t.integer  "origination_nugget_id"
     t.string   "broker_email_to"
     t.string   "broker_email_from"
