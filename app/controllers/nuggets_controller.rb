@@ -4,8 +4,8 @@ class NuggetsController < ApplicationController
   # GET /nuggets
   # GET /nuggets.json
   def index
-    @count = Nugget.all.count
-    @nuggets = Nugget.paginate(:page => params[:page], :per_page => 12)
+    @count = Nugget.count
+    @nuggets = Nugget.order("state ASC, modified_at DESC").paginate(:page => params[:page], :per_page => 12)
 
     respond_to do |format|
       format.html # index.html.erb
