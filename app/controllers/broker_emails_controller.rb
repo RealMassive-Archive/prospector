@@ -2,8 +2,9 @@ class BrokerEmailsController < ApplicationController
 
   #Get /broker_emails/parse_broker_email
   def parse
-    @nugget = Nugget.parse_info_from_broker_emails_jobs.first
-    @broker_email = @nugget.broker_emails.not_parsed.first if @nugget
+
+    @broker_email = BrokerEmail.not_parsed.first
+    @nugget = @broker_email.nugget
     if @broker_email && @nugget
       @listing_nuggets = @broker_email.listing_nuggets
     else
