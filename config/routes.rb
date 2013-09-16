@@ -59,7 +59,7 @@ Prospector::Application.routes.draw do
     end
     resources :broker_emails,:only=>[:create]
   end
-  resources :listings, :only => [:create,:update] do
+  resources :listings do
     collection do
       get "extract_listing"
     end

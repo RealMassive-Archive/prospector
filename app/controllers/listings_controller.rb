@@ -1,5 +1,11 @@
 class ListingsController < ApplicationController
 
+  # POST /listings
+  # POST /listings.json
+  def index
+    @listings = Listing.all
+  end
+
   def extract_listing
     @listing_nugget = ListingNugget.listing_nuggets_of_parsed_broker_emails.first
     @broker_email = @listing_nugget.broker_email
@@ -43,4 +49,17 @@ class ListingsController < ApplicationController
     end
     redirect_to :back
   end
+
+  # DELETE /listings/1
+  # DELETE /listings/1.json
+  def destroy
+    @listing = Listing.find(params[:id])
+    @listing.destroy
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
+    end
+  end
+
 end

@@ -92,6 +92,8 @@
   .modal-footer
     %button(type="button" data-dismiss="modal" class="btn") Close
 
+%br
+= link_to 'Open &amp; Pushed Live Listings', listings_path
 :javascript
   $(document).ready( function() {
     $("#jobs").nested({selector: '.box', resizeToFit: false});

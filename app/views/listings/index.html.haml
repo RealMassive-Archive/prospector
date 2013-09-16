@@ -1,0 +1,29 @@
+%h1 #{@count} Listings
+
+%table{cellspacing: 5, border:1}
+  %tr
+    %th id
+    %th street_address
+    %th city
+    %th status
+    %th last update
+    %th
+    %th
+
+  - @nuggets.each do |nugget|
+    %tr
+      %td= listing.id
+      %td= listing.street_address
+      %td= listing.city
+      %td= listing.state
+      %td #{time_ago_in_words(listing.updated_at)} ago
+
+      %td= link_to 'Show', listing
+      %td= link_to 'Destroy', listing, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= will_paginate @listings, :renderer => BootstrapPagination::Rails
+
+= link_to 'Back to Jobboard', jobboard_path
+
