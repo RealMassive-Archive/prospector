@@ -4,7 +4,7 @@ class ListingsController < ApplicationController
   # POST /listings.json
   def index
     @count = Listing.all.count
-    @listings = Listing.paginate(:page => params[:page], :per_page => 50)
+    @listings = Listing.order("updated_at DESC").paginate(:page => params[:page], :per_page => 50)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @listings }
