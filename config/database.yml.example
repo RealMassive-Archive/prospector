@@ -4,8 +4,8 @@ development:
   encoding: unicode
   database: prospector_development
   pool: 5
-  username: q
-  password:
+  username: dev
+  password: dev
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -16,10 +16,15 @@ test:
   encoding: unicode
   database: prospector_test
   pool: 5
-  username: q
-  password:
+  username: dev
+  password: dev
   host: localhost
 
+# Note that in production on most Rails-compatible PaaS services,
+# this entire file (database.yml) will be blown away and regenerated
+# on the service itself with custom variables for the runtime
+# environment in question. Generally, whatever you put in here
+# will be irrelevant when run in production.
 production:
   adapter: postgresql
   encoding: unicode

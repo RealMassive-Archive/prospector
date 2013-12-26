@@ -22,13 +22,11 @@ db/*.sqlite3
 
 .ruby-version
 .rvmrc
-Gemfile.lock
 
 # various artifacts
 **.war
 *.rbc
 *.sassc
-.rspec
 .redcar/
 .sass-cache
 /config/config.yml
@@ -83,6 +81,5 @@ pickle-email-*.html
 #ignore to solve migration conflicts
 /db/schema.rb
 # Ignore rvmrc file for ruby version conflictchanges requested.
-/Gemfile.lock
-/.rvmrc
-/.ruby-version
+.rvmrc
+.ruby-version
