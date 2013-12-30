@@ -16,7 +16,6 @@
 //= require bootstrap-modalmanager
 //= require bootstrap-modal
 //= require bootstrap-editable
-// or use this: require bootstrap-editable-inline   for inline editing
 //= require bootstrap-tab
 //= require jquery.bootstrap.wizard
 //= require jquery.ui.core
