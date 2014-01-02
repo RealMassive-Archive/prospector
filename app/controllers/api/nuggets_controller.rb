@@ -64,12 +64,10 @@ class Api::NuggetsController < ApplicationController
         signage = NuggetSignageUploader.new
         signage.cache!(attachment.read)
       rescue CarrierWave::IntegrityError => e
-        # puts there was a problem storing attachments
         logger.error "message #{message.message_id}: problem storing attachment #{i} ('#{attachment.file_name}') of message #{message.message_id}"
-        # logger.error [e, *e.backtrace].join("\n")
-        # great place to send ourselves an email warning us that some storage problem is occuring
 
-        #return render :nothing => true
+        # Deliver an e-mail notifying both the admin and submitter that this image couldn't be stored.
+        NuggetMailer.image_store_fail(n).deliver
         next
       end
 
