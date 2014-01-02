@@ -28,6 +28,7 @@ class Api::NuggetsController < ApplicationController
 
       # Render a blank page with a status code of 400 (bad request)
       render :nothing => true, status: 400
+      return
     end
     logger.info "token passed in was: #{message.mailbox_hash}"
     logger.info "from #{message.from}"
