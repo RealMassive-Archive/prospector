@@ -22,8 +22,12 @@ class Api::NuggetsController < ApplicationController
     # ignore messages with no attachments
     if message.attachments.empty?
       logger.info "message #{message.message_id} from #{message.from}: no attachments!; skipping."
-      # great place to send an email alerting submitter of same
-      return render :nothing => true
+
+      # Send an e-mail to the submitter telling them we don't have any attachments.
+      SignageMailer.no_attachment(message.from, message.subject).deliver
+
+      # Render a blank page with a status code of 400 (bad request)
+      render :nothing => true, status: 400
     end
     logger.info "token passed in was: #{message.mailbox_hash}"
     logger.info "from #{message.from}"
