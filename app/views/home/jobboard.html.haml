@@ -6,13 +6,6 @@
     %br
     %a.btn.btn-large{:href => read_signage_nuggets_path, :'data-target'=>"#read_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @read_signage_jobs_count==0 ? true : false}DO WORK
 
-  .box.size85.cyan
-    %br
-    %p.jobtype Review Signage
-    %h1.count #{@review_signage_jobs_count} jobs
-    %br
-    %a.btn.btn-large{:href => review_signage_nuggets_path, :'data-target'=>"#review_signage", :remote => true, :role => "button", :'data-toggle' => "modal", disabled: @review_signage_jobs_count==0 ? true : false}DO WORK
-
   .box.size85.green
     %br
     %p.jobtype De-dupe Signage

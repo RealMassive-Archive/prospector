@@ -142,9 +142,11 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.find(params[:id])
     @nugget.unset_editable_time
     @nugget.signage_tag_list = "blurry"
-    @nugget.signage_review!
+    @nugget.signage_review! # Spoof the state machine to thinking it's been reviewed, quick hack
+    @nugget.signage_reject! # Reject it.
     @nugget.save
-    redirect_to jobboard_path
+    NuggetMailer.nugget_rejected("Image is too blurry", @nugget).deliver
+    redirect_to jobboard_path, flash: { notice: "That nugget was rejected because it's too blurry and the submitter has been notified." }
   end
 
   # GET /nuggets/1/tag_as_inappropriate
@@ -152,9 +154,11 @@ class NuggetsController < ApplicationController
     @nugget = Nugget.find(params[:id])
     @nugget.unset_editable_time
     @nugget.signage_tag_list = "inappropriate"
-    @nugget.signage_review!
+    @nugget.signage_review! # Spoof the state machine to let us reject it
+    @nugget.signage_reject! # Actually reject it
     @nugget.save
-    redirect_to jobboard_path
+    NuggetMailer.nugget_rejected("Image is inappropriate", @nugget).deliver
+    redirect_to jobboard_path, flash: { notice: "That nugget was rejected because it's inappropriate and the submitter has been notified." }
   end
 
   # GET /nuggets/review_signage
