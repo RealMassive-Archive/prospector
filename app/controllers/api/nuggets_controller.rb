@@ -27,7 +27,7 @@ class Api::NuggetsController < ApplicationController
       SignageMailer.no_attachment(message.from, message.subject).deliver
 
       # Render a blank page with a status code of 400 (bad request)
-      render :nothing => true, status: 400
+      render :nothing => true
       return
     end
     logger.info "token passed in was: #{message.mailbox_hash}"
