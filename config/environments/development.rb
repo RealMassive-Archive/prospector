@@ -30,13 +30,13 @@ Prospector::Application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "example.com",
-    authentication: "plain",
+    address: ENV['SMTP_HOST'],
+    port: ENV['SMTP_PORT'],
+    domain: "realmassive.com",
+    authentication: :cram_md5,
     enable_starttls_auto: true,
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+    user_name: ENV['POSTMARK_API_KEY'],
+    password: ENV['POSTMARK_API_KEY']
   }
 
 
