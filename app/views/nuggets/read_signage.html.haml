@@ -44,21 +44,25 @@
       :javascript
         // blurry
         $('#read_signage #blurry').on('click', function (e) {
-          $.ajax({
-            url: '#{tag_as_blurry_nugget_path(@nugget)}',
-            success: function( data ) {
-              location.href = '#{jobboard_path}'
-            }
-          });
+          if(confirm("Are you sure?")) {
+            $.ajax({
+              url: '#{tag_as_blurry_nugget_path(@nugget)}',
+              success: function( data ) {
+                location.href = '#{jobboard_path}'
+              }
+            });
+          }
         });
         // inappropriate
         $('#read_signage #inappropriate').on('click', function (e) {
-          $.ajax({
-            url: '#{tag_as_inappropriate_nugget_path(@nugget)}',
-            success: function( data ) {
-              location.href = '#{jobboard_path}'
-            }
-          });
+          if(confirm("Are you sure?")) {
+            $.ajax({
+              url: '#{tag_as_inappropriate_nugget_path(@nugget)}',
+              success: function( data ) {
+                location.href = '#{jobboard_path}'
+              }
+            });
+          }
         });
         // cancel
         $('#read_signage button[data-dismiss="modal"]').on('click', function (e) {
