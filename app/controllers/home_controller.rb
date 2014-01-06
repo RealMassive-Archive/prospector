@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_filter :authenticate_user!, :except => [:please_login, :map]
 
+
   def please_login
   end
 

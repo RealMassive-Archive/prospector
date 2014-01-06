@@ -1,5 +1,6 @@
 class Api::NuggetsController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  skip_before_filter :cheap_authentication
 
   # GET /api/nuggets/geofind.json
   def geofind

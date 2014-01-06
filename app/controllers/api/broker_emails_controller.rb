@@ -1,4 +1,6 @@
 class Api::BrokerEmailsController < ApplicationController
+  skip_before_filter :cheap_authentication
+
   def create
     # make sure the thing posting has rights to post here... maybe with
     # http basic auth or a super secret token.
