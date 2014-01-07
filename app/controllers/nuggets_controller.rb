@@ -128,6 +128,13 @@ class NuggetsController < ApplicationController
     respond_to do |format|
       if @nugget.update_attributes(params[:nugget])
         @nugget.signage_review!
+
+        # JAH - Jan 7 2014
+        # There used to be a state here to "review" signage that isn't
+        # necessary. Ergo we're going to transition the nugget immediately
+        # from signage_review to signage_approve to move it further along.
+        @nugget.signage_approve!
+
         format.html { redirect_to jobboard_path, notice: 'Read Signage Job completed.' }
         format.json { head :no_content }
       else
