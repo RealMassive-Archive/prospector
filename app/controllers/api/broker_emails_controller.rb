@@ -18,6 +18,7 @@ class Api::BrokerEmailsController < ApplicationController
     if Rails.env.development?
       nugget = Nugget.awaiting_broker_response.last #only when testing (find the last nugget for the parse info from broker email jobs instead of finding it on the basis of message.to)
     else
+      logger.info("Message 'to' address: #{message.to}")
       nugget = Nugget.find_by_contact_broker_fake_email(message.to)
     end
 
