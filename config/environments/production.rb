@@ -1,6 +1,10 @@
 Prospector::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # Debug setting - remove for use at scale.
+  config.logger = Logger.new(STDOUT)
+  config.log_level = :debug
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
