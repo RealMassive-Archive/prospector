@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906164030) do
+ActiveRecord::Schema.define(:version => 20140110095414) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -112,6 +112,16 @@ ActiveRecord::Schema.define(:version => 20130906164030) do
     t.datetime "updated_at",         :null => false
     t.string   "state"
     t.integer  "listing_nugget_id"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.text     "message_body"
+    t.datetime "received_at"
+    t.datetime "began_processing_at"
+    t.datetime "finished_processing_at"
+    t.datetime "failed_at"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
   create_table "nugget_signages", :force => true do |t|

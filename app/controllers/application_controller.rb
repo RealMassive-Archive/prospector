@@ -32,8 +32,10 @@ private
   # kevlar body armor.
   #
   def cheap_authentication
-    authenticate_or_request_with_http_basic "RealMassive Prospector" do |u,p|
-      u == ENV['CHEAP_AUTH_USERNAME'] && p == ENV['CHEAP_AUTH_PASSWORD']
+    if ["staging", "production"].include?(Rails.env)
+      authenticate_or_request_with_http_basic "RealMassive Prospector" do |u,p|
+        u == ENV['CHEAP_AUTH_USERNAME'] && p == ENV['CHEAP_AUTH_PASSWORD']
+      end
     end
   end
 

@@ -1,5 +1,9 @@
 Prospector::Application.routes.draw do
 
+  # Mount resque's UI:
+  authenticate :user do
+    mount Resque::Server.new, :at => "/resque"
+  end
 
   authenticated :user do
     root :to => 'home#jobboard'

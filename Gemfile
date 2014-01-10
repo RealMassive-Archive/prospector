@@ -10,6 +10,7 @@ gem 'geocoder'
 gem 'state_machine'
 gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
+gem 'resque', "~> 1.25.1" # redis is a dependency
 
 # send emails
 gem 'postmark-rails'

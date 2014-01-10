@@ -15,6 +15,14 @@ class Api::NuggetsController < ApplicationController
 
   # POST /api/nuggets
   def create
+    @message = Message.new(message_body: request.body.read, received_at: Time.now.utc)
+    @message.save # Shove it in the DB for later processing
+
+    # Enqueue the worker for Resque then tell Postmark that everything's cool.
+    Resque.enqueue(NuggetWorker, @message.id)
+    return render nothing: true, status: 200
+  end
+=begin
     # make sure the thing posting has rights to post here... maybe with
     # http basic auth or a super secret token.
 
@@ -106,8 +114,9 @@ class Api::NuggetsController < ApplicationController
 
     render :nothing => true
   end
+=end
 
-  private
+private
   def clean_field(str)
     str.gsub(/\n/,'') if str
   end
