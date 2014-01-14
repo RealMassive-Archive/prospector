@@ -2,6 +2,16 @@ class Api::BrokerEmailsController < ApplicationController
   skip_before_filter :cheap_authentication
 
   def create
+    @message = Message.new(message_body: request.body.read, received_at: Time.now.utc)
+    @message.save # Shove it in the DB for later processing
+
+    # Enqueue the worker for Resque then tell Postmark that everything's cool.
+    Resque.enqueue(BrokerEmailWorker, @message.id)
+    return render nothing: true, status: 200
+  end
+
+=begin
+  def create
     # make sure the thing posting has rights to post here... maybe with
     # http basic auth or a super secret token.
 
@@ -61,4 +71,5 @@ class Api::BrokerEmailsController < ApplicationController
     end
     render :nothing => true
   end
+=end
 end
