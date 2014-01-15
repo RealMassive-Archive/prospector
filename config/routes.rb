@@ -10,7 +10,6 @@ Prospector::Application.routes.draw do
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
     match "/index3" => "home#index3", :as => :index3, :via => :get
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
-    #match "/map" => "home#map", :as => :map, :via => :get
   end
 
   root :to => "home#please_login"
@@ -18,7 +17,7 @@ Prospector::Application.routes.draw do
 
   devise_for :users
   resources :users
-  resources :nuggets do
+  resources :nuggets, only: [:index, :show] do
     collection do
       post 'transition'
       get 'read_signage'
@@ -26,7 +25,6 @@ Prospector::Application.routes.draw do
       get 'dedupe_signage'
       get 'contact_broker'
       get 'parse_broker_email'
-      get 'index2'
     end
     member do
       put 'update_signage'
@@ -68,6 +66,4 @@ Prospector::Application.routes.draw do
       get "extract_listing"
     end
   end
-  # Any other routes are handled here (as ActionDispatch prevents RoutingError from hitting ApplicationController::rescue_action).
-  #match "*path", :to => "application#routing_error"
 end
