@@ -1,7 +1,7 @@
 <h1>Nuggets</h1>
 
 <p>
-  There are currently <%= @count %> nuggets in the database.
+  There are currently <%= @nuggets.count %> valid nuggets in the database.
   This list ignores all nuggets that are missing GPS data, rejected,
   or duplicates, since there's nothing left to do with those.
 </p>
@@ -10,7 +10,7 @@
 
 <table class="table table-hover">
   <tr>
-    <th>Nugget Address</th>
+    <th>Approximate Address</th>
     <th>Submitted By</th>
     <th>Current Status</th>
     <th>Last Update</th>
@@ -22,7 +22,7 @@
     <td><%= n.signage_address || "Unknown Location" %></td>
     <td><%= n.submitter || "Unknown Submitter" %></td>
     <td><%= n.state || "New" %></td>
-    <td><%= n.updated_at %></td>
+    <td><%= time_ago_in_words(n.updated_at) %> ago</td>
     <td><%= link_to("More...", n) %></td>
   </tr>
 <% end -%>
@@ -30,3 +30,33 @@
 </table>
 
 <%= will_paginate @nuggets, renderer: BootstrapPagination::Rails %>
+
+<fieldset>
+  <legend>Current Status Definitions:</legend>
+
+  <dl>
+    <dt>initial</dt>
+    <dd>Just recently submitted. Still waiting on some one to review signage and reject or push to the next stage.</dd>
+
+    <dt>signage_reviewed</dt>
+    <dd>Some one has reviewed the signage attached to this nugget; further steps are yet to be taken.</dd>
+
+    <dt>awaiting_broker_response</dt>
+    <dd>The broker has been contacted and RealMassive is waiting on a response from him/her.</dd>
+
+    <dt>dupe_check</dt>
+    <dd>The nugget and signage need to be checked against the system for duplicate items.</dd>
+
+    <dt>ready_to_contact_broker</dt>
+    <dd>The nugget and signage have been reviewed and it's time to call the broker and ask for more information.</dd>
+
+    <dt>awaiting_broker_response</dt>
+    <dd>The broker has been contacted and RealMassive is waiting on a response from them.</dd>
+
+    <dt>broker_email_received</dt>
+    <dd>We've received an e-mail from the broker and the nugget is ready to have that information reviewed and curated.</dd>
+
+    <dt>broker_email_parsed</dt>
+    <dd>The system has programmatically examined the broker's e-mail and entered data into the system.</dd>
+  </dl>
+</fieldset>

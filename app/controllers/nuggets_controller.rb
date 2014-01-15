@@ -4,8 +4,9 @@ class NuggetsController < ApplicationController
   # GET /nuggets
   # GET /nuggets.json
   def index
-    @count = Nugget.count
-    @nuggets = Nugget.order("state ASC, updated_at DESC").paginate(:page => params[:page], :per_page => 12)
+    @nuggets = Nugget.where('state NOT IN (?)', [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]).
+      where("signage_address IS NOT NULL").
+      order("state ASC, updated_at DESC").paginate(:page => params[:page], :per_page => 12)
 
     respond_to do |format|
       format.html # index.html.erb
