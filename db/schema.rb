@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140110095414) do
+ActiveRecord::Schema.define(:version => 20140115085743) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -172,6 +172,8 @@ ActiveRecord::Schema.define(:version => 20140110095414) do
     t.text     "broker_email_body"
     t.integer  "origination_email_id"
   end
+
+  add_index "nuggets", ["state"], :name => "index_nuggets_on_state"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
