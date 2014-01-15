@@ -24,7 +24,7 @@ gem 'postmark-mitt'
 gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
 
 gem 'will_paginate'
-gem 'will_paginate-bootstrap'
+gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
