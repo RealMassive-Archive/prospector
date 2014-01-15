@@ -1,4 +1,32 @@
 <h1>Nuggets</h1>
 
-There are currently <%= @count %> nuggets in the database. A paginated view is shown below:
+<p>
+  There are currently <%= @count %> nuggets in the database.
+  This list ignores all nuggets that are missing GPS data, rejected,
+  or duplicates, since there's nothing left to do with those.
+</p>
 
+<p><%= will_paginate @nuggets, renderer: BootstrapPagination::Rails %></p>
+
+<table class="table table-hover">
+  <tr>
+    <th>Nugget Address</th>
+    <th>Submitted By</th>
+    <th>Current Status</th>
+    <th>Last Update</th>
+    <th>More...</th>
+  </tr>
+
+<% @nuggets.each do |n| -%>
+  <tr>
+    <td><%= n.signage_address || "Unknown Location" %></td>
+    <td><%= n.submitter || "Unknown Submitter" %></td>
+    <td><%= n.state || "New" %></td>
+    <td><%= n.updated_at %></td>
+    <td><%= link_to("More...", n) %></td>
+  </tr>
+<% end -%>
+
+</table>
+
+<%= will_paginate @nuggets, renderer: BootstrapPagination::Rails %>
