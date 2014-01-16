@@ -11,9 +11,30 @@
 <table class="table table-hover">
   <tr>
     <th>Approximate Address</th>
-    <th>Submitted By</th>
-    <th>Current Status</th>
-    <th>Last Update</th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=submitter">
+        Submitted By
+        <% if @sort_column == 'submitter' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=state">
+        Current Status
+        <% if @sort_column == 'state' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=updated_at">
+        Last Update
+        <% if @sort_column == 'updated_at' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
     <th>More...</th>
   </tr>
 

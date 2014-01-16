@@ -4,9 +4,19 @@ class NuggetsController < ApplicationController
   # GET /nuggets
   # GET /nuggets.json
   def index
-    @nuggets = Nugget.where('state NOT IN (?)', [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]).
+
+    # Basic guard against invalid parameters for sorting.
+    # The view needs to know the opposite of the current sort order to generate the right links.
+    # The view also has to know what you're currently sorting by so it can highlight the right field.
+    @sort_column = (%w(submitter updated_at state).select { |x| x == params[:sort_column] }).first || "updated_at"
+    @sort_order  = (%w(ASC DESC).select { |x| x == params[:sort_order] }).first || "ASC"
+
+    @nuggets = Nugget.unscoped.where('state NOT IN (?)', [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]).
       where("signage_address IS NOT NULL").
-      order("state ASC, updated_at DESC").paginate(:page => params[:page], :per_page => 12)
+      order("#{@sort_column} #{@sort_order}").paginate(:page => params[:page], :per_page => 20)
+      # This order clause may look susceptible to SQL injection, but above I'm explicitly checking for specific
+      # values in these fields and absolutely no other value, including anything with quotes, commas, dashes,
+      # semicolons, etc.
 
     respond_to do |format|
       format.html # index.html.erb
