@@ -35,6 +35,12 @@
         <% end -%>
       </a>
     </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=signage_phone">
+        Signage Phone
+        <% if @sort_column == 'signage_phone' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
     <th>More...</th>
   </tr>
 
@@ -44,6 +50,7 @@
     <td><%= n.submitter || "Unknown Submitter" %></td>
     <td><%= n.state || "New" %></td>
     <td><%= time_ago_in_words(n.updated_at) %> ago</td>
+    <td><%= number_to_phone(n.signage_phone) %></td>
     <td><%= link_to("More...", n) %></td>
   </tr>
 <% end -%>

@@ -46,7 +46,7 @@ class Nugget < ActiveRecord::Base
   geocoded_by :address
   reverse_geocoded_by :latitude, :longitude
   before_create :default_values
-  #before_save :process_geodata
+  before_save   :clean_up_signage_phone
 
   has_many :nugget_state_transitions
 
@@ -239,4 +239,13 @@ class Nugget < ActiveRecord::Base
            self.compared_to_nugget_ids << self.id,self.created_at
         ])
   end
+
+private
+
+  def clean_up_signage_phone
+    # Clean out everything that isn't a digit
+    # and isn't the letter x. When displaying, this will be properly formatted.
+    signage_phone.gsub!(/[^\dx]/i, '')
+  end
+
 end

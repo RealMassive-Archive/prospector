@@ -8,7 +8,7 @@ class NuggetsController < ApplicationController
     # Basic guard against invalid parameters for sorting.
     # The view needs to know the opposite of the current sort order to generate the right links.
     # The view also has to know what you're currently sorting by so it can highlight the right field.
-    @sort_column = (%w(submitter updated_at state).select { |x| x == params[:sort_column] }).first || "updated_at"
+    @sort_column = (%w(submitter updated_at state signage_phone).select { |x| x == params[:sort_column] }).first || "updated_at"
     @sort_order  = (%w(ASC DESC).select { |x| x == params[:sort_order] }).first || "ASC"
 
     @nuggets = Nugget.unscoped.where('state NOT IN (?)', [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]).

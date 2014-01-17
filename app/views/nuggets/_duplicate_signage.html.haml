@@ -7,7 +7,7 @@
   .row-fluid
     %h5 Signage from #{render_date(dupe_nugget.created_at)}
     %p Lease at approximate address: #{dupe_nugget.address}
-    %p #{dupe_nugget.signage_phone}
+    %p #{number_to_phone(dupe_nugget.signage_phone)}
     -#%p.border #{dupe_nugget.id}
   .row-fluid
     %div.span4.pagination-centered

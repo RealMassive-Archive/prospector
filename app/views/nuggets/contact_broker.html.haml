@@ -6,7 +6,7 @@
         %p
           Call this number:
           %strong
-            = @nugget.signage_phone
+            = number_to_phone(@nugget.signage_phone)
       %h5 And tell them this:
     .row-fluid
       %p "Hi, this is #{@name}. I'm calling about a property my boss [or, "one of my co-workers"] saw for #{@listing_type} near #{@address} in #{@city}"

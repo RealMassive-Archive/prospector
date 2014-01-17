@@ -47,7 +47,7 @@
   <div class="row">
     <div class="span6">
       <p>
-        <strong>Signage phone:</strong> <%= @nugget.signage_phone %><br>
+        <strong>Signage phone:</strong> <%= number_to_phone(@nugget.signage_phone) %><br>
         <strong>Listing type:</strong>  <%= @nugget.signage_listing_type %><br>
         <strong>Fake Contact:</strong>  <%= @nugget.contact_broker_fake_name %> - <%= @nugget.contact_broker_fake_email %>
       </p>

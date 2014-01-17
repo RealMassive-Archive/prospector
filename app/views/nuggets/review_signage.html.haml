@@ -45,7 +45,7 @@
         %button(type="button" class="btn btn-large disabled") Inappropriate
       -else
         %h5 This Nugget was read as:
-        %h4 phone: #{@nugget.signage_phone}
+        %h4 phone: #{number_to_phone(@nugget.signage_phone)}
         %h4 lease or sale?: #{@nugget.signage_listing_type}
 
     .row-fluid
