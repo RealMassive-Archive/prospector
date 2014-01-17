@@ -1,5 +1,78 @@
+<h1><%= @nugget.signage_address %></h1>
+
+<fieldset>
+  <legend>Photos</legend>
+  <p>Click any photo below to see the full size image in a new window or tab.</p>
+  <% @nugget.nugget_signages.each do |s| -%>
+    <a href="<%= s.signage_url %>" target="_blank">
+      <img class="img-rounded" src="<%= s.signage_url(:small) %>">&nbsp;
+    </a>
+  <% end -%>
+</fieldset>
+<hr>
+<fieldset>
+  <legend>Property</legend>
+  <div class="row">
+    <div class="span8">
+      <table class="table table-hover">
+        <tr>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Submitted by</th>
+        </tr>
+
+        <tr>
+          <td><%= @nugget.state %></td>
+          <td><%= @nugget.signage_address %><br>
+              <small><%= @nugget.signage_neighborhood %><br>
+                                  <%= @nugget.signage_intersection unless @nugget.signage_intersection.blank? %>
+              </small></td>
+          <td><a href="mailto:<%= @nugget.submitter %>"><%= @nugget.submitter %></a><br>
+              <small>Submitted about <%= time_ago_in_words(@nugget.submitted_at) %> ago.</small>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="span4">
+      <p>Submitter notes:</p>
+
+      <p><%= @nugget.submitter_notes %></p>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Broker</legend>
+  <div class="row">
+    <div class="span6">
+      <p>
+        <strong>Signage phone:</strong> <%= @nugget.signage_phone %><br>
+        <strong>Listing type:</strong>  <%= @nugget.signage_listing_type %><br>
+        <strong>Fake Contact:</strong>  <%= @nugget.contact_broker_fake_name %> - <%= @nugget.contact_broker_fake_email %>
+      </p>
+    </div>
+
+    <div class="span6">
+      <p>
+        <strong>Broker email to:</strong> <%= @nugget.broker_email_to %><br>
+        <strong>Broker email from:</strong> <%= @nugget.broker_email_from %><br>
+        <strong>Broker email subject:</strong> <%= @nugget.broker_email_subject %>
+      </p>
+      <p>
+        <%= @nugget.broker_email_body %>
+      </p>
+    </div>
+
+
+
+
+  </div>
+</fieldset>
+
+<small><a href="#" id="reveal_all_db_props">Click here to show/hide all database properties for this nugget.</a></small>
+<div id="nugget_db_props">
 <% @nugget.attributes.each do |k,v| -%>
-
-<p><strong><%= k %></strong>: <%= v %></p>
-
+  <p><strong><%= k %></strong>: <%= v %></p>
 <% end -%>
+</div>
