@@ -46,7 +46,7 @@ class Nugget < ActiveRecord::Base
   geocoded_by :address
   reverse_geocoded_by :latitude, :longitude
   before_create :default_values
-  before_validate :clean_up_signage_phone
+  before_create :clean_up_signage_phone
 
   has_many :nugget_state_transitions
 
