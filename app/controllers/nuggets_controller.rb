@@ -172,6 +172,10 @@ class NuggetsController < ApplicationController
       @address = @nugget.signage_address.nil? ? "{unknown]" : @nugget.signage_address.split(',').first
       @city = @nugget.signage_city
       @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
+
+      # Find additional nuggets with the same signage phone to list on the form.
+      @additional_listings = Nugget.where(signage_phone: @nugget.signage_phone)
+
       @nugget.set_editable_time
       @nugget.save
       @broker_call=BrokerCall.new
