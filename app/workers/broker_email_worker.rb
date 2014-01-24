@@ -7,7 +7,6 @@ class BrokerEmailWorker
   @queue = :broker_email_queue
 
   def self.perform(message_id)
-binding.pry
     # logger = Rails.logger
     Resque.logger.level = Logger::DEBUG
     # Retrieve the message from the database
