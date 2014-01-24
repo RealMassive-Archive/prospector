@@ -61,6 +61,7 @@ class Nugget < ActiveRecord::Base
   attr_accessible :submission_method, :submitted_at, :submitter, :submitter_notes, :message_id
   attr_accessible :state
   attr_accessible :nugget_type, :nugget_phone, :approx_address
+  attr_accessible :contact_broker_fake_name, :contact_broker_fake_email
 
   attr_accessible :signage_address, :signage_city, :signage_state, :signage_county, :signage_neighborhood
   attr_accessible :signage_phone, :signage_listing_type, :signage_intersection
@@ -82,7 +83,7 @@ class Nugget < ActiveRecord::Base
 
   scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_read) }
   scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
-  scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check) }
+  scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check).without_state(:signage_rejected) }
   scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
   scope :unique_fake_emails_to_contact_broker,->{with_state([:ready_to_contact_broker,:awaiting_broker_response])}
   scope :awaiting_broker_response, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:awaiting_broker_response) }

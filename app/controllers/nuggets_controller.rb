@@ -176,6 +176,17 @@ class NuggetsController < ApplicationController
       # Find additional nuggets with the same signage phone to list on the form.
       @additional_listings = Nugget.where(signage_phone: @nugget.signage_phone)
 
+      # This is a patch to fix some behavior that doesn't really fit here due to the age of the code vs. the business' current workflow,
+      # but is nonetheless needed here. We need to set all the additional nuggets to have the same fake broker name/email.
+      # This is so that when a broker emails that address, the other nuggets are given the same attachments as the first.
+      # Then, when the data is being extracted in another stage, RealMassive personnel can decide which attachments to keep
+      # for which nuggets.
+      @additional_listings.each do |n|
+        n.update_attributes(contact_broker_fake_name: @nugget.contact_broker_fake_name,
+                            contact_broker_fake_email: @nugget.contact_broker_fake_email)
+        n.set_editable_time && n.save
+      end
+
       @nugget.set_editable_time
       @nugget.save
       @broker_call=BrokerCall.new
@@ -219,19 +230,19 @@ class NuggetsController < ApplicationController
 
   #Post /nuggets/:id/save_call
   def save_call
-    @nugget=Nugget.where(:id=>params[:id]).first
-    @broker_call=@nugget.broker_calls.new(params[:broker_call])
-    @broker_call.caller = current_user
-    respond_to do |format|
-      if @broker_call.save
-        @nugget.broker_contacted
-        format.html { redirect_to jobboard_path, notice: 'Broker contacted.' }
-        format.json { head :no_content }
-      else
-        @nugget.unset_editable_time
-        format.html { redirect_to jobboard_path, notice: 'Something went wrong. Broker call not saved.' }
-        format.json { render json: @nugget.errors, status: :unprocessable_entity }
+
+    nugget = Nugget.find(params[:id])
+    broker_call = nugget.broker_calls.new(params[:broker_call])
+    broker_call.caller = current_user
+
+    if broker_call.save
+      (Nugget.contact_broker_jobs.where(signage_phone: nugget.signage_phone) + [nugget]).each do |n|
+        n.broker_contacted! # sets each nugget to the broker contacted state
       end
+      redirect_to jobboard_path, notice: "Broker contacted."
+    else
+      (Nugget.where(signage_phone: nugget.signage_phone) + [nugget]).each { |n| n.unset_editable_time }
+      redirect_to jobboard_path, notice: 'Something went wrong. Broker call NOT saved.'
     end
   end
 
