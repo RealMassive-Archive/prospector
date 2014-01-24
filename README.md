@@ -1,3 +1,12 @@
+## Dependencies
+
+You can install most of the dependencies you'll need with homebrew on OS X.
+If you don't have it, get it. It makes things SO much easier.
+
+* brew install postgresql # then set up the dev user with the password 'dev' for the databases you want to use
+* brew install redis # for resque
+* brew install imagemagick # for image manipulation by resque workers
+
 ## Setup
 
 * Clone the repo
@@ -30,4 +39,10 @@ Additional option: ngrok. http://ngrok.com
 * Watch Postmark -> Inbound dashboard and local console log for evidence
   of processing.
 
+### Resque
+
+The application uses Resque to parse emails received from the Postmark web hook.
+Make sure redis is up and running then run QUEUE=* bundle exec rake resque:work.
+The application has an authenticated /resque endpoint that you can use to see
+what resque workers have been up to.
 
