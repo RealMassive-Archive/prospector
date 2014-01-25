@@ -246,4 +246,14 @@ class NuggetsController < ApplicationController
     end
   end
 
+  # DELETE /nuggets/:id
+  def destroy
+    nugget = Nugget.find(params[:id])
+    if nugget.destroy
+      redirect_to nuggets_path, notice: "Nugget destroyed successfully."
+    else
+      redirect_to nugget, warning: "Nugget could not be destroyed. Check logs for details. Nugget ID: #{nugget.id}"
+    end
+  end
+
 end

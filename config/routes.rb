@@ -17,7 +17,7 @@ Prospector::Application.routes.draw do
 
   devise_for :users
   resources :users
-  resources :nuggets, only: [:index, :show] do
+  resources :nuggets, only: [:index, :show, :destroy] do
     collection do
       post 'transition'
       get 'read_signage'

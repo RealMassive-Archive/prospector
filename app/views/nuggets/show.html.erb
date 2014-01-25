@@ -75,4 +75,10 @@
 <% @nugget.attributes.each do |k,v| -%>
   <p><strong><%= k %></strong>: <%= v %></p>
 <% end -%>
+
+<p>
+  <%= button_to "DELETE NUGGET", nugget_path(@nugget), method: :delete, confirm: "Are you absolutely certain? You can't undo this!", class: 'btn btn-danger btn-large' %>
+  WARNING: This action cannot be undone. Don't click unless you're certain.
+</p>
+
 </div>
