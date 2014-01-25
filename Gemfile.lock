@@ -305,7 +305,7 @@ DEPENDENCIES
   acts-as-taggable-on
   annotate
   better_errors (>= 0.6.0)
-  binding_of_caller (>= 0.7.1)
+  binding_of_caller
   bootstrap-sass (~> 2.3.0.0)
   bootstrap-x-editable-rails
   cancan (>= 1.6.8)
