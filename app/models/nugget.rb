@@ -135,6 +135,11 @@ class Nugget < ActiveRecord::Base
     event :reset do
       transition :any => :initial
     end
+
+    # push a nugget back to awaiting_broker_response
+    event :back_to_broker do
+      transition :any => :awaiting_broker_response
+    end
   end
   def assign_fake_name_email
     self.contact_broker_fake_email = loop do

@@ -1,3 +1,5 @@
+require 'logger'
+
 class BrokerEmailWorker
   # This class exists for the same reason as nugget_worker. The
   # rationale behind why it's been generated is in there.
@@ -7,8 +9,12 @@ class BrokerEmailWorker
   @queue = :broker_email_queue
 
   def self.perform(message_id)
-    # logger = Rails.logger
+    # Set up logging.
+    logger = Rails.logger
+    Resque.logger = Logger.new(STDOUT)
     Resque.logger.level = Logger::DEBUG
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+
     # Retrieve the message from the database
     db_msg = Message.find(message_id)
     db_msg.start_processing! # Tell the DB that we just started with this
@@ -43,6 +49,7 @@ class BrokerEmailWorker
         end
 
         nugget.broker_email_received # mark email received
+
         broker_email.listing_nuggets.create(
             :broker_email_from => broker_email.from,
             :broker_email_to => broker_email.to,

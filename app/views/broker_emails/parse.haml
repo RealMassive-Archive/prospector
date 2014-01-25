@@ -23,6 +23,9 @@
           = simple_format @broker_email.body
     .span4
       .row-fluid.pagination-centered
+        = button_to "Reject Broker Email", broker_email_path(@broker_email), method: :delete, confirm: "Are you sure? This will send a standard rejection letter to the broker.", class: 'btn btn-danger'
+    .span4
+      .row-fluid.pagination-centered
         = form_for @broker_email do |f|
           = f.hidden_field :spam, :value=> true
           = f.submit "Mark as Spam",:class=>"btn btn-danger"

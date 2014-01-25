@@ -1,5 +1,6 @@
 class Api::BrokerEmailsController < ApplicationController
   skip_before_filter :cheap_authentication
+  skip_before_filter :verify_authenticity_token
 
   def create
     @message = Message.new(message_body: request.body.read, received_at: Time.now.utc)
