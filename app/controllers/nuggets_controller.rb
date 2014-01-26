@@ -11,12 +11,20 @@ class NuggetsController < ApplicationController
     @sort_column = (%w(submitter updated_at state signage_phone).select { |x| x == params[:sort_column] }).first || "updated_at"
     @sort_order  = (%w(ASC DESC).select { |x| x == params[:sort_order] }).first || "ASC"
 
-    @nuggets = Nugget.unscoped.where('state NOT IN (?)', [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]).
+    # Specify unwanted states for nuggets.
+    unwanted_states = [:duplicate, :no_gps, :signage_rejected, :blurry, :inappropriate]
+
+    @nuggets = Nugget.unscoped.where('state NOT IN (?)', unwanted_states).
       where("signage_address IS NOT NULL").
       order("#{@sort_column} #{@sort_order}").paginate(:page => params[:page], :per_page => 20)
       # This order clause may look susceptible to SQL injection, but above I'm explicitly checking for specific
       # values in these fields and absolutely no other value, including anything with quotes, commas, dashes,
       # semicolons, etc.
+
+    # Find the nuggets that need follow-up.
+    @followup_nuggets = Nugget.unscoped.where('state NOT IN (?)', unwanted_states).
+      where("signage_address IS NOT NULL").
+      joins(:broker_calls).where('broker_calls.call_result' => 'broker_directed_to_website_url')
 
     respond_to do |format|
       format.html # index.html.erb

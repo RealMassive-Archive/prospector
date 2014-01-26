@@ -54,14 +54,18 @@
     </div>
 
     <div class="span6">
-      <p>
-        <strong>Broker email to:</strong> <%= @nugget.broker_email_to %><br>
-        <strong>Broker email from:</strong> <%= @nugget.broker_email_from %><br>
-        <strong>Broker email subject:</strong> <%= @nugget.broker_email_subject %>
-      </p>
-      <p>
-        <%= @nugget.broker_email_body %>
-      </p>
+      <h4>Broker Calls</h4>
+      <% @nugget.broker_calls.each do |c| -%>
+        <p>
+          <strong>Broker name:</strong>
+            <%= c.broker_name %> &lt;<%= link_to c.broker_email, "mailto:#{c.broker_email}" %>&gt;<br>
+          <strong>Caller:</strong>
+            <%= c.caller.name %> &lt;<%= link_to c.caller.email, "mailto:#{c.caller.email}" %>&gt;<br>
+          <strong>Logged at:</strong> <%= c.created_at %><br>
+          <strong>Call result:</strong> <%= c.call_result %><br>
+          <strong>Call comments:</strong> <%= c.call_comments %>
+        </p>
+      <% end -%>
     </div>
 
 

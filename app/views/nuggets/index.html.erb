@@ -6,6 +6,64 @@
   or duplicates, since there's nothing left to do with those.
 </p>
 
+<% if @followup_nuggets && @followup_nuggets.count > 0 -%>
+<h4>Nuggets requiring follow-up</h4>
+<p>These nuggets need manual followup from RealMassive personnel.</p>
+
+<table class="table table-hover">
+  <tr>
+    <th>Approximate Address</th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=submitter">
+        Submitted By
+        <% if @sort_column == 'submitter' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=state">
+        Current Status
+        <% if @sort_column == 'state' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=updated_at">
+        Last Update
+        <% if @sort_column == 'updated_at' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+      </a>
+    </th>
+    <th>
+      <a href="<%= nuggets_path %>?sort_order=<%= (@sort_order == 'ASC' ? 'DESC' : 'ASC') %>&sort_column=signage_phone">
+        Signage Phone
+        <% if @sort_column == 'signage_phone' -%>
+          <i class="icon-chevron-<%= (@sort_order == 'ASC' ? 'up' : 'down') %>"></i>
+        <% end -%>
+    <th>More...</th>
+  </tr>
+
+<% @followup_nuggets.each do |n| -%>
+  <tr>
+    <td><%= n.signage_address || "Unknown Location" %></td>
+    <td><%= n.submitter || "Unknown Submitter" %></td>
+    <td><%= n.state || "New" %></td>
+    <td><%= time_ago_in_words(n.updated_at) %> ago</td>
+    <td><%= number_to_phone(n.signage_phone) %></td>
+    <td><%= link_to("More...", n) %></td>
+  </tr>
+<% end -%>
+
+</table>
+
+<h4>Primary Nugget Listing</h4>
+<% end -%>
+
+
+
 <p><%= will_paginate @nuggets, renderer: BootstrapPagination::Rails %></p>
 
 <table class="table table-hover">
