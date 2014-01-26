@@ -54,7 +54,6 @@ class NuggetsController < ApplicationController
       flash[:notice] = "No Signage jobs available."
       redirect_to jobboard_path
     else
-      @nugget.set_editable_time
       @nugget.save
       render :layout => false
     end
@@ -116,8 +115,6 @@ class NuggetsController < ApplicationController
       flash[:notice] = "No Review jobs available."
       redirect_to jobboard_path
     else
-      @nugget.set_editable_time
-      @nugget.save
       render :layout => false
     end
   end
@@ -152,7 +149,6 @@ class NuggetsController < ApplicationController
   def unset_editable_time
     @nugget = Nugget.find(params[:id])
     @nugget.unset_editable_time
-    @nugget.save
     #redirect_to jobboard_path
     render :nothing => true
   end
@@ -184,10 +180,8 @@ class NuggetsController < ApplicationController
       @additional_listings.each do |n|
         n.update_attributes(contact_broker_fake_name: @nugget.contact_broker_fake_name,
                             contact_broker_fake_email: @nugget.contact_broker_fake_email)
-        n.set_editable_time && n.save
       end
 
-      @nugget.set_editable_time
       @nugget.save
       @broker_call=BrokerCall.new
       render :layout => false
@@ -197,13 +191,10 @@ class NuggetsController < ApplicationController
   # GET /nuggets/dedup_signage
   def dedupe_signage
     @nugget = Nugget.dedupe_jobs.first
-    unless @nugget.nil?
-      @nugget.set_editable_time
-      @nugget.save
-    end
     render layout: false
   end
-  #Post /nuggets/:id/dedupe
+
+  # Post /nuggets/:id/dedupe
   def dedupe
     @nugget = Nugget.find(params[:id])
     @compared_to_nugget= Nugget.find(params[:duplicate])

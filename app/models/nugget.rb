@@ -81,13 +81,12 @@ class Nugget < ActiveRecord::Base
   scope :awaiting_broker_response, -> { with_state(:awaiting_broker_response) }
   scope :initial, -> { with_state(:initial)}
 
-  scope :read_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_read) }
-  scope :review_signage_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:signage_reviewed) }
-  scope :dedupe_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:dupe_check).without_state(:signage_rejected) }
-  scope :contact_broker_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:ready_to_contact_broker) }
-  scope :unique_fake_emails_to_contact_broker,->{with_state([:ready_to_contact_broker,:awaiting_broker_response])}
-  scope :awaiting_broker_response, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:awaiting_broker_response) }
-  scope :parse_info_from_broker_emails_jobs, -> { where("editable_until IS NULL OR editable_until < ?", Time.now).with_state(:broker_email_received) }
+  scope :read_signage_jobs, -> { with_state(:signage_read) }
+  scope :review_signage_jobs, -> { with_state(:signage_reviewed) }
+  scope :dedupe_jobs, -> { with_state(:dupe_check).without_state(:signage_rejected) }
+  scope :contact_broker_jobs, -> { with_state(:ready_to_contact_broker) }
+  scope :unique_fake_emails_to_contact_broker,->{ with_state([:ready_to_contact_broker,:awaiting_broker_response]) }
+  scope :parse_info_from_broker_emails_jobs, -> { with_state(:broker_email_received) }
 
   state_machine initial: :initial do
     store_audit_trail :context_to_log => :state_message # Will grab the results of the state_message method on the model and store it in a field called state_message on the audit trail model
@@ -176,7 +175,8 @@ class Nugget < ActiveRecord::Base
   end
 
   def editable?
-    self.editable_until.nil? || self.editable_until <= Time.now
+    # self.editable_until.nil? || self.editable_until <= Time.now
+    true
   end
 
   def process_geodata
@@ -189,35 +189,42 @@ class Nugget < ActiveRecord::Base
   end
 
   def is_editable
-    self.errors[:editable_until] << "this record is locked" unless editable?
+    # self.errors[:editable_until] << "this record is locked" unless editable?
+    true
   end
 
   def set_editable_time
-    time_to_lock = case self.state_name
-      when :signage_read
-        time_to_lock = 1.minutes
-      when :signage_reviewed
-        time_to_lock = 3.minutes
-      when :ready_to_contact_broker
-        time_to_lock = 1.minutes
-        # probably should be 1 biz days
-        # time_to_lock = case (Time.now).wday % 7
-        #   when 5 # now is Friday
-        #     3.days
-        #   when 6 # now is Saturday
-        #     2.days
-        #   else
-        #     1.days
-        #   end
-      else
-        time_to_lock = 1.minutes
-    end
+    # Original versions of this app had weird case statements
+    # setting how long an item could be editable. This makes
+    # zero sense in the current context, so I'm just making this
+    # essentially unset_editable_time instead.
+    unset_editable_time
 
-    self.editable_until ||= Time.now + time_to_lock
+    # time_to_lock = case self.state_name
+    #   when :signage_read
+    #     time_to_lock = 1.minutes
+    #   when :signage_reviewed
+    #     time_to_lock = 3.minutes
+    #   when :ready_to_contact_broker
+    #     time_to_lock = 1.minutes
+    #     # probably should be 1 biz days
+    #     # time_to_lock = case (Time.now).wday % 7
+    #     #   when 5 # now is Friday
+    #     #     3.days
+    #     #   when 6 # now is Saturday
+    #     #     2.days
+    #     #   else
+    #     #     1.days
+    #     #   end
+    #   else
+    #     time_to_lock = 1.minutes
+    # end
+
+    # self.editable_until ||= Time.now + time_to_lock
   end
 
   def unset_editable_time
-    self.editable_until = nil
+    update_attribute(:editable_until, nil)
   end
 
   def populate_address(geo_addr)
@@ -244,6 +251,17 @@ class Nugget < ActiveRecord::Base
            "id NOT IN (?) and created_at < ?",
            self.compared_to_nugget_ids << self.id,self.created_at
         ])
+  end
+
+  #
+  # Looks at the broker calls for the nugget, and if they're there and the
+  # personnel at RealMassive need to follow up with this broker, returns
+  # true.
+  #
+  def followup_needed?
+    if broker_calls.count > 0
+
+    end
   end
 
 private
