@@ -1,5 +1,5 @@
 class BrokerNotificationsMailer < ActionMailer::Base
-  default from: "no-reply@nuggetfund.com"
+  default from: "nuggetfund.com@realmassive.com"
 
   def submission_rejected(broker_email)
     @to = broker_email.from

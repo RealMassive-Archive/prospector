@@ -170,7 +170,7 @@ class NuggetsController < ApplicationController
       @listing_type = @nugget.signage_listing_type.nil? ? "sale or maybe lease" : @nugget.signage_listing_type
 
       # Find additional nuggets with the same signage phone to list on the form.
-      @additional_listings = Nugget.where(signage_phone: @nugget.signage_phone)
+      @additional_listings = Nugget.ready_to_contact_broker.where(signage_phone: @nugget.signage_phone).where("id != ?", @nugget.id)
 
       # This is a patch to fix some behavior that doesn't really fit here due to the age of the code vs. the business' current workflow,
       # but is nonetheless needed here. We need to set all the additional nuggets to have the same fake broker name/email.

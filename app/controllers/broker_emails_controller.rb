@@ -4,7 +4,7 @@ class BrokerEmailsController < ApplicationController
   # DELETE /broker_emails/:id
   def destroy
     be = BrokerEmail.find(params[:id])
-    if be.destroy && Resque.enqueue(BrokerNotificationsWorker, be.id)
+    if Resque.enqueue(BrokerNotificationsWorker, be.id)
       redirect_to jobboard_path, notice: "Broker Email rejected and notice sent."
     else
       redirect_to jobboard_path, warning: "Not able to delete Broker Email and/or notify broker. Check logs. Broker email id: #{be.id}"

@@ -9,7 +9,10 @@ class BrokerNotificationsWorker
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActionMailer::Base.logger = Logger.new(STDOUT)
 
-    BrokerNotificationsMailer.submission_rejected(BrokerEmail.find(broker_email_id)).deliver
+    # This will have to both notify the broker AND destroy the record.
+    be = BrokerEmail.find(broker_email_id)
+    BrokerNotificationsMailer.submission_rejected(be).deliver
+    be.destroy
   end
 
 end
