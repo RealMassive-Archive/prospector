@@ -24,7 +24,7 @@ class NuggetsController < ApplicationController
     # Find the nuggets that need follow-up.
     @followup_nuggets = Nugget.unscoped.where('state NOT IN (?)', unwanted_states).
       where("signage_address IS NOT NULL").
-      joins(:broker_calls).where('broker_calls.call_result' => 'broker_directed_to_website_url')
+      joins(:broker_calls).where('broker_calls.call_result NOT IN (?)', [:broker_refused_to_email, :broker_will_email_assets])
 
     respond_to do |format|
       format.html # index.html.erb
