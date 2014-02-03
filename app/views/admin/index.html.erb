@@ -1,0 +1,22 @@
+<h1>Available administrator functions</h1>
+
+<p><strong>NOTE:</strong> You can do a lot of serious damage here. Be <em>really sure</em>
+  you know what you're doing before pressing ANY of these buttons!</p>
+
+<h3>Purge Database</h3>
+<p>
+  If you're absolutely <strong>CERTAIN</strong> you want to purge the database,
+  type "purge" below and click the purge buton.
+</p>
+
+<h1>THIS ACTION ABSOLUTELY CANNOT BE UNDONE. ALL DATA WILL BE *PERMANENTLY* LOST!
+YOU'D BETTER BE ABSOLUTELY SURE BEFORE YOU CONTINUE BECAUSE THERE IS NO WAY IN
+HEAVEN OR ON EARTH TO GET THIS DATA BACK!</h1>
+
+<p>So...you still good with that?</p>
+
+<%= form_tag purge_path, method: :delete do %>
+<input type="text" name="purge_confirm"><br>
+<small>If you're sure, type &quot;purge&quot; above.</small>
+<p><%= submit_tag "PURGE", class: "btn btn-danger btn-large" %></p>
+<% end %>
