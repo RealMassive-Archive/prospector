@@ -5,13 +5,12 @@ gem 'rails', '~> 3.2.14'
 gem 'pg'
 gem 'carrierwave'
 gem "mini_magick"
-gem "fog", "~> 1.20.0"
+gem "fog", "~> 1.3.1"
 gem 'geocoder'
 gem 'state_machine'
 gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
 gem 'resque', "~> 1.25.1" # redis is a dependency
-gem 'excon', "~> 0.31.0" # for external HTTP connections to API
 
 # send emails
 gem 'postmark-rails'
