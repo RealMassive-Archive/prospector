@@ -1,0 +1,1 @@
+Dir["#{Rails.root}/app/models/api/*.rb"].each { |f| require f }
