@@ -38,6 +38,34 @@ class Building
     # Step 2: Loop through opts{} and see if we have a method that
     # responds to that particular parameter, and if so, set it to the value.
     # TODO
-binding.pry
   end
+
+  #
+  # Building.find(address: ... city: ... state: ... zipcode: ...)
+  # Utilizes the Electrick-co API to fetch all buildings by its search
+  # functionality and returns an array of hashes with indifferent access.
+  #
+  def self.find(address, city, state, zipcode)
+    # Error checking - make sure we have what we need per the Electrick-co API
+    # https://github.com/electrik-co/realmassive/wiki/Building-API
+    if address.blank? || city.blank? || state.blank? || state.length != 2 || zipcode.blank?
+      raise ArgumentError, "You must supply ALL parameters, and state must be a two-letter abbreviation."
+    end
+
+    conn = Excon.new((ENV['ELECTRIC_API_ENDPOINT'] || 'https://realmassive-staging.appspot.com') + "/api/v1/buildings?address")
+    response = conn.get(query: { street: address, city: city, state: state, zipcode: zipcode.to_s, limit: 3 })
+    new_arr = []
+    parsed = ::Yajl::Parser.new.parse(response.body)
+    if parsed["results"]
+      parsed["results"].each do |x|
+        new_arr << x.with_indifferent_access
+      end
+      return new_arr
+    else
+      return [] # empty array if there aren't any buildings found
+    end
+
+
+  end
+
 end
