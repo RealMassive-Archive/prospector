@@ -5,7 +5,7 @@ gem 'rails', '~> 3.2.17'
 gem 'pg'
 gem 'carrierwave'
 gem "mini_magick"
-gem "fog", "~> 1.3.1"
+gem "fog", "~> 1.20.0"
 gem 'geocoder'
 gem 'state_machine'
 gem 'state_machine-audit_trail'

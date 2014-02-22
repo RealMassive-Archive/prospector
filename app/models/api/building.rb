@@ -31,7 +31,7 @@ class Building
     # Step 1: Find and set key, manager, created_by and attachments.
     # Nil objects are entirely acceptable here if not found in opts{}.
     @key = "TODO"
-    @manager = 'TODO'
+    @manager = "TODO"
     @created_by = "TODO"
     @attachments = "TODO"
 
