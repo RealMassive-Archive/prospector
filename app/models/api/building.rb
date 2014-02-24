@@ -40,6 +40,27 @@ class Building
     # TODO
   end
 
+  def self.create(opts={}.with_indifferent_access)
+    # Start by checking for all required options to create a new Building object.
+    unless opts[:name] && opts[:type] && opts[:subtype] && opts[:size] && opts[:size_units] && opts[:lot_size] && opts[:lot_size_units] && opts[:building_class] && opts[:year_built] && opts[:highlights] && opts[:address]
+      raise ArgumentError, "You must supply all editable properties as described at https://github.com/electrik-co/realmassive/wiki/Building-API."
+    end
+
+    # Check to be sure address contains what we need
+    unless opts[:address][:street] && opts[:address][:city] && opts[:address][:state] && opts[:address][:zipcode]
+      raise ArgumentError, "You did not supply street, city, state and zipcode in your address hash."
+    end
+
+    # Make sure state is exactly a two-letter abbreviation
+    unless opts[:address][:state].length == 2
+      raise ArgumentError, "State must be a 2-letter abbreviation."
+    end
+
+
+
+    # Shove it up there.
+  end
+
   #
   # Building.find(address: ... city: ... state: ... zipcode: ...)
   # Utilizes the Electrick-co API to fetch all buildings by its search

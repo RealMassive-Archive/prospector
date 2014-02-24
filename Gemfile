@@ -12,6 +12,7 @@ gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
 gem 'resque', "~> 1.25.1" # redis is a dependency
 gem "yajl-ruby", "~> 1.2.0", require: 'yajl' # faster json parser
+gem 'faraday'
 
 # send emails
 gem 'postmark-rails'
