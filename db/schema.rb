@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115092848) do
+ActiveRecord::Schema.define(:version => 20140303055248) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -108,11 +108,14 @@ ActiveRecord::Schema.define(:version => 20140115092848) do
     t.string   "broker2_phone"
     t.string   "brokerage_name"
     t.string   "landlord_name"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "state"
     t.integer  "listing_nugget_id"
+    t.boolean  "processed",          :default => false
   end
+
+  add_index "listings", ["processed"], :name => "index_listings_on_processed"
 
   create_table "messages", :force => true do |t|
     t.text     "message_body"
