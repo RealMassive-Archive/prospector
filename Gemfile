@@ -12,7 +12,20 @@ gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
 gem 'resque', "~> 1.25.1" # redis is a dependency
 gem "yajl-ruby", "~> 1.2.0", require: 'yajl' # faster json parser
-gem 'faraday'
+gem 'jquery-rails'
+gem 'haml'
+gem 'haml-rails'
+gem 'annotate'
+gem "devise", ">= 2.2.3"
+gem "cancan", ">= 1.6.8"
+gem "rolify", ">= 3.2.0"
+gem "simple_form", ">= 2.0.4"
+gem "figaro", ">= 0.5.3"
+gem 'faker'
+gem 'httparty', "~> 0.13.0"
+gem 'jquery-ui-rails'
+gem 'will_paginate'
+gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
 
 # send emails
 gem 'postmark-rails'
@@ -25,9 +38,6 @@ gem 'postmark-mitt'
 # so exifr may be redundant (JCQ, March 2013)
 gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
 
-gem 'will_paginate'
-gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
-
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -35,19 +45,6 @@ group :assets do
   gem "bootstrap-sass", "~> 2.3.0.0"
   gem 'bootstrap-x-editable-rails'
 end
-
-gem 'jquery-rails'
-gem 'haml'
-gem 'haml-rails'
-gem 'annotate'
-gem "devise", ">= 2.2.3"
-gem "cancan", ">= 1.6.8"
-gem "rolify", ">= 3.2.0"
-gem "simple_form", ">= 2.0.4"
-gem "figaro", ">= 0.5.3"
-gem 'faker'
-gem 'httparty'
-gem 'jquery-ui-rails'
 
 # This will allow future switches
 # between major application servers
