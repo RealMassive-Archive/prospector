@@ -11,6 +11,17 @@
 
 class Building
   #
+  # fetch(key)
+  #   Fetches a building from the API using the key passed in.
+  #   Parameters:
+  #     key: the UUID key of the building. This is authoratatively suppled by
+  #          the API.
+  #
+  def self.fetch(key)
+    return Yajl::Parser.parse(ApiWrapper.get("/api/v1/buildings/#{key}", '').body)
+  end
+
+  #
   # create({street: "...", city: "..." ...})
   # Creates a building. Returns the response object.
   # Parameters:
