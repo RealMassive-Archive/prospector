@@ -22,7 +22,7 @@ class Building
   end
 
   #
-  # create({street: "...", city: "..." ...})
+  # Building.create(addr) # addr = {street: ..., city: ..., ...}
   # Creates a building. Returns the response object.
   # Parameters:
   #   address: Hash containing street, city, state, zipcode keys
@@ -52,7 +52,7 @@ class Building
   end
 
   #
-  # Building.find(address: ... city: ... state: ... zipcode: ...)
+  # Building.search(addr) # addr = { street: ... city: ... ... }
   # Utilizes the Electrick-co API to fetch all buildings by its search
   # functionality and returns an array of hashes with indifferent access.
   #
@@ -76,6 +76,11 @@ class Building
 
     # Perform GET request to retrieve results
     results = ApiWrapper.get('/api/v1/buildings', {address: address, limit: 3})
+      # RE: limit: 3 - if there's only one in the entire set it's an exact
+      # match and that's the one you want to add to. If not, there will be N
+      # matches. If it isn't within the first of those three, since they're
+      # ordered by geographic proximity, there's no point since it's obviously
+      # not in the result set.
 
     # Return the actual buildings that the API gave us
     return Yajl::Parser.parse(results.body)['results']
