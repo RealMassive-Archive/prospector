@@ -28,7 +28,7 @@ class ApiWrapper
     response = Typhoeus::Request.new(
       ENV['ELECTRICK_API_ENDPOINT'] + path,
       method: :post,
-      body:   body,
+      body:   Yajl::Encoder.encode(body), # params are automaticaly encoded by Typhoeus, but not body
       userpwd: [ENV['ELECTRICK_API_USERNAME'],ENV['ELECTRICK_API_PASSWORD']].join(':')
     )
     return response.run

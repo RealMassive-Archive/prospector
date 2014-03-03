@@ -34,12 +34,8 @@ class Building
       raise ArgumentError, "address[:state] must be an exact two-letter state abbreviation."
     end
 
-
-
-
-    # Shove it up there.
-    json = ::Yajl::Encoder.encode(opts)
-
+    # Finally, send the payload to the API and return a response.
+    return Yajl::Parser.parse(ApiWrapper.post('/api/v1/buildings', {address: address}).body)
 
 
   end
