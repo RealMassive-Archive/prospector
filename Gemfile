@@ -23,6 +23,7 @@ gem "simple_form", ">= 2.0.4"
 gem "figaro", ">= 0.5.3"
 gem 'faker' # for "fake" broker email addresses
 gem 'faraday', "~> 0.9.0"
+gem "typhoeus", "~> 0.6.7"
 gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
