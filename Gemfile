@@ -21,8 +21,8 @@ gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 gem "simple_form", ">= 2.0.4"
 gem "figaro", ">= 0.5.3"
-gem 'faker'
-gem 'httparty', "~> 0.13.0"
+gem 'faker' # for "fake" broker email addresses
+gem 'faraday', "~> 0.9.0"
 gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
