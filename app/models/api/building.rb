@@ -14,7 +14,7 @@ class Building
   # fetch(key)
   #   Fetches a building from the API using the key passed in.
   #   Parameters:
-  #     key: the UUID key of the building. This is authoratatively suppled by
+  #     key: the UUID key of the building. This is authoratatively supplied by
   #          the API.
   #
   def self.fetch(key)
@@ -47,8 +47,6 @@ class Building
 
     # Finally, send the payload to the API and return a response.
     return Yajl::Parser.parse(ApiWrapper.post('/api/v1/buildings', {address: address}).body)
-
-
   end
 
   #
@@ -66,7 +64,7 @@ class Building
     # Address must have ALL of the following keys
     [:street, :city, :state, :zipcode].each do |k|
       unless address[k] || address[k].blank?
-        raise ArgumentError, "address[:#{k}] is blank and shouldn't be"
+        raise ArgumentError, "address[:#{k}] is blank and shouldn't be."
       end
     end
 
@@ -84,6 +82,5 @@ class Building
 
     # Return the actual buildings that the API gave us
     return Yajl::Parser.parse(results.body)['results']
-
   end
 end
