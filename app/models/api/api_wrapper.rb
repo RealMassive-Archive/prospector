@@ -9,7 +9,7 @@ class ApiWrapper
   #   path: the path to run the GET against
   #   params: the request params to throw. Should be a hash when passed in.
   #
-  def self.get(path, params)
+  def self.get(path, params = nil)
     response = Typhoeus::Request.new(
       ENV['ELECTRICK_API_ENDPOINT'] + path,
       method: :get,
