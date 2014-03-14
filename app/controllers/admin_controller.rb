@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   before_filter :authenticate_user!
   before_filter :final_check, only: :purge
+  skip_before_filter :cheap_authentication, only: :purge
 
   def index
     # For now, just lists available actions. Nothing
