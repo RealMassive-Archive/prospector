@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140321091219) do
+ActiveRecord::Schema.define(:version => 20140321092846) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -58,10 +58,12 @@ ActiveRecord::Schema.define(:version => 20140321091219) do
     t.string   "city"
     t.string   "state"
     t.string   "zipcode"
+    t.string   "api_uuid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "buildings", ["api_uuid"], :name => "index_buildings_on_api_uuid"
   add_index "buildings", ["city"], :name => "index_buildings_on_city"
   add_index "buildings", ["state"], :name => "index_buildings_on_state"
   add_index "buildings", ["street"], :name => "index_buildings_on_street"
@@ -213,6 +215,19 @@ ActiveRecord::Schema.define(:version => 20140321091219) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "spaces", :force => true do |t|
+    t.string   "space_type"
+    t.text     "description"
+    t.string   "unit_number"
+    t.string   "rate"
+    t.string   "rate_units"
+    t.string   "floor_number"
+    t.string   "api_uuid"
+    t.string   "api_building_uuid"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

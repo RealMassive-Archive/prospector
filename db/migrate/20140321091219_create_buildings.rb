@@ -8,6 +8,7 @@ class CreateBuildings < ActiveRecord::Migration
       t.string        :city
       t.string        :state
       t.string        :zipcode
+      t.string        :api_uuid
       t.timestamps
     end
 
@@ -15,5 +16,6 @@ class CreateBuildings < ActiveRecord::Migration
     add_index :buildings, :city
     add_index :buildings, :state
     add_index :buildings, :zipcode
+    add_index :buildings, :api_uuid
   end
 end
