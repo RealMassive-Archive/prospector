@@ -5,7 +5,7 @@
 # documentation at https://github.com/electrik-co/realmassive/wiki/Space-API.
 #
 
-class Space
+class ApiSpace
   #
   # Space.create("abc123", {space_type: ..., unit_number: ...})
   #

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303055248) do
+ActiveRecord::Schema.define(:version => 20140321091219) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -49,6 +49,23 @@ ActiveRecord::Schema.define(:version => 20140303055248) do
     t.boolean  "spam",                   :default => false
     t.boolean  "need_supervisor_review", :default => false
   end
+
+  create_table "buildings", :force => true do |t|
+    t.string   "name"
+    t.string   "size"
+    t.string   "size_units"
+    t.string   "street"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "buildings", ["city"], :name => "index_buildings_on_city"
+  add_index "buildings", ["state"], :name => "index_buildings_on_state"
+  add_index "buildings", ["street"], :name => "index_buildings_on_street"
+  add_index "buildings", ["zipcode"], :name => "index_buildings_on_zipcode"
 
   create_table "duplicates", :force => true do |t|
     t.integer  "nugget_id"

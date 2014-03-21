@@ -1,15 +1,12 @@
-#
-# building.rb
-#
-# A basic wrapper class to interface with buildings according to
-# the way that buildings have properties in the RealMassive/Electrick-co
-# readme located at https://github.com/electrik-co/realmassive/wiki/Building-API
-#
-# This model is NOT data-store backed in any way. We'll save the request and
-# api response in a table at a later date.
-#
+class Building < ActiveRecord::Base
 
-class Building
+  #
+  # building.rb
+  #
+  # An ActiveRecord class to interface with buildings according to
+  # the way that buildings have properties in the RealMassive/Electrick-co
+  # readme located at https://github.com/electrik-co/realmassive/wiki/Building-API
+
   #
   # fetch(key)
   #   Fetches a building from the API using the key passed in.
@@ -22,12 +19,12 @@ class Building
   end
 
   #
-  # Building.create(addr) # addr = {street: ..., city: ..., ...}
+  # Building.api_create(addr) # addr = {street: ..., city: ..., ...}
   # Creates a building. Returns the response object.
   # Parameters:
   #   address: Hash containing street, city, state, zipcode keys
   #
-  def self.create(address={}.with_indifferent_access)
+  def self.api_create(address={}.with_indifferent_access)
     # Error checking - make sure we have what we need per the Electrick-co API
     # https://github.com/electrik-co/realmassive/wiki/Building-API
     if address.blank?
