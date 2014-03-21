@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140321092846) do
+ActiveRecord::Schema.define(:version => 20140321093238) do
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"
@@ -83,6 +83,15 @@ ActiveRecord::Schema.define(:version => 20140321092846) do
     t.string   "file"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "listing_checks", :force => true do |t|
+    t.string   "real_estate_type"
+    t.string   "check_status"
+    t.text     "request_payload"
+    t.text     "response_payload"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "listing_nuggets", :force => true do |t|
