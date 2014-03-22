@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.1'
 
 gem 'rails', '~> 3.2.17'
 gem 'pg'
@@ -15,7 +15,6 @@ gem "yajl-ruby", "~> 1.2.0", require: 'yajl' # faster json parser
 gem 'jquery-rails'
 gem 'haml'
 gem 'haml-rails'
-gem 'annotate'
 gem "devise", ">= 2.2.3"
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
@@ -27,6 +26,7 @@ gem "typhoeus", "~> 0.6.7"
 gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
+gem 'thin' # evented
 
 # send emails
 gem 'postmark-rails'
@@ -47,34 +47,9 @@ group :assets do
   gem 'bootstrap-x-editable-rails'
 end
 
-# This will allow future switches
-# between major application servers
-# with minimal effort.
-group :applicaiton_servers do
-  gem 'puma' # concurrency
-  gem 'thin' # evented
-  gem 'unicorn' # just plain awesome
-end
-
 group :development, :test do
-  gem "rspec-rails", ">= 2.12.2"
-  gem "database_cleaner", ">= 0.9.1"
-  gem "email_spec", ">= 1.4.0"
-  gem "cucumber-rails", ">= 1.3.0", require: false
-  gem "launchy", ">= 2.2.0"
-  gem "capybara", ">= 2.0.2"
-  gem "factory_girl_rails", ">= 4.2.0"
-  gem "quiet_assets", ">= 1.0.1"
   gem "better_errors", ">= 0.6.0"
   gem "binding_of_caller"
-  gem 'html2haml'
-
-  # with this gem, call "rake haml:convert_erbs" or
-  # "rake haml:replace_erbs" to batch-convert any erb
-  # to haml (will not overwrite existing haml files
-  gem 'erb2haml'
-
-  gem 'pry'
+  gem 'annotate'
   gem 'pry-rails'
-  gem 'rb-readline', '~> 0.5.0', :require=>false
 end
