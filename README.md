@@ -1,3 +1,12 @@
+## Status
+
+This application was originally developed around a concept for Real Massive that
+no longer exists; ergo, much of this codebase is invalid and based on previous
+concepts. Several pivots have happened since it was started and this code has
+been through several maintainers. Tests will no longer function, and since the
+application is needed in a hurry and for a limited time to process a large
+batch of data, those tests were removed (they'd never work right anyway).
+
 ## Dependencies
 
 You can install most of the dependencies you'll need with homebrew on OS X.
@@ -45,4 +54,3 @@ The application uses Resque to parse emails received from the Postmark web hook.
 Make sure redis is up and running then run QUEUE=* bundle exec rake resque:work.
 The application has an authenticated /resque endpoint that you can use to see
 what resque workers have been up to.
-
