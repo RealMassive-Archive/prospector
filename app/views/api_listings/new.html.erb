@@ -1,0 +1,49 @@
+<h2>New Building</h2>
+
+<p>
+  Please supply all information you have about the building itself. If you
+  don't know one of the details, leave it blank with the exception of the
+  address parameters - all of those are absolutely required.
+</p>
+
+<%= form_for @building do |f| -%>
+
+  <p>
+    <%= f.label :name, "Building Name" %>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :size, "Building Size" %>
+    <%= f.text_field :size %>
+  </p>
+
+  <p>
+    <%= f.label :size_units, "Size Unit of Measure (e.g. ft/2, m/2)" %>
+    <%= f.text_field :size_units %>
+  </p>
+
+  <p>
+    <%= f.label :street, "Street Address" %>
+    <%= f.text_field :street %>
+  </p>
+
+  <p>
+    <%= f.label :city %>
+    <%= f.text_field :city %>
+  </p>
+
+  <p>
+    <%= f.label :state, "State (two-letter abbreviation only)" %>
+    <%= f.text_field :state %>
+  </p>
+
+  <p>
+    <%= f.label :zipcode, "Zip Code" %>
+    <%= f.text_field :zipcode %>
+  </p>
+
+
+  <%= f.submit "Next" %>
+
+<% end -%>
