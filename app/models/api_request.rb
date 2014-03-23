@@ -1,7 +1,7 @@
 class ApiRequest < ActiveRecord::Base
 
   before_save :encode_args_hash
-  before_create :set_status_pending, on: :create
+  before_create :set_status_pending
 
   def process!
     # Mark this object's status as "pending" to start the process
