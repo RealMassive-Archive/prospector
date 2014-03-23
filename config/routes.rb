@@ -1,10 +1,5 @@
 Prospector::Application.routes.draw do
 
-  # Mount resque's UI:
-  authenticate :user do
-    mount Resque::Server.new, :at => "/resque"
-  end
-
   authenticated :user do
     root :to => 'home#jobboard'
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
@@ -15,6 +10,7 @@ Prospector::Application.routes.draw do
     get '/api-listings/new' => 'api_listings#new'
     resources :buildings, except: [:edit, :update, :destroy]
     get '/buildings/search/:street/:city/:state/:zipcode' => 'buildings#search'
+    mount Resque::Server.new, :at => "/resque"
   end
 
   root :to => "home#please_login"
