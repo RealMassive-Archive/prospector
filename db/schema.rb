@@ -101,15 +101,6 @@ ActiveRecord::Schema.define(:version => 20140323104648) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "listing_checks", :force => true do |t|
-    t.string   "real_estate_type"
-    t.string   "check_status"
-    t.text     "request_payload"
-    t.text     "response_payload"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
   create_table "listing_nuggets", :force => true do |t|
     t.integer  "broker_email_id"
     t.string   "broker_email_to"
@@ -253,6 +244,10 @@ ActiveRecord::Schema.define(:version => 20140323104648) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
+
+  add_index "spaces", ["api_building_uuid"], :name => "index_spaces_on_api_building_uuid"
+  add_index "spaces", ["api_uuid"], :name => "index_spaces_on_api_uuid"
+  add_index "spaces", ["space_type"], :name => "index_spaces_on_space_type"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
