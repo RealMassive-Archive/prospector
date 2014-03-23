@@ -3,7 +3,6 @@ Prospector::Application.routes.draw do
   authenticated :user do
     root :to => 'home#jobboard'
     match "/jobboard" => "home#jobboard", :as => :jobboard, :via => :get
-    match "/index3" => "home#index3", :as => :index3, :via => :get
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
     delete  '/admin/purge' => 'admin#purge', as: :purge
     get     '/admin'       => 'admin#index', as: :admin

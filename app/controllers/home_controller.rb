@@ -14,9 +14,6 @@ class HomeController < ApplicationController
     @listing_jobs = ListingNugget.listing_nuggets_of_parsed_broker_emails.count
   end
 
-  def index3
-  end
-
   def map
     @nuggets = Nugget.where("latitude IS NOT NULL")
   end
