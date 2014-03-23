@@ -5,17 +5,34 @@ class Building < ActiveRecord::Base
   #
   # An ActiveRecord class to interface with buildings according to
   # the way that buildings have properties in the RealMassive/Electrick-co
-  # readme located at https://github.com/electrik-co/realmassive/wiki/Building-API
+  # readme located at
+  # https://github.com/electrik-co/realmassive/wiki/Building-API
+
+  # NOTE: This "DSL" needs to conform to a standard that has all API-related
+  # methods accept a hash of options. This is to facilitate some very basic
+  # metaprogramming throughout the system that allows for dynamic "queries"
+  # of the model based on information gathered from the database at runtime.
+
+  #
+  # Building.allowed_queries
+  # Provides an array of symbols specifying the allowed methods that will be
+  # later used by Object#send. This is to prevent abuse of the send method,
+  # especially when user input is at least somewhat utilized. (security)
+  def self.allowed_queries
+    [:fetch, :api_create, :search]
+  end
 
   #
   # fetch(key)
   #   Fetches a building from the API using the key passed in.
   #   Parameters:
-  #     key: the UUID key of the building. This is authoratatively supplied by
-  #          the API.
+  #     key: {uuid: "abc123..."} the UUID key of the building. This is
+  #                         authoratatively supplied by the API.
   #
-  def self.fetch(key)
-    return Yajl::Parser.parse(ApiWrapper.get("/api/v1/buildings/#{key}", '').body)
+  def self.fetch(key = {}.with_indifferent_access)
+    return Yajl::Parser.parse(ApiWrapper.get(
+      "/api/v1/buildings/#{key[:uuid]}", ''
+      ).body)
   end
 
   #
