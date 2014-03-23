@@ -15,13 +15,12 @@ class ApiRequestWorker
     Resque.logger = Logger.new(STDOUT)
     Resque.logger.level = Logger::DEBUG
     ActiveRecord::Base.logger = Logger.new(STDOUT)
-    ActionMailer::Base.logger = Logger.new(STDOUT)
 
     ar = ApiRequest.find(id)
     ar.process!
 
-    # Failsafe - look for any other object marked "pending" and run it.
-    ApiRequest.where(status: "pending").each do |ar|
+    # Failsafe - look for any other object marked "new/pending" and run it.
+    ApiRequest.where("status IN ('pending','new')").limit(10).each do |ar|
       ar.process!
     end
 
