@@ -26,8 +26,7 @@ gem "typhoeus", "~> 0.6.7"
 gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap', '~> 0.2.5' # app is using old bootstrap, need old gem
-gem 'thin', "~> 1.6.1"
-gem 'postgres_ext'
+gem 'thin' # evented
 
 # send emails
 gem 'postmark-rails'
