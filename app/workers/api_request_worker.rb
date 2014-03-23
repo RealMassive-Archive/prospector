@@ -10,18 +10,7 @@ class ApiRequestWorker
   @queue = :api_request_queue
 
   def self.perform
-    # Fetch the first object that is "new", mark it as "pending". Do this
-    # as one atomic transaction at the database layer.
-    ApiRequest.transaction do
-      begin
-        lc = ApiRequest.where(status: "new").order_by("created at ASC").first
-        lc.pending!
-      rescue ActiveRecord::RecordNotFound
-        # no-op, ignore it in the odd event it blows up
-      end
-    end
 
-    # log the request payload and initiate a request to the API
 
 
   end

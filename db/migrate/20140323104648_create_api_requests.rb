@@ -2,11 +2,13 @@ class CreateApiRequests < ActiveRecord::Migration
   def change
     create_table :api_requests do |t|
       t.string        :model_type
-      t.text          :request_body
+      t.text          :request_options
       t.text          :response_body
       t.integer       :response_code
       t.string        :status
       t.string        :run_method
+      t.text          :run_args_hash # store this as json if possible
+      t.string        :request_url # where the request originally went
       t.timestamps
     end
 

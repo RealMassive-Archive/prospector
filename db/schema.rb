@@ -15,13 +15,15 @@ ActiveRecord::Schema.define(:version => 20140323104648) do
 
   create_table "api_requests", :force => true do |t|
     t.string   "model_type"
-    t.text     "request_body"
+    t.text     "request_options"
     t.text     "response_body"
     t.integer  "response_code"
     t.string   "status"
     t.string   "run_method"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.text     "run_args_hash"
+    t.string   "request_url"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "api_requests", ["created_at"], :name => "index_api_requests_on_created_at"

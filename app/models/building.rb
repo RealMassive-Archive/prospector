@@ -29,10 +29,9 @@ class Building < ActiveRecord::Base
   #     key: {uuid: "abc123..."} the UUID key of the building. This is
   #                         authoratatively supplied by the API.
   #
-  def self.fetch(key = {}.with_indifferent_access)
-    return Yajl::Parser.parse(ApiWrapper.get(
-      "/api/v1/buildings/#{key[:uuid]}", ''
-      ).body)
+  def self.fetch(key = {})
+    key = key.with_indifferent_access # make it easier
+    return ApiWrapper.get("/api/v1/buildings/#{key[:uuid]}", '')
   end
 
   #
@@ -41,12 +40,14 @@ class Building < ActiveRecord::Base
   # Parameters:
   #   address: Hash containing street, city, state, zipcode keys
   #
-  def self.api_create(address={}.with_indifferent_access)
+  def self.api_create(address={})
     # Error checking - make sure we have what we need per the Electrick-co API
     # https://github.com/electrik-co/realmassive/wiki/Building-API
     if address.blank?
       raise ArgumentError, "The address hash is blank."
     end
+
+    address = address.with_indifferent_access
 
     # Address must have ALL of the following keys
     [:street, :city, :state, :zipcode].each do |k|
@@ -60,7 +61,7 @@ class Building < ActiveRecord::Base
     end
 
     # Finally, send the payload to the API and return a response.
-    return Yajl::Parser.parse(ApiWrapper.post('/api/v1/buildings', {address: address}).body)
+    return ApiWrapper.post('/api/v1/buildings', {address: address})
   end
 
   #
@@ -68,12 +69,15 @@ class Building < ActiveRecord::Base
   # Utilizes the Electrick-co API to fetch all buildings by its search
   # functionality and returns an array of hashes with indifferent access.
   #
-  def self.search(address={}.with_indifferent_access)
+  def self.search(address={})
     # Error checking - make sure we have what we need per the Electrick-co API
     # https://github.com/electrik-co/realmassive/wiki/Building-API
     if address.blank?
       raise ArgumentError, "The address hash is blank."
     end
+
+    # Make the address more easily accessible
+    address = address.with_indifferent_access
 
     # Address must have ALL of the following keys
     [:street, :city, :state, :zipcode].each do |k|
@@ -87,14 +91,14 @@ class Building < ActiveRecord::Base
     end
 
     # Perform GET request to retrieve results
-    results = ApiWrapper.get('/api/v1/buildings', {address: address, limit: 3})
+    return ApiWrapper.get('/api/v1/buildings', {address: address, limit: 3})
       # RE: limit: 3 - if there's only one in the entire set it's an exact
       # match and that's the one you want to add to. If not, there will be N
       # matches. If it isn't within the first of those three, since they're
       # ordered by geographic proximity, there's no point since it's obviously
       # not in the result set.
 
-    # Return the actual buildings that the API gave us
-    return Yajl::Parser.parse(results.body)['results']
+    # If you're looking for the actual results, it's in body['results']
+    # return Yajl::Parser.parse(results.body)['results']
   end
 end
