@@ -9,8 +9,21 @@ class ApiRequestWorker
 
   @queue = :api_request_queue
 
-  def self.perform
+  def self.perform(id)
+    # Log to STDOUT. It's a Heroku thing.
+    logger = Rails.logger
+    Resque.logger = Logger.new(STDOUT)
+    Resque.logger.level = Logger::DEBUG
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActionMailer::Base.logger = Logger.new(STDOUT)
 
+    ar = ApiRequest.find(id)
+    ar.process!
+
+    # Failsafe - look for any other object marked "pending" and run it.
+    ApiRequest.where(status: "pending").each do |ar|
+      ar.process!
+    end
 
 
   end
