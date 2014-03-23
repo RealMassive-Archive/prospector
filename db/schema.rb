@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140321093238) do
+ActiveRecord::Schema.define(:version => 20140323104648) do
+
+  create_table "api_requests", :force => true do |t|
+    t.string   "model_type"
+    t.text     "request_body"
+    t.text     "response_body"
+    t.integer  "response_code"
+    t.string   "status"
+    t.string   "run_method"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "api_requests", ["created_at"], :name => "index_api_requests_on_created_at"
+  add_index "api_requests", ["model_type"], :name => "index_api_requests_on_model_type"
+  add_index "api_requests", ["status"], :name => "index_api_requests_on_status"
+  add_index "api_requests", ["updated_at"], :name => "index_api_requests_on_updated_at"
 
   create_table "broker_calls", :force => true do |t|
     t.integer  "caller_id"

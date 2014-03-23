@@ -7,10 +7,11 @@ Prospector::Application.routes.draw do
     match "/dashboard" => "home#dashboard", :as => :dashboard, :via => :get
     delete  '/admin/purge' => 'admin#purge', as: :purge
     get     '/admin'       => 'admin#index', as: :admin
-    get '/api-listings/new' => 'api_listings#new'
+    get '/api-listings/new' => 'api_listings#new', as: :api_listing
     resources :buildings, except: [:edit, :update, :destroy]
     get '/buildings/search/:street/:city/:state/:zipcode' => 'buildings#search'
     mount Resque::Server.new, :at => "/resque"
+    resources :api_requests, only: [:index, :show, :create]
   end
 
   root :to => "home#please_login"

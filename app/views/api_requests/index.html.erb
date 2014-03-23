@@ -1,0 +1,10 @@
+<h1>Existing API Request Objects</h1>
+
+<% @api_requests.each do |ar| -%>
+<div>
+  <strong>ID: <%= ar.id %></strong><br>
+  Status: <%= ar.status %><br>
+  Created: <%= ar.created_at %> / Updated: <%= ar.updated_at %>
+</div>
+<hr>
+<% end -%>
