@@ -11,5 +11,9 @@ class CreateSpaces < ActiveRecord::Migration
       t.string          :api_building_uuid
       t.timestamps
     end
+
+    add_index :spaces, :space_type
+    add_index :spaces, :api_uuid
+    add_index :spaces, :api_building_uuid
   end
 end
