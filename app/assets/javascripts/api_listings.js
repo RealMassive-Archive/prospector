@@ -2,9 +2,6 @@ $(document).ready(function() {
   // Declare the Building object
   var building = new Object();
 
-  // Declare a top-scope interval object to be cleared later
-  var interv = null; // we'll set it later
-
   // Hide all forms, then show the building creation form.
   $('form').hide();
   $('#building_form').show(); // start here
