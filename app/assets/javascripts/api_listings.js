@@ -15,7 +15,7 @@ $(document).ready(function() {
     for(i = 0; i < inputs.length; i++) {
       if(inputs[i].value.length < 1) {
         alert(inputs[i].id + " doesn't appear to be filled out correctly.");
-        break;
+        return false;
       }
       // Assign values to the appropriate properties of building.
       building[inputs[i].id] = inputs[i].value;
