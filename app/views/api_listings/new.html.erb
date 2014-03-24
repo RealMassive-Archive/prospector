@@ -44,6 +44,35 @@
   <input type="submit" value="Next &gt;" id="btn_next">
 </form>
 
-<form id="building_list_form" method="" action="">
+<form id="building_list_form" method="" action="" class="form-horizontal">
+  <p>Is this building one of the below that already exist in the RealMassive
+     database?
+  </p>
+  {{#each this}}
+    <label class="radio">
+      <input type="radio" name="api_uuid" value="{{this.key}}" id="{{this.key}}">
+      <strong>
+        {{#if this.title}}
+          {{this.title}}
+        {{else}}
+          (No Title Supplied)
+        {{/if}}
+      </strong><br>
+      {{this.address.street}}, {{this.address.city}}, {{this.address.state}}
+      {{this.address.zipcode}}
+    </label>
+  {{/each}}
 
+  <p>
+    If not, you can create a new building by selecting the option below.
+    <strong>Do NOT duplicate buildings!</strong> If it's in the list above,
+    USE IT.
+  </p>
+
+  <label class="radio">
+    <input type="radio" name="api_uuid" value="" id="new_uuid">
+    <strong>Not in list</strong><br>
+    Create new entry. I know I'm not supposed to duplicate buildings and I swear
+    this isn't a duplicate!
+  </label>
 </form>

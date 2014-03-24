@@ -78,13 +78,25 @@ $(document).ready(function() {
         // the browser is closed.
         if(data.response_body && data.response_body.length > 0 && data.status && data.status == 'success') {
           // Success, we have data. Parse the json and show buildings.
-          console.log(JSON.parse(data.response_body));
           // Clear the interval to stop pinging the server.
-          console.log(interv);
           clearInterval(interv);
+          show_building_options(JSON.parse(data.response_body).results);
         }
       });
     }, 3000);
+  }
+
+  // Shows the choice of building options - pick one in the list, or
+  // create a new one. Will assign the appropriate API UUID based on the "key"
+  // ...erm...key in the JSON hash to the building object.
+  function show_building_options(buildings) {
+    // buildings should already be an array of JSON-parsed objects.
+    // Parse the internal template with Handlebars.js (http://handlebarsjs.com/)
+    // and show it.
+    console.log(buildings);
+    var tmp = Handlebars.compile($('#building_list_form').html());
+    $('#building_list_form').html(tmp(buildings));
+    $('#building_list_form').show();
   }
 
 });
