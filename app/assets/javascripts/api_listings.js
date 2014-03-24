@@ -2,6 +2,9 @@ $(document).ready(function() {
   // Declare the Building object
   var building = new Object();
 
+  // Declare a top-scope interval object to be cleared later
+  var interv = null; // we'll set it later
+
   // Hide all forms, then show the building creation form.
   $('form').hide();
   $('#building_form').show(); // start here
@@ -43,7 +46,7 @@ $(document).ready(function() {
       }
     })
 
-    creation_request = $.ajax({
+    new_api_request = $.ajax({
       url: "/api_requests",
       type: "POST",
       data: params,
@@ -56,35 +59,35 @@ $(document).ready(function() {
 
   // Waiting screen function
   function waiting_screen(model_type, api_request_id) {
-    var interv = setInterval(pingServer(model_type, api_request_id, 3000));
-  }
+    // TODO: spinner
+    var interv = window.setInterval(function() {
+      console.log("doing a ping of " + model_type + " " + api_request_id);
+      console.log(interv);
+      status_check = $.ajax({
+        url: '/api_requests/' + api_request_id,
+        type: "GET",
+        dataType: "json"
+      }).done(function(data) {
+        // Check for failure so we can bail out quickly.
+        if(data.status && data.status == 'fail') {
+          console.log("IT ASPLODED!");
+          console.log(data);
+          clearInterval(interv);
+          alert("Internal failure. Talk to management about this listing.")
+        }
 
-  // Ping server function. Looks up status of API request.
-  function pingServer(model_type, api_request_id, interv) {
-    status_check = $.ajax({
-      url: '/api_requests/' + api_request_id,
-      type: "GET",
-      dataType: "json"
-    }).done(function(data) {
-      // Check for failure so we can bail out quickly.
-      if(data.status && data.status == 'fail') {
-        console.log("IT ASPLODED!");
-        console.log(data);
-        clearInterval(interv);
-        alert("Internal failure. Talk to management about this listing.")
-      }
-
-      // If no failure, look for success so we can proceed. Otherwise the item
-      // is trapped in limbo until the system returns a success or fail, or
-      // the browser is closed.
-      if(data.response_body && data.response_body.length > 0 && data.status && data.status == 'success') {
-        // Success, we have data. Parse the json and show buildings.
-        console.log(JSON.parse(data.response_body));
-        // Clear the interval to stop pinging the server.
-        console.log(interv);
-        clearInterval(interv);
-      }
-    });
+        // If no failure, look for success so we can proceed. Otherwise the item
+        // is trapped in limbo until the system returns a success or fail, or
+        // the browser is closed.
+        if(data.response_body && data.response_body.length > 0 && data.status && data.status == 'success') {
+          // Success, we have data. Parse the json and show buildings.
+          console.log(JSON.parse(data.response_body));
+          // Clear the interval to stop pinging the server.
+          console.log(interv);
+          clearInterval(interv);
+        }
+      });
+    }, 3000);
   }
 
 });
