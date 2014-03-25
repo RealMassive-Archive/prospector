@@ -1,45 +1,68 @@
-<h2>New Building</h2>
+<!-- Div to show the spinner gif -->
+<div id="spinner">
+  <p>Communicating with server. Please stand by.</p>
+</div>
 
-<p>
-  Please supply all information you have about the building itself. If you
-  don't know one of the details, leave it blank with the exception of the
-  address parameters - all of those are absolutely required.
-</p>
+<div id="error">
+  <p><strong>An API error occurred:</strong></p>
+  <p>Contact your supervisor. Show them the below output:</p>
+  <div style="font-family: monospace;" class="text-error">
+    {{response_body}}
+  </div>
+  <p>The server received the following data from your browser:</p>
+  <div style="font-family: monospace;" class="text-error">
+    <strong>Run Model:</strong> {{model_type}}<br>
+    <strong>Run Method:</strong> {{run_method}}<br>
+    <strong>Arguments:</strong> {{run_args_hash}}
+  </div>
+</div>
 
-<form id="building_form" action="" method="">
+<!-- Using a div to not hide all forms in the project, just building-related -->
+<!-- Begin: building_forms section -->
+<div id="building_forms">
+
+<form id="building_form" action="#" method="">
+  <h2>New Building</h2>
+
+  <p>
+    Please supply all information you have about the building itself. If you
+    don't know one of the details, leave it blank with the exception of the
+    address parameters - all of those are absolutely required.
+  </p>
+
   <p>
     <label for="name">Building Name</label>
-    <input type="text" id="name">
+    <input type="text" id="name" placeholder="Enter 'Unknown' if not known">
   </p>
 
   <p>
     <label for="size">Building Size</label>
-    <input type="text" id="size">
+    <input type="text" id="size" placeholder="Enter 'Unknown' if not known">
   </p>
 
   <p>
     <label for="size_units">Units of Measure (e.g. ft/2, m/2)</label>
-    <input type="text" id="size_units">
+    <input type="text" id="size_units" placeholder="Enter 'Unknown' if not known">
   </p>
 
   <p>
     <label for="street">Street Address</label>
-    <input type="text" id="street">
+    <input type="text" id="street" placeholder="Required">
   </p>
 
   <p>
     <label for="city">City</label>
-    <input type="text" id="city">
+    <input type="text" id="city" placeholder="Required">
   </p>
 
   <p>
     <label for="state">State (two-letter abbreviation only)</label>
-    <input type="text" id="state">
+    <input type="text" id="state" placeholder="Required (e.g. 'TX')">
   </p>
 
   <p>
     <label for="zipcode">Zip Code</label>
-    <input type="text" id="zipcode">
+    <input type="text" id="zipcode" placeholder="Required">
   </p>
   <input type="submit" value="Next &gt;" id="btn_next">
 </form>
@@ -75,4 +98,29 @@
     Create new entry. I know I'm not supposed to duplicate buildings and I swear
     this isn't a duplicate!
   </label>
+
+  <button type="button" id="btn_building_list_back">&lt; Back</button>
+  <input type="submit" value="Next &gt;" id="btn_building_list_next">
 </form>
+
+<!-- New space form -->
+<form id="new_space_form">
+  <h2>New Space</h2>
+  <p>You're adding a <strong>space</strong> to the following building:</p>
+
+  <p>
+    <strong>
+      {{#if title}}
+        {{title}}
+      {{else}}
+        (No Title Supplied)
+      {{/if}}
+    </strong><br>
+    {{address.street}}<br>
+    {{address.city}}, {{address.state}} {{address.zipcode}}
+  </p>
+
+</form>
+
+<!-- End: building_forms section -->
+</div>
