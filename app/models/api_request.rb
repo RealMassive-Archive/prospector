@@ -29,8 +29,23 @@ class ApiRequest < ActiveRecord::Base
     # Now do the same check for the existence of the method on the model,
     # but be sure that it's in the pre-defined list of allowed methods.
     if klass.allowed_queries && klass.allowed_queries.include?(run_method.to_sym)
-      # It's inside the given whitelist, run the method
-      response = klass.send(run_method.to_sym, method_args)
+      begin
+        # It's inside the given whitelist, run the method
+        response = klass.send(run_method.to_sym, method_args)
+      rescue ArgumentError => e
+        # This application threw an error before talking to the API. Mark
+        # the request as failed and log.
+        logger.fatal e
+        update_attributes(
+          response_code: 400,
+          status:        "fail",
+          response_body: Yajl::Encoder.encode(
+            {status: "error", message: "ArgumentError: #{e}"}
+          )
+        )
+        return false
+      end
+
 
       # Look at the response code. If anything other than 200, it failed.
       request_status = response.code == 200 ? "success" : "fail"
