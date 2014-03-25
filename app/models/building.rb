@@ -47,7 +47,10 @@ class Building < ActiveRecord::Base
       raise ArgumentError, "The address hash is blank."
     end
 
-    address = address.with_indifferent_access
+    # Grab the "name" parameter off the address hash
+    title = (address['title'] || address['name'])
+    address = address.reject{|k| [:name, :title].include?(k) }
+      .with_indifferent_access
 
     # Address must have ALL of the following keys
     [:street, :city, :state, :zipcode].each do |k|
@@ -61,7 +64,7 @@ class Building < ActiveRecord::Base
     end
 
     # Finally, send the payload to the API and return a response.
-    return ApiWrapper.post('/api/v1/buildings', {address: address})
+    return ApiWrapper.post('/api/v1/buildings', {title: title, address: address})
   end
 
   #
