@@ -12,7 +12,6 @@ gem 'state_machine-audit_trail'
 gem 'acts-as-taggable-on'
 gem 'resque', "~> 1.25.1" # redis is a dependency
 gem "yajl-ruby", "~> 1.2.0", require: 'yajl' # faster json parser
-gem 'jquery-rails'
 gem 'haml'
 gem 'haml-rails'
 gem "devise", ">= 2.2.3"
@@ -40,6 +39,7 @@ gem 'postmark-mitt'
 gem 'exifr', :git => 'git://github.com/picuous/exifr.git'
 
 group :assets do
+  gem 'jquery-rails', '~> 3.1.0'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
