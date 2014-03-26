@@ -94,7 +94,14 @@ class Building < ActiveRecord::Base
     end
 
     # Perform GET request to retrieve results
-    return ApiWrapper.get('/api/v1/buildings', {address: address, limit: 3})
+    return ApiWrapper.get('/api/v1/buildings', {
+      address: true,
+      limit: 3,
+      street:  address[:street],
+      city:    address[:city],
+      state:   address[:state],
+      zipcode: address[:zipcode]
+    })
       # RE: limit: 3 - if there's only one in the entire set it's an exact
       # match and that's the one you want to add to. If not, there will be N
       # matches. If it isn't within the first of those three, since they're
