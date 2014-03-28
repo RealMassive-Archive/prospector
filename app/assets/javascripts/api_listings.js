@@ -210,7 +210,11 @@ $(document).ready(function() {
     val = $('#building_list_form input[name=api_uuid]:checked').val();
     if(val && val.length > 0) {
       // User selected an existing building.
-      // TODO: Advance to next step with building ID selection
+      // Assign UUID to the building object and move on to showing the
+      // space creation form.
+debugger;
+      building.key = val;
+      show_new_space_form(building);
     }
     else {
       // User wants a new building so create it and get the ID.
@@ -266,10 +270,13 @@ $(document).ready(function() {
   // shows the new space form and sets the building's api_uuid based on the
   // return data from the app's API request object (response_body)
   function show_new_space_form(bldg) {
+debugger;
     // Set the building's API uuid
-    building.api_uuid = bldg.key; // key is provided from Electrick's API.
-    building.title = bldg.title;
-    building.address = bldg.address; // will be a hash
+    building.key = bldg.key; // key is provided from Electrick's API.
+    building.title = bldg.name;
+    building.address = {street: bldg.street, city: bldg.city, state: bldg.state,
+                        zipcode: bldg.zipcode}; // Hash of options
+
     var tmp = Handlebars.compile($('#new_space_form').html());
     $('#new_space_form').html(tmp(building))
     hide_all_forms();
