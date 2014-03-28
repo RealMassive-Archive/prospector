@@ -212,7 +212,6 @@ $(document).ready(function() {
       // User selected an existing building.
       // Assign UUID to the building object and move on to showing the
       // space creation form.
-debugger;
       building.key = val;
       show_new_space_form(building);
     }
@@ -270,7 +269,6 @@ debugger;
   // shows the new space form and sets the building's api_uuid based on the
   // return data from the app's API request object (response_body)
   function show_new_space_form(bldg) {
-debugger;
     // Set the building's API uuid
     building.key = bldg.key; // key is provided from Electrick's API.
     building.title = bldg.name;
