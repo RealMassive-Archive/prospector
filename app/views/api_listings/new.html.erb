@@ -104,8 +104,10 @@
 </form>
 
 <!-- New space form -->
-<form id="new_space_form">
+<form id="new_space_form" action="" method="">
   <h2>New Space</h2>
+  <p><strong>If this building has no multiple spaces,</strong> just fill out
+     the below information as if there's only one space.</p>
   <p>You're adding a <strong>space</strong> to the following building:</p>
 
   <p>
@@ -120,7 +122,81 @@
     {{address.city}}, {{address.state}} {{address.zipcode}}
   </p>
 
+  <p>
+    <label for="space_type">Space Type</label>
+    <input type="text" id="space_type" placeholder="e.g. Office">
+  </p>
+
+  <p>
+    <label for="description">Description</label>
+    <textarea id="description"
+      placeholder="Enter a nice description of the space here."></textarea>
+  </p>
+
+  <p>
+    <label for="unit_number">Unit Number</label>
+    <input type="text" id="unit_number" placeholder="e.g. 202">
+  </p>
+
+  <p>
+    <label for="floor_number">Floor Number</label>
+    <input type="text" id="floor_number" placeholder="e.g. 1 (for first floor)">
+  </p>
+
+  <p>
+    <label for="rate">Rate (price)</label>
+    <input type="text" id="rate" placeholder="e.g. 55 (for $55 bucks)">
+  </p>
+
+  <p>
+    <label for="rate_units">Rate Units (currency)</label>
+    <input type="text" id="rate_units" placeholder="Enter USD for US Dollar">
+  </p>
+
+  <p>
+    <label for="space_available">Space Available</label>
+    <input type="text" id="space_available" placeholder="? Assume how much phys. space">
+  </p>
+
+  <p>
+    <label for="space_available_units">Unit of Measure for Space Available</label>
+    <input type="text" id="space_available_units" placeholder="e.g. ft/2 (for square feet)">
+  </p>
+
+  <input type="submit" value="Save Space">
+
 </form>
 
 <!-- End: building_forms section -->
+
+<div id="cycle_complete">
+  <h1>You're all set!</h1>
+  <p>You've successfully created a space and/or building.</p>
+
+  <p>
+    <strong>
+      {{#if building.title}}
+        {{building.title}}
+      {{else}}
+        (No Title Supplied)
+      {{/if}}
+    </strong><br>
+    {{building.address.street}}<br>
+    {{building.address.city}}, {{building.address.state}}
+    {{building.address.zipcode}}
+  </p>
+
+  <p>
+    Space type: {{space_type}}<br>
+    {{#if description}}
+      {{description}}
+    {{else}}
+      (No description supplied.)
+    {{/if}}<br>
+    ${{rate}} {{rate_units}}<br>
+    {{space_available}} {{space_available_units}} available<br>
+    Unit number {{unit_number}} on floor {{floor_number}}
+  </p>
+</div>
+
 </div>

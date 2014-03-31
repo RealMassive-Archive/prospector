@@ -1,6 +1,7 @@
 $(document).ready(function() {
   // Declare the Building object
   var building = new Object();
+  var space    = new Object();
 
   // Declare a spinner object to be used with sonic.js.
   // Shamelessly ripped from sonic.js examples
@@ -88,6 +89,7 @@ $(document).ready(function() {
   $('#spinner').append(s.canvas);
   s.play();
   hide_all_forms();
+  $('#building_forms #cycle_complete').hide(); // hide finish message
   show_form('building_form');
 
   function hide_all_forms() {
@@ -182,15 +184,29 @@ $(document).ready(function() {
             show_building_options(JSON.parse(data.response_body).results);
             break;
           case "new_space_form":
-            console.log(next_step);
             show_new_space_form(JSON.parse(data.response_body));
+            break;
+          case "cycle_complete":
+            show_cycle_complete(JSON.parse(data.response_body));
             break;
           default:
             show_building_options(JSON.parse(data.response_body).results);
+            break;
           }
         }
       });
     }, 2000);
+  }
+
+  // Shows the cycle_complete dialog
+  function show_cycle_complete(data) {
+    hide_all_forms();
+    hide_spinner();
+
+    // Set up the handlebars templating here
+    var tmp = Handlebars.compile($('#building_forms #cycle_complete').html());
+    $('#building_forms #cycle_complete').html(tmp(data));
+    $('#building_forms #cycle_complete').show();
   }
 
   // Clicking the "back" button on the building list form should
@@ -250,6 +266,41 @@ $(document).ready(function() {
     });
   }
 
+  // Creating a space object
+  function create_space(spc) {
+    hide_all_forms();
+    show_spinner();
+
+    // Send a request to the API.
+    var params = $.param({
+      api_request: {
+        model_type: "space",
+        run_method: "api_create",
+        run_args_hash: {
+          building_key: spc.building_key,
+          space_type: spc.space_type,
+          description: spc.description,
+          unit_number: spc.unit_number,
+          rate: spc.rate,
+          rate_units: spc.rate_units,
+          space_available: spc.space_available,
+          space_available_units: spc.space_available_units,
+          floor_number: spc.floor_number
+        }
+      }
+    });
+
+    new_api_request = $.ajax({
+      url: "/api_requests",
+      type: "POST",
+      data: params,
+      dataType: "json"
+    }).done(function(data) {
+      console.log(data);
+      waiting_screen("cycle_complete", data.id);
+    });
+  }
+
   // Shows the choice of building options - pick one in the list, or
   // create a new one. Will assign the appropriate API UUID based on the "key"
   // ...erm...key in the JSON hash to the building object.
@@ -271,9 +322,8 @@ $(document).ready(function() {
   function show_new_space_form(bldg) {
     // Set the building's API uuid
     building.key = bldg.key; // key is provided from Electrick's API.
-    building.title = bldg.name;
-    building.address = {street: bldg.street, city: bldg.city, state: bldg.state,
-                        zipcode: bldg.zipcode}; // Hash of options
+    building.title = bldg.title;
+    building.address = bldg.address;
 
     var tmp = Handlebars.compile($('#new_space_form').html());
     $('#new_space_form').html(tmp(building))
@@ -281,5 +331,30 @@ $(document).ready(function() {
     hide_spinner();
     show_form('new_space_form');
   }
+
+  // When the new space form is submitted, set values for the space object
+  // according to what's typed in, then go create the api request for it.
+  $(document).on('submit', '#building_forms #new_space_form', function(e) {
+    e.preventDefault(); // don't submit
+    // Come up with a shortcut to the form objects.
+    frm = $('#building_forms #new_space_form input[type!="submit"], #building_forms #new_space_form textarea');
+
+    // put the values inside the space object
+    for(i = 0; i < frm.length; i++) {
+      Object.defineProperty(space, frm[i].id, {
+        value: frm[i].value,
+        enumerable: true,
+        writable: true,
+        configurable: true
+      });
+    }
+
+    // Set the key for the building itself
+    space.building_key = building.key;
+
+    console.log(space);
+    create_space(space);
+    return false;
+  });
 
 });

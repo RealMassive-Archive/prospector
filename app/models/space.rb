@@ -6,10 +6,18 @@ class Space < ActiveRecord::Base
   # documentation at https://github.com/electrik-co/realmassive/wiki/Space-API.
 
   #
-  # Space.api_create("abc123", {space_type: ..., unit_number: ...})
+  # Space.allowed_queries
+  # Provides an array of symbols specifying the allowed methods that will be
+  # later used by Object#send. This is to prevent abuse of the send method,
+  # especially when user input is at least somewhat utilized. (security)
+  def self.allowed_queries
+    [:fetch, :api_create]
+  end
+
   #
-  # Creates a building object returning the response parsed into
-  # a hash (instead of raw JSON).
+  # Space.api_create({building_key: 'abc123...', space_type: 'office', ...})
+  #
+  # Creates a building object returning the response object from ApiWrapper.
   # Options:
   #   space_type
   #   description
@@ -20,13 +28,22 @@ class Space < ActiveRecord::Base
   #   space_available_units
   #   floor_number
   #
-  def self.api_create(building_key, options={}.with_indifferent_access)
-    all_options = (options.reject {|k,v| k == :building_key }).merge({:building_key => building_key})
-    response = ApiWrapper.post("/api/v1/spaces", all_options)
-    if response.code == 200
-      return Yajl::Parser.parse(response.body)
+  def self.api_create(options={})
+    # Make the options with indifferent access
+    options = options.with_indifferent_access # From ActiveSupport, allows
+                                              # access to options[:foo] instead
+                                              # of options['foo']
+
+    # Specify which options are allowed. Nothing other than this gets pushed
+    # to the API for any reason whatsoever.
+    allowed_options = [:space_type, :description, :unit_number, :rate,
+                       :rate_units, :space_available, :space_available_units,
+                       :floor_number, :building_key]
+
+    options.delete_if do |k,v|
+      !allowed_options.include?(k.to_sym)
     end
-    return nil # if it failed, throw nil
+    return ApiWrapper.post("/api/v1/spaces", options)
   end
 
   #
