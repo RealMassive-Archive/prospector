@@ -52,6 +52,9 @@ class Building < ActiveRecord::Base
     address = address.reject{|k| [:name, :title].include?(k) }
       .with_indifferent_access
 
+    # Grab the "building type" off there too
+    building_type = address.delete(:type)
+
     # Address must have ALL of the following keys
     [:street, :city, :state, :zipcode].each do |k|
       unless address[k] || address[k].blank?
@@ -64,7 +67,7 @@ class Building < ActiveRecord::Base
     end
 
     # Finally, send the payload to the API and return a response.
-    return ApiWrapper.post('/api/v1/buildings', {title: title, address: address})
+    return ApiWrapper.post('/api/v1/buildings', {title: title, address: address, type: building_type})
   end
 
   #

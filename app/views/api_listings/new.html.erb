@@ -36,6 +36,17 @@
   </p>
 
   <p>
+    <label for="building_type">Building Type</label>
+    <select name="building_type" id="building_type">
+      <option value="Office" selected>Office</option>
+      <option value="Retail">Retail</option>
+      <option value="Industrial">Industrial</option>
+      <option value="Flex Space">Flex Space</option>
+      <option value="Land">Land</option>
+    </select>
+  </p>
+
+  <p>
     <label for="size">Building Size</label>
     <input type="text" id="size" placeholder="Enter 'Unknown' if not known">
   </p>
@@ -118,13 +129,17 @@
         (No Title Supplied)
       {{/if}}
     </strong><br>
+    {{type}}<br>
     {{address.street}}<br>
     {{address.city}}, {{address.state}} {{address.zipcode}}
   </p>
 
   <p>
     <label for="space_type">Space Type</label>
-    <input type="text" id="space_type" placeholder="e.g. Office">
+    <select name="space_type" id="space_type">
+      <option value="Lease" selected>Lease</option>
+      <option value="Sale">Sale</option>
+    </select>
   </p>
 
   <p>
@@ -144,23 +159,13 @@
   </p>
 
   <p>
-    <label for="rate">Rate (price)</label>
-    <input type="text" id="rate" placeholder="e.g. 55 (for $55 bucks)">
+    <label for="rate">Rate (price) per square foot ($/SF) - numbers only please</label>
+    <input type="text" id="rate" placeholder="e.g. 55 (for $55 bucks)"> $/Square Foot
   </p>
 
   <p>
-    <label for="rate_units">Rate Units (currency)</label>
-    <input type="text" id="rate_units" placeholder="Enter USD for US Dollar">
-  </p>
-
-  <p>
-    <label for="space_available">Space Available</label>
-    <input type="text" id="space_available" placeholder="? Assume how much phys. space">
-  </p>
-
-  <p>
-    <label for="space_available_units">Unit of Measure for Space Available</label>
-    <input type="text" id="space_available_units" placeholder="e.g. ft/2 (for square feet)">
+    <label for="space_available">How many square feet of space are available?</label>
+    <input type="text" id="space_available" placeholder="Numbers only please!"> Square Feet
   </p>
 
   <input type="submit" value="Save Space">
@@ -187,7 +192,7 @@
   </p>
 
   <p>
-    Space type: {{space_type}}<br>
+    Space type: {{type}}<br>
     {{#if description}}
       {{description}}
     {{else}}

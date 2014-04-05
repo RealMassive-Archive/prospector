@@ -118,6 +118,7 @@ $(document).ready(function() {
       }
       // Assign values to the appropriate properties of building.
       building[inputs[i].id] = inputs[i].value;
+      building.type = $('#building_form #building_type').val();
     }
     find_building(building); // trigger the find_building function below.
     return false; // don't submit form yet (preventDefault doesn't work here)
@@ -229,6 +230,11 @@ $(document).ready(function() {
       // Assign UUID to the building object and move on to showing the
       // space creation form.
       building.key = val;
+
+      // Move the building street/city/zip etc. into an address hash
+      // for compatibility with the view layer, which is itself already
+      // compatible with the data model from the API.
+      building.address = {street: building.street, city: building.city, state: building.state, zipcode: building.zipcode};
       show_new_space_form(building);
     }
     else {
@@ -251,7 +257,7 @@ $(document).ready(function() {
         model_type: "building",
         run_method: "api_create",
         run_args_hash: {title: bldg.name, street: bldg.street, city: bldg.city,
-                        state: bldg.state, zipcode: bldg.zipcode}
+                        state: bldg.state, zipcode: bldg.zipcode, type: bldg.type}
       }
     })
 
@@ -282,9 +288,9 @@ $(document).ready(function() {
           description: spc.description,
           unit_number: spc.unit_number,
           rate: spc.rate,
-          rate_units: spc.rate_units,
+          rate_units: '$/SF', // Not going outside US for this app.
           space_available: spc.space_available,
-          space_available_units: spc.space_available_units,
+          space_available_units: 'SF', // Will always be square feet for this app.
           floor_number: spc.floor_number
         }
       }
