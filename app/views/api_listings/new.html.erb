@@ -48,12 +48,7 @@
 
   <p>
     <label for="size">Building Size</label>
-    <input type="text" id="size" placeholder="Enter 'Unknown' if not known">
-  </p>
-
-  <p>
-    <label for="size_units">Units of Measure (e.g. ft/2, m/2)</label>
-    <input type="text" id="size_units" placeholder="Enter 'Unknown' if not known">
+    <input type="text" id="size" placeholder="Enter 'Unknown' if not known"> SF
   </p>
 
   <p>
@@ -202,6 +197,8 @@
     {{space_available}} {{space_available_units}} available<br>
     Unit number {{unit_number}} on floor {{floor_number}}
   </p>
+
+  <p><%= link_to "Click here to go back to the main screen", root_path %></p>
 </div>
 
 </div>

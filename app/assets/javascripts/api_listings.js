@@ -257,7 +257,8 @@ $(document).ready(function() {
         model_type: "building",
         run_method: "api_create",
         run_args_hash: {title: bldg.name, street: bldg.street, city: bldg.city,
-                        state: bldg.state, zipcode: bldg.zipcode, type: bldg.type}
+                        state: bldg.state, zipcode: bldg.zipcode, type: bldg.type,
+                        size: bldg.size, size_units: "SF"}
       }
     })
 
